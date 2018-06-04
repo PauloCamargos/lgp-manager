@@ -7,7 +7,9 @@ localization of a given asset in a ambient.
  ### RF Kits Common
     Doc.: http://docs.digi.com/display/RFKitsCommon/Introduction+to+the+XBee+modules
 ## Libraries used
- 1. SoftwareSerial Library
+ 1. (Arduino) SoftwareSerial Library
     Doc.: (https://www.arduino.cc/en/Reference/SoftwareSerial)
+ 2. (Python) XBee Python Library
+    Doc.: (http://xbplib.readthedocs.io/en/latest/)
 
 
