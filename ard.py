@@ -3,11 +3,10 @@ import serial
 import time
 import os
 import serial.tools.list_ports
-
-print('Estou funcionando!')
+import struct
 
 arduino_port = serial.tools.list_ports.comports()[0].device
-print(f"Found Arduindo at port {port_name}")
+print(f"Found Arduindo at port {arduino_port}")
 comport = serial.Serial(arduino_port, 9600, timeout=5)
 
 
@@ -22,19 +21,32 @@ def readSL():
 
     """
 
-    end_device = input("Enter the End Device number: ")
-    print(f"Sending request to Arduino for End Device number {end_device}...")
-    comport.write(end_device)
-    time.sleep(1.8)
-    value_serial = comport.readline()
-    
-    if value_serial == '0':
-        # If not found
-        print("The specified device was not found")
-        return None
-    else:
-        print(f"Device with SL number {value_serial} found.")
-        return value_serial
+    # end_device = input("Enter the End Device number: ")
+    # print(f"Sending request to Arduino for End Device number {end_device}...")
+    # comport.write(end_device)
+    # serial_number = ['7E', '00', '13', '97', '01', '00', '13', 'A2', '00', '40', \
+    # '7C', '48', 'FF', 'FE', '59', '53', '4C', '00', '40', '7C', '48', 'FF', 'B6']
+    # sn = b'\x00 \x13 \xA2 \x00 \x40 \x7C \x48 \xFF'
+    # sn = ['\x00', '\x13', '\xA2', '\x00', '\x40', '\x7C', '\x48', '\xFF']
+    # data = struct.pack(hex(sn))
+    parameter = int(input('Enter the device option: '))
+    comport.write(parameter)
+
+    # time.sleep(1.8)
+
+    # value_serial = comport.read()
+    # serial_list = []
+    # for v in value_serial:
+    #     serial_list.append(hex(v))
+    #     print(hex(v))
+    #
+    # if value_serial == None:
+    #     # If not found
+    #     print("The specified device was not found")
+    #     return None
+    # else:
+    #     print(f"Device with SL number found.")
+    #     return value_serial
 
 
 def menu():
