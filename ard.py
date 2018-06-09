@@ -32,9 +32,10 @@ def readSL():
     parameter = int(input('Enter the device option: '))
     comport.write(parameter)
 
-    # time.sleep(1.8)
+    time.sleep(1.8)
 
-    # value_serial = comport.read()
+    value_serial = comport.read(6)
+    print(value_serial)
     # serial_list = []
     # for v in value_serial:
     #     serial_list.append(hex(v))

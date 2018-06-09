@@ -19,9 +19,9 @@
 SoftwareSerial xbee_serial(2, 3); //RX, TX
 
 uint8_t option;
-const byte E1_64BIT_ADDRESS[] = {0x00, 0x13, 0xA2, 0x00, 0x40, 0x7C, 0x48, 0xFF};
-const byte E2_64BIT_ADDRESS[] = {0x00, 0x13, 0xA2, 0x00, 0x40, 0x7C, 0x49, 0x27};
-const byte E3_64BIT_ADDRESS[] = {0x00, 0x13, 0xA2, 0x00, 0x40, 0x7C, 0x48, 0xFE};
+// const byte E1_64BIT_ADDRESS[] = {0x00, 0x13, 0xA2, 0x00, 0x40, 0x7C, 0x48, 0xFF};
+// const byte E2_64BIT_ADDRESS[] = {0x00, 0x13, 0xA2, 0x00, 0x40, 0x7C, 0x49, 0x27};
+// const byte E3_64BIT_ADDRESS[] = {0x00, 0x13, 0xA2, 0x00, 0x40, 0x7C, 0x48, 0xFE};
 
 //00 13 A2 00 40 7C 48 FF - E1
 //00 13 A2 00 40 7C 49 27 - E2
@@ -83,7 +83,7 @@ void send_frame(byte frame[19], char param) {
 
 void loop() {
 
-  if (Serial.available() == 2) {
+  if (Serial.available() == 1) {
     option = Serial.read();
     switch (option) {
       case '1': // envia frame para o ED 1 [SL]
@@ -145,4 +145,3 @@ void loop() {
   Serial.flush();
 
 }
-
