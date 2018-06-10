@@ -5,7 +5,7 @@ import os
 # PAN ID: C001BEE
 # SC: FFF
 
-# Corrdinator C:    0013A200404A4BB3
+# Cordinator C:    0013A200404A4BB3
 # Router R1:        0013A200404A4BC6
 # Router R2:        0013A200404AB737
 # End Device 1:     0013A200407C48FE
@@ -35,7 +35,19 @@ cordinator = XBeeDevice('/dev/ttyUSB0', 9600)
 # end_dev_E4 = RemoteXBeeDevice(cordinator, XBee64BitAddress.from_hex_string("0013A200407C4927"))
 
 def readRouterEndDevices():
-    
+    """
+        Returns a list of end devices conected to a specified router.
+
+        Parameters
+        --------
+        None
+
+        Returns
+        --------
+        List of RemoteXBeeDevice connected to a specified router if found and
+        'None' in case of no end device connected.
+    """
+
     router = input("> Enter the router NI (R1/R2): ")
     if router.title() == "R1":
         x64addr = XBee64BitAddress.from_hex_string(routers_64bit_addr['R1'])
@@ -52,7 +64,7 @@ def readRouterEndDevices():
     xbee_network.set_discovery_timeout(25)
     xbee_network.start_discovery_process()
     while xbee_network.is_discovery_running():
-        time.sleep(3)
+        time.sleep(0.5)
 
     # Retrieving router from network by 64bit address
     print(f"Retrieving router '{router.title()}' in the network...")
@@ -83,6 +95,7 @@ def readRouterEndDevices():
     else:
         return connected_ed
 
+
 def menu():
     """Shows a menu with the Application Options.
     This function only shows the menu, you still need to gets the user inputs.
@@ -94,8 +107,10 @@ def menu():
     print('C - CLEAR SCREEN *')
     print('-----------------------------------------------------------------\n')
 
+
 def main():
-    """Main Application
+    """
+        Main Application
     """
     menu()
 
@@ -119,4 +134,6 @@ if __name__ == "__main__":
     finally:
         print("Closing XBee connection...")
         cordinator.close()
+        while(cordinator.isOpen():
+            time.sleep(0.5)
         print("Connection successfully closed!")
