@@ -16,6 +16,8 @@ import com.digi.xbee.api.models.XBee64BitAddress;
 import com.digi.xbee.api.XBeeNetwork;
 
 public class MainApp {
+	// XBEE JAVA LIBRARY
+	//https://www.digi.com/resources/documentation/digidocs/90001438/#concepts/c_90001438.htm%3FTocPath%3D_____1
 	/* MESH MAIN INFORMATION */
 	// PAN ID: C001BEE
 	// SC: FFF
@@ -40,14 +42,14 @@ public class MainApp {
 		String device_address = ""; // Holds the 64-bit address for the chosen device
 
 		// Dictionary holding the device name and its 64-bit address
-		Map<String, String> devices64bitAdrresses = new HashMap<String, String>();
-		devices64bitAdrresses.put("C", "0013A200404A4BB3");
-		devices64bitAdrresses.put("R1", "0013A200404A4BC6");
-		devices64bitAdrresses.put("R2", "0013A200404AB737");
-		devices64bitAdrresses.put("E1", "0013A200407C48FE");
-		devices64bitAdrresses.put("E2", "0013A200407C48FF");
-		devices64bitAdrresses.put("E3", "0013A200407C4533");
-		devices64bitAdrresses.put("E4", "0013A200407C4927");
+		Map<String, String> devices64bitAddresses = new HashMap<String, String>();
+		devices64bitAddresses.put("C", "0013A200404A4BB3");
+		devices64bitAddresses.put("R1", "0013A200404A4BC6");
+		devices64bitAddresses.put("R2", "0013A200404AB737");
+		devices64bitAddresses.put("E1", "0013A200407C48FE");
+		devices64bitAddresses.put("E2", "0013A200407C48FF");
+		devices64bitAddresses.put("E3", "0013A200407C4533");
+		devices64bitAddresses.put("E4", "0013A200407C4927");
 
 		try {
 			coordinator.open(); // Opening connection with the coord.
@@ -60,8 +62,9 @@ public class MainApp {
 			System.out.println(" 0 - Quit the program ");
 			System.out.println(" 1 - Read all router's EDs ");
 			System.out.println(" 2 - Search for device ");
-			System.out.println(" * 3 - Get the number of remote devs. ");
-			System.out.println(" * 4 - Get a parameter [MP, MY, SL...] ");
+			System.out.println(" 3 - Search for device location ");
+			System.out.println(" * 4 - Get the number of remote devs. ");
+			System.out.println(" * 5 - Get a parameter [MP, MY, SL...] ");
 			System.out.println("-------------------------------------------------------");
 
 			while (option != 0) {
@@ -80,11 +83,11 @@ public class MainApp {
 					device_address = "";
 					switch (device_name) {
 					case "R1":
-						device_address = devices64bitAdrresses.get(device_name); // Retrieving the 64-bit addr. from the
+						device_address = devices64bitAddresses.get(device_name); // Retrieving the 64-bit addr. from the
 																					// List
 						break;
 					case "R2":
-						device_address = devices64bitAdrresses.get(device_name); // Retrieving the 64-bit addr. from the
+						device_address = devices64bitAddresses.get(device_name); // Retrieving the 64-bit addr. from the
 																					// List
 						break;
 					default:
@@ -165,23 +168,23 @@ public class MainApp {
 					device_address = "";
 					switch (device_name) {
 					case "R1":
-						device_address = devices64bitAdrresses.get(device_name); // Retrieving the 64-bit addr. from the
+						device_address = devices64bitAddresses.get(device_name); // Retrieving the 64-bit addr. from the
 																					// List
 						break;
 					case "R2":
-						device_address = devices64bitAdrresses.get(device_name);
+						device_address = devices64bitAddresses.get(device_name);
 						break;
 					case "E1":
-						device_address = devices64bitAdrresses.get(device_name);
+						device_address = devices64bitAddresses.get(device_name);
 						break;
 					case "E2":
-						device_address = devices64bitAdrresses.get(device_name);
+						device_address = devices64bitAddresses.get(device_name);
 						break;
 					case "E3":
-						device_address = devices64bitAdrresses.get(device_name);
+						device_address = devices64bitAddresses.get(device_name);
 						break;
 					case "E4":
-						device_address = devices64bitAdrresses.get(device_name);
+						device_address = devices64bitAddresses.get(device_name);
 						break;
 					default:
 						System.out.println("Device name not valid. Try again.\n");

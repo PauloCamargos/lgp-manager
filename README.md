@@ -4,12 +4,12 @@ registered equipment in a hospital. It uses the ZigBee technolgy to provide info
 localization of a given asset in a ambient. 
 
 ## ZigBee documentation
- ### RF Kits Common
+### RF Kits Common
     Doc.: http://docs.digi.com/display/RFKitsCommon/Introduction+to+the+XBee+modules
-## Libraries used
+### Libraries used
  1. (Arduino) SoftwareSerial Library
     Doc.: (https://www.arduino.cc/en/Reference/SoftwareSerial)
  2. (Python) XBee Python Library
     Doc.: (http://xbplib.readthedocs.io/en/latest/)
-
-
+ 3. (Java) XBee Java Libray
+    Doc.: (https://www.digi.com/resources/documentation/digidocs/90001438/#concepts/c_90001438.htm%3FTocPath%3D_____1)
