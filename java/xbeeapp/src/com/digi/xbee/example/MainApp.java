@@ -1,6 +1,7 @@
 package com.digi.xbee.example;
 
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -32,7 +33,7 @@ public class MainApp {
 	// TODO Replace with the baud rate of your sender module.
 	private static final int BAUD_RATE = 9600;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnsupportedEncodingException {
 		Scanner reader = new Scanner(System.in);
 		XBeeDevice coordinator = new XBeeDevice(PORT, BAUD_RATE); // Instantiating the local (coordinator) device
 		String device_name; // Holds the option for device [R1,R2,E1...]
@@ -73,7 +74,8 @@ public class MainApp {
 					option = 0;
 					break;
 				case 1: // Reads all router's EDs
-					System.out.print("Enter the device name [R1,R2]: ");
+					xbee_network = coordinator.getNetwork();
+					System.out.print("> Enter the device name [R1,R2]: ");
 					device_name = reader.next();
 					device_address = "";
 					switch (device_name) {
@@ -94,7 +96,7 @@ public class MainApp {
 						break;
 
 					System.out.println("Starting discover process...");
-					xbee_network.setDiscoveryTimeout(10000); // Estabilishing a timeout in ms
+//					xbee_network.setDiscoveryTimeout(25000); // Estabilishing a timeout in ms
 					xbee_network.startDiscoveryProcess();
 
 					// Holding the program until the startDiscoveryProcess() has not been finished
@@ -119,6 +121,7 @@ public class MainApp {
 						break;
 					} else { // Case the router was found
 						System.out.println("Router NI: " + router.getNodeID()); // Show the chosen router NI parameter
+						System.out.println("Router 16-bit addr.: " + router.get16BitAddress().toString());
 
 						List<RemoteXBeeDevice> remotes = xbee_network.getDevices(); // List holding all remote devices,
 																					// including the router
@@ -129,9 +132,16 @@ public class MainApp {
 																												// children
 
 						for (RemoteXBeeDevice dev : remotes) { // Loop to check if a device's MP = MY
-							// System.out.println("Remote: " + devs.getNodeID()); //DEBUG
-							if (dev.getParameter("MP") == router.getParameter("MY")) { // If MP == MY
-								ed_children.put(dev.getNodeID(), dev); // Save that device with it's NI and itself
+//							System.out.println("--- ED: ");
+							
+							byte[] mp = dev.getParameter("MP");
+							byte[] my = router.getParameter("MY");
+							String mp_string = String.format("%02X",mp[0]) + String.format("%02X",mp[1]);
+							String my_string = String.format("%02X",my[0]) + String.format("%02X",my[1]);
+//							System.out.println("ED NI: " + dev.getNodeID()); // Show the chosen router NI parameter
+//							System.out.println("ED MP: " + mp_string);
+							if (mp_string.equals(my_string)) { // If MP == MY
+								ed_children.put(dev.getNodeID().toString(), dev); // Save that device with it's NI and itself
 							}
 						}
 						if (ed_children.isEmpty()) { // If no children device was found
@@ -149,7 +159,8 @@ public class MainApp {
 					break;
 
 				case 2:
-					System.out.print("Enter the device name [R1,R2,E1,E2,E3,E4]: ");
+					xbee_network = coordinator.getNetwork();
+					System.out.print("> Enter the device name [R1,R2,E1,E2,E3,E4]: ");
 					device_name = reader.next();
 					device_address = "";
 					switch (device_name) {
@@ -182,7 +193,7 @@ public class MainApp {
 						break;
 					
 					System.out.println("Starting discover process...");
-					xbee_network.setDiscoveryTimeout(10000); // Estabilishing a timeout in ms
+//					xbee_network.setDiscoveryTimeout(25000); // Estabilishing a timeout in ms
 					xbee_network.startDiscoveryProcess();
 
 					// Holding the program until the startDiscoveryProcess() has not been finished
@@ -209,6 +220,11 @@ public class MainApp {
 					} else { // If the device was found, print its NI
 						System.out.println("[OK] Device found in the network.");
 						System.out.println("Device NI: " + router.getNodeID());
+						byte[] mp = router.getParameter("MP");
+						System.out.print("None MP addr.: ");
+						System.out.print(String.format("%02X",mp[0]));
+						System.out.println(String.format("%02X",mp[1]));
+						System.out.println("None 16-bit addr.: " + router.get16BitAddress().toString());
 						System.out.println();
 					}
 					break;
