@@ -4,3 +4,4 @@
 *.docx
 *.odt
 
+/java/LogahGUI/nbproject/private/
