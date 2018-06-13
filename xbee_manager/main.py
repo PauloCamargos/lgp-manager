@@ -5,7 +5,7 @@ import os
 # PAN ID: C001BEE
 # SC: FFF
 
-# Cordinator C:    0013A200404A4BB3
+# coordinator C:    0013A200404A4BB3
 # Router R1:        0013A200404A4BC6
 # Router R2:        0013A200404AB737
 # End Device 1:     0013A200407C48FE
@@ -24,16 +24,25 @@ devices_64bit_addr = {
     "E4": "0013A200407C4927"
 }
 
-# Instantiating the cordinator
-cordinator = XBeeDevice('/dev/ttyUSB0', 9600)
+# Instantiating the coordinator
+coordinator = XBeeDevice('/dev/ttyUSB0', 9600)
 # # Instantiating routers
-# router_R1 = RemoteXBeeDevice(cordinator, XBee64BitAddress.from_hex_string("0013A200404A4BC6"))
-# router_R2 = RemoteXBeeDevice(cordinator, XBee64BitAddress.from_hex_string("0013A200404AB737"))
-# # Instantiating end devices
-# end_dev_E1 = RemoteXBeeDevice(cordinator, XBee64BitAddress.from_hex_string("0013A200407C48FE"))
-# end_dev_E2 = RemoteXBeeDevice(cordinator, XBee64BitAddress.from_hex_string("0013A200407C48FF"))
-# end_dev_E3 = RemoteXBeeDevice(cordinator, XBee64BitAddress.from_hex_string("0013A200407C4533"))
-# end_dev_E4 = RemoteXBeeDevice(cordinator, XBee64BitAddress.from_hex_string("0013A200407C4927"))
+router_R1 = RemoteXBeeDevice(coordinator, XBee64BitAddress.from_hex_string("0013A200404A4BC6"))
+router_R2 = RemoteXBeeDevice(coordinator, XBee64BitAddress.from_hex_string("0013A200404AB737"))
+# Instantiating end devices
+end_dev_E1 = RemoteXBeeDevice(coordinator, XBee64BitAddress.from_hex_string("0013A200407C48FE"))
+end_dev_E2 = RemoteXBeeDevice(coordinator, XBee64BitAddress.from_hex_string("0013A200407C48FF"))
+end_dev_E3 = RemoteXBeeDevice(coordinator, XBee64BitAddress.from_hex_string("0013A200407C4533"))
+end_dev_E4 = RemoteXBeeDevice(coordinator, XBee64BitAddress.from_hex_string("0013A200407C4927"))
+
+
+def openCoordinatorCom():
+    coordinator.open()
+
+
+def closeCoordinatorCom():
+    coordinator.close()
+
 
 def readRouterEndDevices():
     """
@@ -60,7 +69,7 @@ def readRouterEndDevices():
 
     print(f"Searching for devices in the network...")
     # Getting the xbee network
-    xbee_network = cordinator.get_network()
+    xbee_network = coordinator.get_network()
     # Setting timeout
     xbee_network.set_discovery_timeout(25)
     xbee_network.start_discovery_process()
@@ -130,11 +139,11 @@ def main():
 
 if __name__ == "__main__":
     try:
-        cordinator.open()
+        coordinator.open()
         main()
     finally:
         print("Closing XBee connection...")
-        cordinator.close()
-        # while cordinator.isOpen():
+        coordinator.close()
+        # while coordinator.isOpen():
         #     time.sleep(0.5)
         print("Connection successfully closed!")

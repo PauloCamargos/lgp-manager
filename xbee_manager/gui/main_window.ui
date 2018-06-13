@@ -1,0 +1,85 @@
+<root borderwidth="10" bg="#CCC" >
+  <style>
+    [*]
+    background=#CCC
+    [Grupo.TLabel]
+    background=#CCC
+    [Grupo.TFrame]
+    background=#CCC
+    borderwidth=1
+    relief=raised
+    [TLabelFrame]
+    background=#CCC
+    [TLabel]
+    background=#CCC
+    [WTF.TLabel]
+    background=#800
+    [medium.TButton]
+    width=20
+  </style>
+  <themedlabelframe wid="frm-porsetor" title="Por setor"
+                    labelstyle="Grupo.TLabel" framestyle="Grupo.TFrame">
+    <label wid="label1" text="Setor: " />
+    <combobox wid="combo-setor" values="Selecione... Neurologia Bioengenharia" />
+    <label wid="label2" text="Dispositivos encontrados: "/>
+    <text wid="text-dispositivo-encontrado" width="40" height="10" />
+    <button wid="button-setor" text="Buscar setor" style="medium.TButton" />
+    <grid-configure>
+      <column index='0' weight='0' />
+      <column index='1' weight='2' />
+      <row index='2' weight='1' />
+    </grid-configure>
+    <geometry>
+      <grid for="label1" padx="(10,0)" pady="(0,10)" row="0" column="0"
+            sticky='w' />
+      <grid for="combo-setor" padx="(0,10)" row="0" column="1" sticky='nwe' />
+      <grid for="label2" padx="10" row="1" column="0" sticky='w'
+            columnspan="2" />
+      <grid for="text-dispositivo-encontrado" padx="10" row="2" column="0" sticky='nswe'
+            columnspan="2" />
+      <grid for="button-setor" row="3" column="0" columnspan="4" pady="10"/>
+    </geometry>
+  </themedlabelframe>
+
+  <themedlabelframe wid="frm-por-equipamento" title="Por equipamento"
+                    labelstyle="Grupo.TLabel" framestyle="Grupo.TFrame">
+    <label wid="label3" text="Equipamento: " />
+    <combobox wid="combo-equipamento" values="Selecione... Esfigmomanônetro Oximetro
+      Ventilador\ Mecânico Notebook"/>
+    <label wid="label4" text="Setor: "/>
+    <text wid="text-setor-encontrado" width="40" height="10" />
+    <button wid="button-equipamento" text="Buscar equipamento"  style="medium.TButton"/>
+    <grid-configure>
+      <column index='0' weight='0' />
+      <column index='1' weight='2' />
+      <row index='2' weight='1' />
+    </grid-configure>
+    <geometry>
+      <grid for="label3" padx="(10,0)" pady="(0,10)" row="0" column="0"
+            sticky='w' />
+      <grid for="combo-equipamento" padx="(0,10)" row="0" column="1" sticky='nwe' />
+      <grid for="label4" padx="10" row="1" column="0" sticky='w'
+            columnspan="2" />
+      <grid for="text-setor-encontrado" padx="10" row="2" column="0" sticky='nswe'
+            columnspan="2" />
+      <grid for="button-equipamento" row="3" column="0" columnspan="4" pady="10"/>
+    </geometry>
+  </themedlabelframe>
+
+  <frame wid="frm-status">
+    <label wid="lbl-status" text="Status: " />
+    <progressbar wid="progressbar" />
+    <geometry>
+      <pack for="lbl-status" side="left" />
+      <pack for="progressbar" side="left" expand="1" fill="x"/>
+    </geometry>
+  </frame>
+  <geometry>
+    <grid for="frm-porsetor" row="0" column="0" sticky="nswe" padx="(0, 10)"/>
+    <grid for="frm-por-equipamento" row="0" column="1" sticky="nswe" />
+
+
+    <grid for="frm-status" row="1" column="0" columnspan="2" sticky="we"
+          pady="(10, 0)"/>
+  </geometry>
+</root>
