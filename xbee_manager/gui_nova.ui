@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>645</width>
+    <height>471</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>LOGAH Manager</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_8">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_7">
+      <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Por setor</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Setor</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cbx_sectors">
+             <item>
+              <property name="text">
+               <string>Selecione o setor...</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Bioengenharia</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Neurologia</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Dispositivos encontrados:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListView" name="listView"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton">
+           <property name="text">
+            <string>Buscar equipamentos</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <item>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>Por Equipamento</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_7">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Equipamento:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cbx_equipments">
+             <item>
+              <property name="text">
+               <string>Selecione o equipamento...</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Esfigmomanômtro</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Oxímetro</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Ventilador Mecânico</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Notebook Dell 5448</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Setor:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListView" name="listView_2"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_2">
+           <property name="text">
+            <string>Buscar setor</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>645</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuArquivo">
+    <property name="title">
+     <string>Arquivo</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionAvan_ado"/>
+    <addaction name="separator"/>
+    <addaction name="actionSair"/>
+   </widget>
+   <widget class="QMenu" name="menuEditar">
+    <property name="title">
+     <string>Editar</string>
+    </property>
+    <addaction name="actionAdicionar_equipamento"/>
+    <addaction name="actionListar_equipamento"/>
+    <addaction name="actionEditar_equipamento"/>
+   </widget>
+   <widget class="QMenu" name="menuSobre">
+    <property name="title">
+     <string>Sobre</string>
+    </property>
+    <addaction name="actionAjuda"/>
+    <addaction name="actionVers_o"/>
+   </widget>
+   <addaction name="menuArquivo"/>
+   <addaction name="menuEditar"/>
+   <addaction name="menuSobre"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAvan_ado">
+   <property name="text">
+    <string>Avançado</string>
+   </property>
+  </action>
+  <action name="actionSair">
+   <property name="text">
+    <string>Sair</string>
+   </property>
+  </action>
+  <action name="actionAdicionar_equipamento">
+   <property name="text">
+    <string>Adicionar equipamento</string>
+   </property>
+  </action>
+  <action name="actionListar_equipamento">
+   <property name="text">
+    <string>Listar equipamento</string>
+   </property>
+  </action>
+  <action name="actionEditar_equipamento">
+   <property name="text">
+    <string>Editar equipamento</string>
+   </property>
+  </action>
+  <action name="actionAjuda">
+   <property name="text">
+    <string>Ajuda</string>
+   </property>
+  </action>
+  <action name="actionVers_o">
+   <property name="text">
+    <string>Versão</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

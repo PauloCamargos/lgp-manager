@@ -37,22 +37,31 @@ def show_sector():
     # print(combo_setor.get())
     # text_setor.insert(tk.END, combo_setor.get() + "\n")
     # text_setor.config(state=tk.DISABLED)
+    text_equipamento.config(state=tk.NORMAL)
+    text_equipamento.delete('1.0', tk.END)
+
     setor_roteador = combo_setor.get()
     if setor_roteador == "Neurologia":
         dispositivos_encontrados = readRouterEndDevices("R1")
         print(combo_setor.get())
-        for d in dispositivos_encontrados:
-            text_equipamento.config(state=tk.NORMAL)
-            text_equipamento.insert(tk.END, d + "\n")
-            text_equipamento.config(state=tk.DISABLED)
-    else:
+        if dispositivos_encontrados == None:
+            text_equipamento.insert(tk.END, "Nenhum dispositivo encontrado" + "\n")
+        else:
+            for d in dispositivos_encontrados:
+                text_equipamento.insert(tk.END, d + "\n")
+
+        text_equipamento.config(state=tk.DISABLED)
+    elif setor_roteador == "Bioengenharia":
         dispositivos_encontrados = readRouterEndDevices("R2")
         print(combo_setor.get())
-        for d in dispositivos_encontrados:
-            text_equipamento.config(state=tk.NORMAL)
-            text_equipamento.insert(tk.END, d + "\n")
-            text_equipamento.config(state=tk.DISABLED)
-
+        if dispositivos_encontrados == None:
+            text_equipamento.insert(tk.END, "Nenhum dispositivo encontrado" + "\n")
+        else:
+            for d in dispositivos_encontrados:
+                text_equipamento.insert(tk.END, d + "\n")
+        text_equipamento.config(state=tk.DISABLED)
+    else:
+        text_equipamento.insert(tk.END, "Selecione um setor" + "\n")
 
 def show_equipamento():
     # Setor

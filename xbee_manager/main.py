@@ -1,4 +1,4 @@
-from digi.xbee.devices import XBeeDevice, RemoteXBeeDevice, XBee64BitAddress
+from digi.xbee.devices import XBeeDevice, RemoteXBeeDevice, XBee64BitAddress, DiscoveryOptions
 import time
 import os
 
@@ -44,7 +44,7 @@ def closeCoordinatorCom():
     coordinator.close()
 
 
-def readRouterEndDevices():
+def readRouterEndDevices(router):
     """
         Returns a list of end devices conected to a specified router.
 
@@ -58,7 +58,6 @@ def readRouterEndDevices():
         'None' in case of no end device connected.
     """
 
-    router = input("> Enter the router NI (R1/R2): ")
     if router.title() == "R1":
         x64addr = XBee64BitAddress.from_hex_string(devices_64bit_addr['R1'])
     elif router.title() == "R2":
@@ -70,8 +69,11 @@ def readRouterEndDevices():
     print(f"Searching for devices in the network...")
     # Getting the xbee network
     xbee_network = coordinator.get_network()
+    # discovery options
+    xbee_network.set_discovery_options({DiscoveryOptions.APPEND_DD})
+
     # Setting timeout
-    xbee_network.set_discovery_timeout(25)
+    xbee_network.set_discovery_timeout(25.5)
     xbee_network.start_discovery_process()
     while xbee_network.is_discovery_running():
         time.sleep(0.5)
@@ -82,27 +84,39 @@ def readRouterEndDevices():
     if discovered_router is None:
         # If the device was not found
         print(f"Device {router} not found. Try again.")
+        xbee_network.clear()
         return None
 
     # If the device was found in the network
     print(f"Device {router.title()} found. Retrieving device information...")
     discovered_router.read_device_info()
     print(f"{router.title()}-NI: {discovered_router.get_node_id()}")
-
+    time.sleep(2)
     print("Searching for EDs...")
+
     all_devices = xbee_network.get_devices()
+    print("Devices: " + str(len(all_devices)))
+    print("Devices type: " + str(discovered_router.get_parameter("DD")))
     connected_ed = []
+    xbee_network.clear()
+
     for d in all_devices:
         d.read_device_info()
-        if d.get_parameter("MP") == discovered_router.get_parameter("MY"):
+        mp = str(d.get_parameter("MP"))
+        # if ==
+        my = str(discovered_router.get_parameter("MY"))
+        print("MP encontado: " + mp +" | " + my)
+        # print(f"-Router{d.get_node_id()} FOUND.")
+        if mp == my:
             print(f"-{d.get_node_id()} connected.")
-            connected_ed.append(d)
-
+            connected_ed.append(d.get_node_id())
     if not connected_ed:
         # if the list connected_ed is empty
         print(f"No end device connected to router {router.title()}")
+        xbee_network.clear()
         return None
     else:
+        xbee_network.clear()
         return connected_ed
 
 
@@ -132,7 +146,8 @@ def main():
             os.system('cls' if os.name == 'nt' else 'clear')
             menu()
         elif item == '1':
-            readRouterEndDevices();
+            router = input("> Enter the router NI (R1/R2): ")
+            readRouterEndDevices(router);
             print('\n')
         else:
             print("Invalid option! Choose one option from the menu above.\n")
