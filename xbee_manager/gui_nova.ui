@@ -6,153 +6,200 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>645</width>
-    <height>471</height>
+    <width>803</width>
+    <height>579</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>LOGAH Manager</string>
+   <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_8">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QGroupBox" name="groupBox">
-        <property name="title">
-         <string>Por setor</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_6">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_9">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>Por setor</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
            <item>
-            <widget class="QLabel" name="label_3">
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Setor</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboBox_2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>1</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Bioengenharia</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Engenharia clínica</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_2">
              <property name="text">
-              <string>Setor</string>
+              <string>Dispositivos encontrados:</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="cbx_sectors">
-             <item>
-              <property name="text">
-               <string>Selecione o setor...</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Bioengenharia</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Neurologia</string>
-              </property>
-             </item>
+            <widget class="QListWidget" name="listWidget"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton">
+             <property name="text">
+              <string>Buscar dispositivos</string>
+             </property>
             </widget>
            </item>
           </layout>
-         </item>
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Dispositivos encontrados:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QListView" name="listView"/>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton">
-           <property name="text">
-            <string>Buscar equipamentos</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="title">
+           <string>Por equipamento</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>Equipamento</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboBox">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>1</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Oxímetro</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Ventilador Mecânico </string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Monitor Mutiparâmetro Portátil</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Ultrassom Portátil</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>Setor encontrado:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QListWidget" name="listWidget_2"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_2">
+             <property name="text">
+              <string>Buscar setor</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="title">
-         <string>Por Equipamento</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_7">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_10">
-           <item>
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>Equipamento:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="cbx_equipments">
-             <item>
-              <property name="text">
-               <string>Selecione o equipamento...</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Esfigmomanômtro</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Oxímetro</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Ventilador Mecânico</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Notebook Dell 5448</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Setor:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QListView" name="listView_2"/>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_2">
-           <property name="text">
-            <string>Buscar setor</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Status</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QProgressBar" name="progressBar">
+          <property name="value">
+           <number>24</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>645</width>
+     <width>803</width>
      <height>25</height>
     </rect>
    </property>
@@ -160,7 +207,6 @@
     <property name="title">
      <string>Arquivo</string>
     </property>
-    <addaction name="separator"/>
     <addaction name="actionAvan_ado"/>
     <addaction name="separator"/>
     <addaction name="actionSair"/>
@@ -170,21 +216,21 @@
      <string>Editar</string>
     </property>
     <addaction name="actionAdicionar_equipamento"/>
-    <addaction name="actionListar_equipamento"/>
+    <addaction name="actionListar_equipamentos"/>
     <addaction name="actionEditar_equipamento"/>
    </widget>
    <widget class="QMenu" name="menuSobre">
     <property name="title">
      <string>Sobre</string>
     </property>
-    <addaction name="actionAjuda"/>
     <addaction name="actionVers_o"/>
+    <addaction name="actionAjuda"/>
    </widget>
    <addaction name="menuArquivo"/>
    <addaction name="menuEditar"/>
    <addaction name="menuSobre"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionAvan_ado">
    <property name="text">
     <string>Avançado</string>
@@ -200,9 +246,9 @@
     <string>Adicionar equipamento</string>
    </property>
   </action>
-  <action name="actionListar_equipamento">
+  <action name="actionListar_equipamentos">
    <property name="text">
-    <string>Listar equipamento</string>
+    <string>Listar equipamentos</string>
    </property>
   </action>
   <action name="actionEditar_equipamento">
@@ -210,14 +256,14 @@
     <string>Editar equipamento</string>
    </property>
   </action>
-  <action name="actionAjuda">
-   <property name="text">
-    <string>Ajuda</string>
-   </property>
-  </action>
   <action name="actionVers_o">
    <property name="text">
     <string>Versão</string>
+   </property>
+  </action>
+  <action name="actionAjuda">
+   <property name="text">
+    <string>Ajuda</string>
    </property>
   </action>
  </widget>

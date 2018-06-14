@@ -48,7 +48,15 @@ def show_sector():
             text_equipamento.insert(tk.END, "Nenhum dispositivo encontrado" + "\n")
         else:
             for d in dispositivos_encontrados:
-                text_equipamento.insert(tk.END, d + "\n")
+                if d == 'E1':
+                    disp = 'Esgifmo'
+                elif d == 'E2':
+                    disp = 'Oxímetro'
+                elif d == 'E3':
+                    disp = 'Ventilador M.'
+                else:
+                    disp = 'Notebook Dell'
+                text_equipamento.insert(tk.END, disp + "\n")
 
         text_equipamento.config(state=tk.DISABLED)
     elif setor_roteador == "Bioengenharia":
@@ -58,7 +66,15 @@ def show_sector():
             text_equipamento.insert(tk.END, "Nenhum dispositivo encontrado" + "\n")
         else:
             for d in dispositivos_encontrados:
-                text_equipamento.insert(tk.END, d + "\n")
+                if d == 'E1':
+                    disp = 'Esgifmo'
+                elif d == 'E2':
+                    disp = 'Oxímetro'
+                elif d == 'E3':
+                    disp = 'Ventilador M.'
+                else:
+                    disp = 'Notebook Dell'
+                text_equipamento.insert(tk.END, disp + "\n")
         text_equipamento.config(state=tk.DISABLED)
     else:
         text_equipamento.insert(tk.END, "Selecione um setor" + "\n")

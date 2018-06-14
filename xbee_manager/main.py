@@ -73,7 +73,7 @@ def readRouterEndDevices(router):
     xbee_network.set_discovery_options({DiscoveryOptions.APPEND_DD})
 
     # Setting timeout
-    xbee_network.set_discovery_timeout(25.5)
+    xbee_network.set_discovery_timeout(5)
     xbee_network.start_discovery_process()
     while xbee_network.is_discovery_running():
         time.sleep(0.5)
@@ -82,6 +82,7 @@ def readRouterEndDevices(router):
     print(f"Retrieving router '{router.title()}' in the network...")
     discovered_router = xbee_network.get_device_by_64(x64addr)
     if discovered_router is None:
+        xbee_network.clear()
         # If the device was not found
         print(f"Device {router} not found. Try again.")
         xbee_network.clear()
