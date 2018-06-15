@@ -69,46 +69,47 @@ class XBeeHandler():
         # Setting timeout
         xbee_network.set_discovery_timeout(5)
         xbee_network.start_discovery_process()
-        while xbee_network.is_discovery_running():
-            time.sleep(0.5)
+        # while xbee_network.is_discovery_running():
+            # time.sleep(0.5)
 
+        if not xbee_network.is_discovery_running():
         # Retrieving router from network by 64bit address
-        print(f"Retrieving router '{sector.title()}' in the network...")
-        discovered_device = xbee_network.get_device_by_64(x64addr)
-        if discovered_device is None:
-            # If the device was not found
-            print(f"Device {router} not found. Try again.")
-            xbee_network.clear()
-            return None
+            print(f"Retrieving router '{sector.title()}' in the network...")
+            discovered_device = xbee_network.get_device_by_64(x64addr)
+            if discovered_device is None:
+                # If the device was not found
+                print(f"Device {router} not found. Try again.")
+                xbee_network.clear()
+                return None
 
-        # If the device was found in the network
-        print(f"Device {sector.title()} found. Retrieving device information...")
-        discovered_device.read_device_info()
-        print(f"{sector.title()}-NI: {discovered_device.get_node_id()}")
-        print("Searching for EDs...")
+            # If the device was found in the network
+            print(f"Device {sector.title()} found. Retrieving device information...")
+            discovered_device.read_device_info()
+            print(f"{sector.title()}-NI: {discovered_device.get_node_id()}")
+            print("Searching for EDs...")
 
-        all_devices = xbee_network.get_devices() # Get network's devices
-        xbee_network.clear() # Clearing the network before new discovery
-        print("Devices: " + str(len(all_devices)))
-        print("Devices type: " + str(discovered_device.get_parameter("DD")))
-        connected_ed = []
+            all_devices = xbee_network.get_devices() # Get network's devices
+            xbee_network.clear() # Clearing the network before new discovery
+            print("Devices: " + str(len(all_devices)))
+            print("Devices type: " + str(discovered_device.get_parameter("DD")))
+            connected_ed = []
 
-        for d in all_devices:
-            d.read_device_info()
-            mp = str(d.get_parameter("MP"))
-            # if ==
-            my = str(discovered_device.get_parameter("MY"))
-            print("MP encontado: " + mp +" | " + my)
-            # print(f"-Router{d.get_node_id()} FOUND.")
-            if mp == my:
-                print(f"-{d.get_node_id()} connected.")
-                connected_ed.append(d.get_node_id())
-        if not connected_ed:
-            # if the list connected_ed is empty
-            print(f"No other device connected to device {sector.title()}")
-            return None
-        else:
-            return connected_ed
+            for d in all_devices:
+                d.read_device_info()
+                mp = str(d.get_parameter("MP"))
+                # if ==
+                my = str(discovered_device.get_parameter("MY"))
+                print("MP encontado: " + mp +" | " + my)
+                # print(f"-Router{d.get_node_id()} FOUND.")
+                if mp == my:
+                    print(f"-{d.get_node_id()} connected.")
+                    connected_ed.append(d.get_node_id())
+            if not connected_ed:
+                # if the list connected_ed is empty
+                print(f"No other device connected to device {sector.title()}")
+                return None
+            else:
+                return connected_ed
 
 
     def getEquipmentLocation(self, equipment):

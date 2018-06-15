@@ -3,6 +3,7 @@
 
 from PyQt5.QtWidgets import QApplication, QMainWindow
 import sys
+import time
 from views import base
 from controller import xbee_handler
 
@@ -17,11 +18,13 @@ class LogahApp(QMainWindow, base.Ui_MainWindow):
 
     def show_hello_world(self):
         self.list_devices.addItem("Hello World!")
-
+        start = time.time()
         self.completed = 0
-        while self.completed < 100:
-            self.completed += 0.00005
+        while self.completed < 100.0:
+            # self.completed += 0.00005
+            self.completed = 5.0 / time.time() * 100
             self.progress_bar.setValue(self.completed)
+
 
 
 def main():
