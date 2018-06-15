@@ -11,6 +11,7 @@ localization of a given asset in a ambient.
  1. [Python XBee Python Library](http://xbplib.readthedocs.io/en/latest/)
  1. [Java XBee Java Libray](https://www.digi.com/resources/documentation/digidocs/90001438/#concepts/c_90001438.htm%3FTocPath%3D_____1)
  1. [PyQt5 5.10.1](http://pyqt.sourceforge.net/Docs/PyQt5/)
+ 1. [psycopg2](https://wiki.postgresql.org/wiki/Psycopg2)
 
 
 ## Installs
@@ -29,3 +30,8 @@ localization of a given asset in a ambient.
   2. Install PyQt5
 
    `pip3 install pyqt5`
+
+### Installing PostgreSQL drive
+  1. Installing binary
+
+  `pip3 install psycopg2-binary`
