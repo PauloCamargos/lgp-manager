@@ -11,7 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Logah Manager</string>
+  </property>
+  <property name="locale">
+   <locale language="Portuguese" country="Brazil"/>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -36,12 +42,12 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Setor</string>
+                <string>Setor:</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="comboBox_2">
+              <widget class="QComboBox" name="cbx_sector">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                  <horstretch>1</horstretch>
@@ -70,10 +76,10 @@
             </widget>
            </item>
            <item>
-            <widget class="QListWidget" name="listWidget"/>
+            <widget class="QListWidget" name="list_devices"/>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="btn_devices">
              <property name="text">
               <string>Buscar dispositivos</string>
              </property>
@@ -97,12 +103,12 @@
              <item>
               <widget class="QLabel" name="label_3">
                <property name="text">
-                <string>Equipamento</string>
+                <string>Equipamento:</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="comboBox">
+              <widget class="QComboBox" name="cbx_equipment">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                  <horstretch>1</horstretch>
@@ -141,10 +147,10 @@
             </widget>
            </item>
            <item>
-            <widget class="QListWidget" name="listWidget_2"/>
+            <widget class="QListWidget" name="list_sector"/>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QPushButton" name="btn_sector">
              <property name="text">
               <string>Buscar setor</string>
              </property>
@@ -182,7 +188,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QProgressBar" name="progressBar">
+         <widget class="QProgressBar" name="progress_bar">
           <property name="value">
            <number>24</number>
           </property>
@@ -207,61 +213,61 @@
     <property name="title">
      <string>Arquivo</string>
     </property>
-    <addaction name="actionAvan_ado"/>
+    <addaction name="menu_avancado"/>
     <addaction name="separator"/>
-    <addaction name="actionSair"/>
+    <addaction name="menu_sair"/>
    </widget>
    <widget class="QMenu" name="menuEditar">
     <property name="title">
      <string>Editar</string>
     </property>
-    <addaction name="actionAdicionar_equipamento"/>
-    <addaction name="actionListar_equipamentos"/>
-    <addaction name="actionEditar_equipamento"/>
+    <addaction name="menu_add_equipment"/>
+    <addaction name="menu_list_equipment"/>
+    <addaction name="menu_edit_equipment"/>
    </widget>
    <widget class="QMenu" name="menuSobre">
     <property name="title">
      <string>Sobre</string>
     </property>
-    <addaction name="actionVers_o"/>
-    <addaction name="actionAjuda"/>
+    <addaction name="menu_version"/>
+    <addaction name="menu_help"/>
    </widget>
    <addaction name="menuArquivo"/>
    <addaction name="menuEditar"/>
    <addaction name="menuSobre"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionAvan_ado">
+  <action name="menu_avancado">
    <property name="text">
     <string>Avançado</string>
    </property>
   </action>
-  <action name="actionSair">
+  <action name="menu_sair">
    <property name="text">
     <string>Sair</string>
    </property>
   </action>
-  <action name="actionAdicionar_equipamento">
+  <action name="menu_add_equipment">
    <property name="text">
     <string>Adicionar equipamento</string>
    </property>
   </action>
-  <action name="actionListar_equipamentos">
+  <action name="menu_list_equipment">
    <property name="text">
     <string>Listar equipamentos</string>
    </property>
   </action>
-  <action name="actionEditar_equipamento">
+  <action name="menu_edit_equipment">
    <property name="text">
     <string>Editar equipamento</string>
    </property>
   </action>
-  <action name="actionVers_o">
+  <action name="menu_version">
    <property name="text">
     <string>Versão</string>
    </property>
   </action>
-  <action name="actionAjuda">
+  <action name="menu_help">
    <property name="text">
     <string>Ajuda</string>
    </property>

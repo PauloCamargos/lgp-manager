@@ -1,7 +1,7 @@
 # LOGAH
-The LOGAH (Localizador e Gerenciador de Ativos Hospitalares) aims into keeping a record of all 
-registered equipment in a hospital. It uses the ZigBee technolgy to provide information about 
-localization of a given asset in a ambient. 
+The LOGAH (Localizador e Gerenciador de Ativos Hospitalares) aims into keeping a record of all
+registered equipment in a hospital. It uses the ZigBee technolgy to provide information about
+localization of a given asset in a ambient.
 
 ## ZigBee documentation
 ### RF Kits Common
@@ -13,3 +13,17 @@ localization of a given asset in a ambient.
     Doc.: (http://xbplib.readthedocs.io/en/latest/)
  3. (Java) XBee Java Libray
     Doc.: (https://www.digi.com/resources/documentation/digidocs/90001438/#concepts/c_90001438.htm%3FTocPath%3D_____1)
+
+## Installing Digi's Python Xbee library
+  `pip3 install digi-xbee`
+
+## PyQt 5.10.1
+### PyQt documentation
+  Doc.: http://pyqt.sourceforge.net/Docs/PyQt5/
+
+### Installing PyQt5
+
+  1. Install QtDesigner
+   `sudo apt-get install qt4-designer`
+  2. Install PyQt5
+   `pip3 install pyqt5`
