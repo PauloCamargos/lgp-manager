@@ -9,6 +9,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from .about import Ui_About
 from .add_equipment import Ui_AddEquipment
+from .list_equipment import Ui_ListEquipment
+from .edit_equipment import Ui_EditEquipment
 
 class Ui_MainWindow(object):
     # User methods
@@ -32,6 +34,13 @@ class Ui_MainWindow(object):
         self.ui = Ui_ListEquipment()
         self.ui.setupUi(self.list_equipment_window)
         self.list_equipment_window.show()
+
+    def open_edit_equipment(self):
+        # Add equipment window
+        self.edit_equipment_window = QtWidgets.QWidget()
+        self.ui = Ui_EditEquipment()
+        self.ui.setupUi(self.edit_equipment_window)
+        self.edit_equipment_window.show()
 
 
     # Core methods
@@ -158,11 +167,16 @@ class Ui_MainWindow(object):
 
         self.menu_add_equipment.triggered.connect(self.open_add_equipment)
 
-
         self.menu_list_equipment = QtWidgets.QAction(MainWindow)
         self.menu_list_equipment.setObjectName("menu_list_equipment")
+
+        self.menu_list_equipment.triggered.connect(self.open_list_equipment)
+
         self.menu_edit_equipment = QtWidgets.QAction(MainWindow)
         self.menu_edit_equipment.setObjectName("menu_edit_equipment")
+
+        self.menu_edit_equipment.triggered.connect(self.open_edit_equipment)
+
         self.menu_version = QtWidgets.QAction(MainWindow)
         self.menu_version.setObjectName("menu_version")
 

@@ -93,12 +93,12 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Equipamento</string>
+               <string>Descrição</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="ledit_equipment">
+             <widget class="QLineEdit" name="ledit_descritpion">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>3</horstretch>
@@ -221,7 +221,7 @@
       <enum>QLayout::SetFixedSize</enum>
      </property>
      <item alignment="Qt::AlignHCenter">
-      <widget class="QPushButton" name="btn_add_equipment">
+      <widget class="QPushButton" name="btn_btn_add_equipment">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>

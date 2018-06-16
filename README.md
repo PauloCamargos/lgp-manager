@@ -1,7 +1,15 @@
 # LOGAH
 The LOGAH (Localizador e Gerenciador de Ativos Hospitalares) aims into keeping a record of all
-registered equipment in a hospital. It uses the ZigBee technolgy to provide information about
-localization of a given asset in a ambient.
+registered equipment in a hospital. It uses the XBee technology (ZigBee protocol) to provide information about
+localization of a given asset inside an ambient.
+
+## App overview
+
+Search home screen
+![app image](app/img/search_screen.png "LOGAH's search equipment screen")
+
+Add equipment screen
+![app image](app/img/add_equipment_screen.png "Add equipment screen")
 
 ## XBee documentation
 ### RF Kits Common

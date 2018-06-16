@@ -15,13 +15,18 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
 
         # Connection functions to buttons
         self.btn_devices.clicked.connect(self.show_hello_world)
+        self.list_devices.addItem("Oxímetro Portátil Bioland")
+        self.list_devices.addItem("Ventilador mecânico Siare")
+        self.list_devices.addItem("Notebook Dell Inpiron 5448")
+        self.list_devices.addItem("Cadeira de rodas Ortobras 250Kg")
 
     def show_hello_world(self):
-        self.list_devices.addItem("Hello World!")
+
+
         # start = time.time()
         self.completed = 0
         while self.completed < 100.0:
-            self.completed += 0.00005
+            self.completed += 0.000001
         #     self.completed = 5.0 / time.time() * 100
             self.progress_bar.setValue(self.completed)
 
