@@ -277,7 +277,7 @@
  <connections>
   <connection>
    <sender>menu_sair</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>close()</slot>
    <hints>
