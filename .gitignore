@@ -4,4 +4,8 @@
 *.docx
 *.odt
 
+# Private folders
 /java/LogahGUI/nbproject/private/
+
+# Compilation folders
+__pycache__/
