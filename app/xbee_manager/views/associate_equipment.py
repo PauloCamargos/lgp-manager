@@ -1,39 +1,27 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'add_equipment.ui'
+# Form implementation generated from reading ui file 'associate_equipment.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-# from controller import database
 
-class Ui_AddEquipment(object):
-
-    # def __init__(self):
-    #     self.db = database.Banco(database='logah', schema='assets', user='postgres',
-    #     password='admin', port=5432, host='localhost')
-    #     self.db.connection()
-
-    def setupUi(self, AddEquipment):
-        AddEquipment.setObjectName("AddEquipment")
-        AddEquipment.resize(800, 320)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(AddEquipment.sizePolicy().hasHeightForWidth())
-        AddEquipment.setSizePolicy(sizePolicy)
-        AddEquipment.setMinimumSize(QtCore.QSize(800, 320))
-        AddEquipment.setMaximumSize(QtCore.QSize(800, 320))
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout(AddEquipment)
-        self.verticalLayout_3.setObjectName("verticalLayout_3")
+class Ui_AssociateEquipment(object):
+    def setupUi(self, AssociateEquipment):
+        AssociateEquipment.setObjectName("AssociateEquipment")
+        AssociateEquipment.resize(854, 290)
+        self.centralwidget = QtWidgets.QWidget(AssociateEquipment)
+        self.centralwidget.setObjectName("centralwidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.groupBox = QtWidgets.QGroupBox(AddEquipment)
+        self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox.setObjectName("groupBox")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.groupBox)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
@@ -58,7 +46,7 @@ class Ui_AddEquipment(object):
         self.horizontalLayout_3.addLayout(self.horizontalLayout_2)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.groupBox_2 = QtWidgets.QGroupBox(AddEquipment)
+        self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_2.setObjectName("groupBox_2")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.groupBox_2)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
@@ -144,57 +132,48 @@ class Ui_AddEquipment(object):
         self.horizontalLayout.addWidget(self.groupBox_2)
         self.horizontalLayout_3.addLayout(self.horizontalLayout)
         self.horizontalLayout_3.setStretch(1, 1)
-        self.verticalLayout_3.addLayout(self.horizontalLayout_3)
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_2.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.btn_btn_add_equipment = QtWidgets.QPushButton(AddEquipment)
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_3.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.btn_associate_equipment = QtWidgets.QPushButton(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_btn_add_equipment.sizePolicy().hasHeightForWidth())
-        self.btn_btn_add_equipment.setSizePolicy(sizePolicy)
-        self.btn_btn_add_equipment.setMinimumSize(QtCore.QSize(400, 0))
-        self.btn_btn_add_equipment.setMaximumSize(QtCore.QSize(400, 16777215))
-        self.btn_btn_add_equipment.setObjectName("btn_btn_add_equipment")
+        sizePolicy.setHeightForWidth(self.btn_associate_equipment.sizePolicy().hasHeightForWidth())
+        self.btn_associate_equipment.setSizePolicy(sizePolicy)
+        self.btn_associate_equipment.setMinimumSize(QtCore.QSize(400, 0))
+        self.btn_associate_equipment.setMaximumSize(QtCore.QSize(400, 16777215))
+        self.btn_associate_equipment.setObjectName("btn_associate_equipment")
+        self.verticalLayout_3.addWidget(self.btn_associate_equipment, 0, QtCore.Qt.AlignHCenter)
+        self.verticalLayout.addLayout(self.verticalLayout_3)
+        AssociateEquipment.setCentralWidget(self.centralwidget)
+        self.statusbar = QtWidgets.QStatusBar(AssociateEquipment)
+        self.statusbar.setObjectName("statusbar")
+        AssociateEquipment.setStatusBar(self.statusbar)
 
-        # self.btn_btn_add_equipment.clicked.connect(self.add_equipment)
+        self.retranslateUi(AssociateEquipment)
+        QtCore.QMetaObject.connectSlotsByName(AssociateEquipment)
 
-        self.verticalLayout_2.addWidget(self.btn_btn_add_equipment, 0, QtCore.Qt.AlignHCenter)
-        self.verticalLayout_3.addLayout(self.verticalLayout_2)
-
-        self.retranslateUi(AddEquipment)
-        QtCore.QMetaObject.connectSlotsByName(AddEquipment)
-
-    def retranslateUi(self, AddEquipment):
+    def retranslateUi(self, AssociateEquipment):
         _translate = QtCore.QCoreApplication.translate
-        AddEquipment.setWindowTitle(_translate("AddEquipment", "Adicionar Equipamento"))
-        self.groupBox.setTitle(_translate("AddEquipment", "Informações do dispositivo"))
-        self.label.setText(_translate("AddEquipment", "XBee"))
-        self.groupBox_2.setTitle(_translate("AddEquipment", "Informações do equipamento"))
-        self.label_2.setText(_translate("AddEquipment", "Descrição"))
-        self.label_3.setText(_translate("AddEquipment", "Nº Série"))
-        self.label_4.setText(_translate("AddEquipment", "Função"))
-        self.label_5.setText(_translate("AddEquipment", "Local Primário"))
-        self.btn_btn_add_equipment.setText(_translate("AddEquipment", "Adicionar equipamento"))
-
-    # def add_equipment(self):
-    #     # db.insertDataInto()
-    #     print(self.ledit_descritpion.text())
-    #     self.db.insertDataInto(table='equipments',
-    #     description=self.ledit_descritpion.text(),
-    #     serial_number=self.ledit_nserie.text(),
-    #     equipment_function=self.ledit_function.text(),
-    #     primarary_sector=self.ledit_primary_place.text()
-    #     )
-    #     print("[OK] Added equipment")
+        AssociateEquipment.setWindowTitle(_translate("AssociateEquipment", "Associar Equipamento"))
+        self.groupBox.setTitle(_translate("AssociateEquipment", "Informações do dispositivo"))
+        self.label.setText(_translate("AssociateEquipment", "XBee"))
+        self.groupBox_2.setTitle(_translate("AssociateEquipment", "Informações do equipamento"))
+        self.label_2.setText(_translate("AssociateEquipment", "Descrição"))
+        self.label_3.setText(_translate("AssociateEquipment", "Nº Série"))
+        self.label_4.setText(_translate("AssociateEquipment", "Função"))
+        self.label_5.setText(_translate("AssociateEquipment", "Local Primário"))
+        self.btn_associate_equipment.setText(_translate("AssociateEquipment", "Associar equipamento"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    AddEquipment = QtWidgets.QWidget()
-    ui = Ui_AddEquipment()
-    ui.setupUi(AddEquipment)
-    AddEquipment.show()
+    AssociateEquipment = QtWidgets.QMainWindow()
+    ui = Ui_AssociateEquipment()
+    ui.setupUi(AssociateEquipment)
+    AssociateEquipment.show()
     sys.exit(app.exec_())
+

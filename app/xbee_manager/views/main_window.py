@@ -11,36 +11,37 @@ from .about import Ui_About
 from .add_equipment import Ui_AddEquipment
 from .list_equipment import Ui_ListEquipment
 from .edit_equipment import Ui_EditEquipment
+import sys
 
 class Ui_MainWindow(object):
     # User methods
-    def open_version(self):
-        # About window
-        self.about_window = QtWidgets.QWidget()
-        self.about = Ui_About()
-        self.about.setupUi(self.about_window)
-        self.about_window.show()
+    # def open_version(self):
+    #     # About window
+    #     self.about_window = QtWidgets.QWidget()
+    #     self.about = Ui_About()
+    #     self.about.setupUi(self.about_window)
+    #     self.about_window.show()
 
-    def open_add_equipment(self):
-        # Add equipment window
-        self.add_equipment_window = QtWidgets.QWidget()
-        self.add_equipment = Ui_AddEquipment()
-        self.add_equipment.setupUi(self.add_equipment_window)
-        self.add_equipment_window.show()
-
-    def open_list_equipment(self):
-        # Add equipment window
-        self.list_equipment_window = QtWidgets.QWidget()
-        self.list_equipment = Ui_ListEquipment()
-        self.list_equipment.setupUi(self.list_equipment_window)
-        self.list_equipment_window.show()
-
-    def open_edit_equipment(self):
-        # Add equipment window
-        self.edit_equipment_window = QtWidgets.QWidget()
-        self.edit_equipment = Ui_EditEquipment()
-        self.edit_equipment.setupUi(self.edit_equipment_window)
-        self.edit_equipment_window.show()
+    # def open_add_equipment(self):
+    #     # Add equipment window
+    #     self.add_equipment_window = QtWidgets.QWidget()
+    #     self.add_equipment = Ui_AddEquipment()
+    #     self.add_equipment.setupUi(self.add_equipment_window)
+    #     self.add_equipment_window.show()
+    #
+    # def open_list_equipment(self):
+    #     # Add equipment window
+    #     self.list_equipment_window = QtWidgets.QWidget()
+    #     self.list_equipment = Ui_ListEquipment()
+    #     self.list_equipment.setupUi(self.list_equipment_window)
+    #     self.list_equipment_window.show()
+    #
+    # def open_edit_equipment(self):
+    #     # Add equipment window
+    #     self.edit_equipment_window = QtWidgets.QWidget()
+    #     self.edit_equipment = Ui_EditEquipment()
+    #     self.edit_equipment.setupUi(self.edit_equipment_window)
+    #     self.edit_equipment_window.show()
 
 
     # Core methods
@@ -165,22 +166,22 @@ class Ui_MainWindow(object):
         self.menu_add_equipment = QtWidgets.QAction(MainWindow)
         self.menu_add_equipment.setObjectName("menu_add_equipment")
 
-        self.menu_add_equipment.triggered.connect(self.open_add_equipment)
+        # self.menu_add_equipment.triggered.connect(self.open_add_equipment)
 
         self.menu_list_equipment = QtWidgets.QAction(MainWindow)
         self.menu_list_equipment.setObjectName("menu_list_equipment")
 
-        self.menu_list_equipment.triggered.connect(self.open_list_equipment)
+        # self.menu_list_equipment.triggered.connect(self.open_list_equipment)
 
         self.menu_edit_equipment = QtWidgets.QAction(MainWindow)
         self.menu_edit_equipment.setObjectName("menu_edit_equipment")
 
-        self.menu_edit_equipment.triggered.connect(self.open_edit_equipment)
+        # self.menu_edit_equipment.triggered.connect(self.open_edit_equipment)
 
         self.menu_version = QtWidgets.QAction(MainWindow)
         self.menu_version.setObjectName("menu_version")
 
-        self.menu_version.triggered.connect(self.open_version)
+        # self.menu_version.triggered.connect(self.open_version)
 
         self.menu_help = QtWidgets.QAction(MainWindow)
         self.menu_help.setObjectName("menu_help")
@@ -230,11 +231,13 @@ class Ui_MainWindow(object):
         self.menu_help.setText(_translate("MainWindow", "Ajuda"))
 
 
-if __name__ == "__main__":
-    import sys
+def main():
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
+if __name__ == "__main__":
+    main()

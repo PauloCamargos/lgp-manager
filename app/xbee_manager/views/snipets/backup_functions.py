@@ -1,28 +1,39 @@
 
 
 def open_add_equipment(self):
-  # Add equipment window
-  self.add_equipment_window = QtWidgets.QWidget()
-  self.ui = Ui_AddEquipment()
-  self.ui.setupUi(self.add_equipment_window)
-  self.add_equipment_window.show()
+    # Add equipment window
+    self.add_equipment_window = QtWidgets.QWidget()
+    self.ui = Ui_AddEquipment()
+    self.ui.setupUi(self.add_equipment_window)
+    self.add_equipment_window.show()
 
-  # self.menu_add_equipment.triggered.connect(self.open_add_equipment)
+    # self.menu_add_equipment.triggered.connect(self.open_add_equipment)
+
 
 def open_list_equipment(self):
-  # Add equipment window
-  self.list_equipment_window = QtWidgets.QWidget()
-  self.ui = Ui_ListEquipment()
-  self.ui.setupUi(self.list_equipment_window)
-  self.list_equipment_window.show()
+    # Add equipment window
+    self.list_equipment_window = QtWidgets.QWidget()
+    self.ui = Ui_ListEquipment()
+    self.ui.setupUi(self.list_equipment_window)
+    self.list_equipment_window.show()
 
-  # self.menu_list_equipment.triggered.connect(self.open_list_equipment)
+    # self.menu_list_equipment.triggered.connect(self.open_list_equipment)
+
 
 def open_version(self, window_name=""):
-  # About window
-  self.about_window = QtWidgets.QWidget()
-  self.ui = Ui_About()
-  self.ui.setupUi(self.about_window)
-  self.about_window.show()
+    # About window
+    self.about_window = QtWidgets.QWidget()
+    self.ui = Ui_About()
+    self.ui.setupUi(self.about_window)
+    self.about_window.show()
 
-  #  self.menu_version.triggered.connect(self.open_version)
+    #  self.menu_version.triggered.connect(self.open_version)
+
+
+def open_edit_equipment(self):
+    # Add equipment window
+    self.edit_equipment_window = QtWidgets.QWidget()
+    self.edit_equipment = Ui_EditEquipment()
+    self.edit_equipment.setupUi(self.edit_equipment_window)
+    self.edit_equipment_window.show()
+    # self.menu_edit_equipment.triggered.connect(self.open_edit_equipment)
