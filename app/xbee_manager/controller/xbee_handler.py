@@ -22,7 +22,12 @@ class XBeeHandler():
             "E4": "0013A200407C4927"
         }
         self.open_ports = self.serial_ports()
-        self.coordinator = XBeeDevice(self.open_ports[0], 9600)
+        if not self.open_ports:
+            print("No device connected")
+            self.coordinator = None
+        else:
+            print("Device connected")
+            self.coordinator = XBeeDevice(self.open_ports[0], 9600)
 
 
     def openCoordinatorCom(self):

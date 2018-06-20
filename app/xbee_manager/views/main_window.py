@@ -14,32 +14,32 @@ from .edit_equipment import Ui_EditEquipment
 
 class Ui_MainWindow(object):
     # User methods
-    def open_version(self, window_name=""):
+    def open_version(self):
         # About window
         self.about_window = QtWidgets.QWidget()
-        self.ui = Ui_About()
-        self.ui.setupUi(self.about_window)
+        self.about = Ui_About()
+        self.about.setupUi(self.about_window)
         self.about_window.show()
 
     def open_add_equipment(self):
         # Add equipment window
         self.add_equipment_window = QtWidgets.QWidget()
-        self.ui = Ui_AddEquipment()
-        self.ui.setupUi(self.add_equipment_window)
+        self.add_equipment = Ui_AddEquipment()
+        self.add_equipment.setupUi(self.add_equipment_window)
         self.add_equipment_window.show()
 
     def open_list_equipment(self):
         # Add equipment window
         self.list_equipment_window = QtWidgets.QWidget()
-        self.ui = Ui_ListEquipment()
-        self.ui.setupUi(self.list_equipment_window)
+        self.list_equipment = Ui_ListEquipment()
+        self.list_equipment.setupUi(self.list_equipment_window)
         self.list_equipment_window.show()
 
     def open_edit_equipment(self):
         # Add equipment window
         self.edit_equipment_window = QtWidgets.QWidget()
-        self.ui = Ui_EditEquipment()
-        self.ui.setupUi(self.edit_equipment_window)
+        self.edit_equipment = Ui_EditEquipment()
+        self.edit_equipment.setupUi(self.edit_equipment_window)
         self.edit_equipment_window.show()
 
 

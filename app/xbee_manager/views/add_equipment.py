@@ -7,8 +7,15 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from controller import database
 
 class Ui_AddEquipment(object):
+
+    def __init__(self):
+        self.db = database.Banco(database='logah', schema='assets', user='postgres',
+        password='admin', port=5432, host='localhost')
+        self.db.connection()
+
     def setupUi(self, AddEquipment):
         AddEquipment.setObjectName("AddEquipment")
         AddEquipment.resize(800, 320)
@@ -150,6 +157,9 @@ class Ui_AddEquipment(object):
         self.btn_btn_add_equipment.setMinimumSize(QtCore.QSize(400, 0))
         self.btn_btn_add_equipment.setMaximumSize(QtCore.QSize(400, 16777215))
         self.btn_btn_add_equipment.setObjectName("btn_btn_add_equipment")
+
+        self.btn_btn_add_equipment.clicked.connect(self.add_equipment)
+
         self.verticalLayout_2.addWidget(self.btn_btn_add_equipment, 0, QtCore.Qt.AlignHCenter)
         self.verticalLayout_3.addLayout(self.verticalLayout_2)
 
@@ -168,6 +178,17 @@ class Ui_AddEquipment(object):
         self.label_5.setText(_translate("AddEquipment", "Local Primário"))
         self.btn_btn_add_equipment.setText(_translate("AddEquipment", "Adicionar equipamento"))
 
+    def add_equipment(self):
+        # db.insertDataInto()
+        print(self.ledit_descritpion.text())
+        self.db.insertDataInto(table='equipments',
+        description=self.ledit_descritpion.text(),
+        serial_number=self.ledit_nserie.text(),
+        equipment_function=self.ledit_function.text(),
+        primarary_sector=self.ledit_primary_place.text()
+        )
+        print("[OK] Added equipment")
+
 
 if __name__ == "__main__":
     import sys
@@ -177,4 +198,3 @@ if __name__ == "__main__":
     ui.setupUi(AddEquipment)
     AddEquipment.show()
     sys.exit(app.exec_())
-
