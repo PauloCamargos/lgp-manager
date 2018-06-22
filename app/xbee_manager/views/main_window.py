@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import pyqtSlot,pyqtSignal
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -170,7 +171,6 @@ class Ui_MainWindow(object):
         self.menu_version.setText(_translate("MainWindow", "Versão"))
         self.menu_help.setText(_translate("MainWindow", "Ajuda"))
 
-
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -179,4 +179,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
