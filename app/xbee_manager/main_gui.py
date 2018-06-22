@@ -37,7 +37,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.list_equipment.setupUi(self.list_equipment_window)
 
         # Add equipment window
-        self.edit_equipment_window = QtWidgets.QWidget()
+        self.edit_equipment_window = QtWidgets.QMainWindow()
         self.edit_equipment = edit_equipment.Ui_EditEquipment()
         self.edit_equipment.setupUi(self.edit_equipment_window)
 
@@ -77,13 +77,22 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.about_window.show()
 
 
-    def open_associate_equipment(self):
+    def open_associate_equipment(self, status=''):
         # Add equipment window
         # Events connection
+
         self.associate_equipment.btn_associate_equipment.clicked.connect(self.associate_equipment_db)
         self.associate_equipment.cbx_xbees.currentIndexChanged.connect(self.fill_xbee_info)
         unassociated_xbees = self.db.select_free_xbees()
         print(unassociated_xbees)
+        # Clearing old infos
+        self.associate_equipment.cbx_xbees.clear()
+        self.associate_equipment.ledit_descritpion.clear()
+        self.associate_equipment.ledit_nserie.clear()
+        self.associate_equipment.ledit_function.clear()
+        self.associate_equipment.ledit_primary_place.clear()
+        self.associate_equipment.statusbar.clearMessage()
+
         self.associate_equipment_window.show()
         # Populating xbees QComboBox and sorting it alphab.
         for x in sorted(unassociated_xbees, key=lambda x:x[2]):
@@ -91,22 +100,38 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             if x[3] != 'C' and x[3] != 'R': # if the xbee is an end device
                 self.associate_equipment.cbx_xbees.addItem(x[2])
 
+        if status == 'added':
+            self.associate_equipment.statusbar.show()
+            self.associate_equipment.statusbar.showMessage('STATUS: Equipamento associado com sucesso!')
 
 
     def open_list_equipment(self):
         # list equipment window
         self.list_equipment.bnt_list_equipment.clicked.connect(self.search_all_equipments_db)
+        # Clearing old infos
+        self.list_equipment.list_registered_equipment.clear()
         self.list_equipment_window.show()
 
 
-    def open_edit_equipment(self):
+    def open_edit_equipment(self, status=''):
         # Add equipment window
         self.edit_equipment.btn_search_equipment.clicked.connect(self.search_equipment_db)
         self.edit_equipment.btn_remove_equipment.clicked.connect(self.remove_equipment_db)
+        # Clearing infos
+        self.edit_equipment.cbx_equipments.clear()
+        self.edit_equipment.ledit_description.clear()
+        self.edit_equipment.ledit_nserie.clear()
+        self.edit_equipment.ledit_function.clear()
+        self.edit_equipment.ledit_primary_place.clear()
+        self.edit_equipment.statusbar.clearMessage()
+
         all_equipments = self.search_all_equipments_db()
         for e in sorted(all_equipments, key=lambda e:e[1]):
                 self.edit_equipment.cbx_equipments.addItem(f'{e[1]}')
         self.edit_equipment_window.show()
+        if status == 'removed':
+            self.edit_equipment.statusbar.show()
+            self.edit_equipment.statusbar.showMessage('STATUS: Equipamento removido com sucesso!')
 
 
     def associate_equipment_db(self):
@@ -127,9 +152,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         xbee=xbee[0]
         )
         print("[OK] Added equipment")
-        self.associate_equipment.statusbar.show()
-        self.associate_equipment.statusbar.showMessage('STATUS: Equipamento associado com sucesso!')
-        self.open_associate_equipment()
+        self.open_associate_equipment(status='added')
 
     def remove_equipment_db(self):
         """
@@ -139,15 +162,16 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         xbee_description = self.edit_equipment.ledit_description.text()
         self.db.deleteDataFrom(table='equipments', condition='description', condition_value=xbee_description )
         print('[OK] Deleted equipment')
+        self.open_edit_equipment(status='removed')
 
     def fill_xbee_info(self):
-        self.associate_equipment.list_xbees.clear()
         option = self.associate_equipment.cbx_xbees.currentText()
         # print(option) # DEBUG
         xbee = self.db.selectDataWhere('xbees', 'address_64_bit',option, 'address_64_bit', 'ni')
         # print(xbee)
-        self.associate_equipment.list_xbees.addItem("64 Bit Addr.: " +  xbee[0])
-        self.associate_equipment.list_xbees.addItem("NI.: " +  xbee[1])
+        if xbee:
+            self.associate_equipment.list_xbees.addItem("64 Bit Addr.: " +  xbee[0])
+            self.associate_equipment.list_xbees.addItem("NI.: " +  xbee[1])
 
     def search_all_equipments_db(self):
         """

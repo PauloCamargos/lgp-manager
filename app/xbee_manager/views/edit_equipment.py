@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'edit_equipment.ui'
+# Form implementation generated from reading ui file 'edit_equipment1.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -11,16 +11,18 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_EditEquipment(object):
     def setupUi(self, EditEquipment):
         EditEquipment.setObjectName("EditEquipment")
-        EditEquipment.resize(900, 300)
-        EditEquipment.setMinimumSize(QtCore.QSize(900, 300))
-        EditEquipment.setMaximumSize(QtCore.QSize(900, 300))
-        self.verticalLayout_4 = QtWidgets.QVBoxLayout(EditEquipment)
-        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        EditEquipment.resize(927, 286)
+        EditEquipment.setMinimumSize(QtCore.QSize(927, 286))
+        EditEquipment.setMaximumSize(QtCore.QSize(927, 286))
+        self.centralwidget = QtWidgets.QWidget(EditEquipment)
+        self.centralwidget.setObjectName("centralwidget")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.label = QtWidgets.QLabel(EditEquipment)
+        self.label = QtWidgets.QLabel(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -28,7 +30,7 @@ class Ui_EditEquipment(object):
         self.label.setSizePolicy(sizePolicy)
         self.label.setObjectName("label")
         self.horizontalLayout_2.addWidget(self.label)
-        self.cbx_equipments = QtWidgets.QComboBox(EditEquipment)
+        self.cbx_equipments = QtWidgets.QComboBox(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
@@ -39,14 +41,15 @@ class Ui_EditEquipment(object):
         self.horizontalLayout_3.addLayout(self.horizontalLayout_2)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.btn_search_equipment = QtWidgets.QPushButton(EditEquipment)
+        self.btn_search_equipment = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_search_equipment.setAutoDefault(False)
         self.btn_search_equipment.setObjectName("btn_search_equipment")
         self.horizontalLayout.addWidget(self.btn_search_equipment)
         self.horizontalLayout_3.addLayout(self.horizontalLayout)
-        self.verticalLayout_4.addLayout(self.horizontalLayout_3)
+        self.verticalLayout_3.addLayout(self.horizontalLayout_3)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.groupBox = QtWidgets.QGroupBox(EditEquipment)
+        self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox.setObjectName("groupBox")
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.groupBox)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
@@ -127,36 +130,30 @@ class Ui_EditEquipment(object):
         self.horizontalLayout_7.addWidget(self.ledit_primary_place)
         self.verticalLayout_8.addLayout(self.horizontalLayout_7)
         self.verticalLayout_2.addWidget(self.groupBox)
-        self.verticalLayout_4.addLayout(self.verticalLayout_2)
+        self.verticalLayout_3.addLayout(self.verticalLayout_2)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        self.btn_update_data = QtWidgets.QPushButton(EditEquipment)
+        self.btn_update_data = QtWidgets.QPushButton(self.centralwidget)
         self.btn_update_data.setObjectName("btn_update_data")
         self.horizontalLayout_9.addWidget(self.btn_update_data)
-        self.btn_remove_equipment = QtWidgets.QPushButton(EditEquipment)
+        self.btn_remove_equipment = QtWidgets.QPushButton(self.centralwidget)
         self.btn_remove_equipment.setObjectName("btn_remove_equipment")
         self.horizontalLayout_9.addWidget(self.btn_remove_equipment)
         self.verticalLayout.addLayout(self.horizontalLayout_9)
-        self.verticalLayout_4.addLayout(self.verticalLayout)
-        self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_8.setObjectName("horizontalLayout_8")
-        self.label_6 = QtWidgets.QLabel(EditEquipment)
-        self.label_6.setObjectName("label_6")
-        self.horizontalLayout_8.addWidget(self.label_6)
-        self.progress_bar = QtWidgets.QProgressBar(EditEquipment)
-        self.progress_bar.setProperty("value", 24)
-        self.progress_bar.setObjectName("progress_bar")
-        self.horizontalLayout_8.addWidget(self.progress_bar)
-        self.verticalLayout_4.addLayout(self.horizontalLayout_8)
+        self.verticalLayout_3.addLayout(self.verticalLayout)
+        EditEquipment.setCentralWidget(self.centralwidget)
+        self.statusbar = QtWidgets.QStatusBar(EditEquipment)
+        self.statusbar.setObjectName("statusbar")
+        EditEquipment.setStatusBar(self.statusbar)
 
         self.retranslateUi(EditEquipment)
         QtCore.QMetaObject.connectSlotsByName(EditEquipment)
 
     def retranslateUi(self, EditEquipment):
         _translate = QtCore.QCoreApplication.translate
-        EditEquipment.setWindowTitle(_translate("EditEquipment", "Editar equipamento"))
+        EditEquipment.setWindowTitle(_translate("EditEquipment", "Editar equipmento"))
         self.label.setText(_translate("EditEquipment", "Equipamento"))
         self.btn_search_equipment.setText(_translate("EditEquipment", "Buscar dados"))
         self.groupBox.setTitle(_translate("EditEquipment", "Informações do equipamento"))
@@ -166,14 +163,14 @@ class Ui_EditEquipment(object):
         self.label_5.setText(_translate("EditEquipment", "Local Primário"))
         self.btn_update_data.setText(_translate("EditEquipment", "Atualizar dados"))
         self.btn_remove_equipment.setText(_translate("EditEquipment", "Remover equipamento"))
-        self.label_6.setText(_translate("EditEquipment", "Status"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    EditEquipment = QtWidgets.QWidget()
+    EditEquipment = QtWidgets.QMainWindow()
     ui = Ui_EditEquipment()
     ui.setupUi(EditEquipment)
     EditEquipment.show()
     sys.exit(app.exec_())
+
