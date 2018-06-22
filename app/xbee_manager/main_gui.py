@@ -53,8 +53,9 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.list_equipment_window = QtWidgets.QWidget()
         self.list_equipment = list_equipment.Ui_ListEquipment()
         self.list_equipment.setupUi(self.list_equipment_window)
-        self.list_equipment.bnt_list_equipment.clicked.connect(self.search_all_equipments_db)
+        self.list_equipment.bnt_list_equipment.clicked.connect(self.list_all_equipments)
         self.list_equipment.list_progress_bar.setValue(0)
+        self.list_equipment.list_progress_bar.setMaximum(5)
 
         # Add equipment window
         self.edit_equipment_window = QtWidgets.QMainWindow()
@@ -107,7 +108,9 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         # list equipment window
         # Clearing old infos
         self.list_equipment.list_registered_equipment.clear()
-
+        self.list_equipment.list_found_equipment.clear()
+        self.list_equipment.list_progress_bar.setValue(0)
+        self.list_equipment.list_progress_bar.setMaximum(5)
         # Add equipment window
         # Clearing infos
         self.edit_equipment.cbx_equipments.clear()
@@ -255,13 +258,13 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
     def list_all_equipments(self):
         self.list_equipment.search_equipment_thread = DiscoveryThread('all')
         # Connect the signal from the thread to the finished method
-        self.list_equipment.search_equipment_thread.signal.connect(self.display_discovered_devices)
+        self.list_equipment.search_equipment_thread.signal.connect(self.display_list_all_equipments)
 
-        self.list_equipment.bnt_list_equipment.setEnabled(False)
         self.list_equipment.bnt_list_equipment.setEnabled(False)
 
         self.list_equipment.search_equipment_thread.start()
         self.list_equipment.list_progress_bar.setValue(0)
+        self.search_all_equipments_db()
 
     def search_all_equipments_db(self):
         """
@@ -331,7 +334,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
                 self.btn_search_devices.setEnabled(True)
                 self.btn_search_sector.setEnabled(True)
 
-    def display_list_all_equipments(self):
+    def display_list_all_equipments(self, devices):
         self.list_equipment.list_found_equipment.clear()
         if devices == None:
             self.list_equipment.list_found_equipment.addItem("Not found")
@@ -362,8 +365,8 @@ class DiscoveryThread(QThread):
                 self.signal.emit(['running'])
                 time.sleep(1.265)
 
-            device_ni = 'R1'
-            devices = xbee.getSectorEquipments(device_ni)
+            xbee_ni = 'R1'
+            devices = xbee.getSectorEquipments(xbee_ni)
 
             if devices is None:
                 devices = ['Not found']
@@ -374,8 +377,7 @@ class DiscoveryThread(QThread):
                 self.signal.emit(['running'])
                 time.sleep(1.265)
 
-            device_ni = 'all'
-            devices = xbee.get_all_equipments(device_ni)
+            devices = xbee.get_all_equipments()
 
             if devices is None:
                 devices = ['Not found']

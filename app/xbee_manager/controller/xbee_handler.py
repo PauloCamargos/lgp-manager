@@ -201,8 +201,8 @@ class XBeeHandler():
     def get_all_equipments(self):
         all_devices = self.xbee_network.get_devices() # Get network's devices
         self.xbee_network.clear() # Clearing the network before new discovery
-        print("Devices: " + str(len(all_devices)))
-        print("Devices type: " + str(discovered_device.get_parameter("DD")))
+        # print("Devices: " + str(len(all_devices)))
+        # print("Devices type: " + str(discovered_device.get_parameter("DD")))
 
         end_devices = []
 
@@ -219,7 +219,7 @@ class XBeeHandler():
 
         if not end_devices:
             # if the list connected_ed is empty
-            print(f"No other device connected to device {equipment.title()}")
+            print(f"No device connected device")
             return None
         else:
             return end_devices
