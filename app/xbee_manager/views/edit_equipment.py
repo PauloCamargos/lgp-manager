@@ -88,6 +88,7 @@ class Ui_EditEquipment(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.ledit_nserie.sizePolicy().hasHeightForWidth())
         self.ledit_nserie.setSizePolicy(sizePolicy)
+        self.ledit_nserie.setReadOnly(True)
         self.ledit_nserie.setObjectName("ledit_nserie")
         self.horizontalLayout_5.addWidget(self.ledit_nserie)
         self.verticalLayout_8.addLayout(self.horizontalLayout_5)

@@ -172,8 +172,8 @@ class Banco:
 
         self.query += " SET" + fields_values + " WHERE " + condition + "=%s"
 
-        # DEBUG: print(self.query)
-        # DEBUG: print(knownValues)
+        print(self.query)
+        print(knownValues)
 
         try:
             self.cur.execute(self.query, knownValues)

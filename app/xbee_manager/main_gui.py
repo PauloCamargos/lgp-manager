@@ -85,9 +85,11 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.associate_equipment.cbx_xbees.currentIndexChanged.connect(self.fill_xbee_info)
         unassociated_xbees = self.db.select_free_xbees()
         print(unassociated_xbees)
+
         # Clearing old infos
         self.associate_equipment.cbx_xbees.clear()
-        self.associate_equipment.ledit_descritpion.clear()
+        self.associate_equipment.list_xbees.clear()
+        self.associate_equipment.ledit_description.clear()
         self.associate_equipment.ledit_nserie.clear()
         self.associate_equipment.ledit_function.clear()
         self.associate_equipment.ledit_primary_place.clear()
@@ -117,6 +119,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         # Add equipment window
         self.edit_equipment.btn_search_equipment.clicked.connect(self.search_equipment_db)
         self.edit_equipment.btn_remove_equipment.clicked.connect(self.remove_equipment_db)
+        self.edit_equipment.btn_update_data.clicked.connect(self.update_equipment_db)
         # Clearing infos
         self.edit_equipment.cbx_equipments.clear()
         self.edit_equipment.ledit_description.clear()
@@ -132,6 +135,9 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         if status == 'removed':
             self.edit_equipment.statusbar.show()
             self.edit_equipment.statusbar.showMessage('STATUS: Equipamento removido com sucesso!')
+        elif status == 'updated':
+            self.edit_equipment.statusbar.show()
+            self.edit_equipment.statusbar.showMessage('STATUS: Equipamento atualizado com sucesso!')
 
 
     def associate_equipment_db(self):
@@ -140,12 +146,11 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
          database.
         """
 
-
         option = self.associate_equipment.cbx_xbees.currentText()
         xbee = self.db.selectDataWhere('xbees', 'address_64_bit',option, 'id','address_64_bit')
 
         self.db.insertDataInto(table='equipments',
-        description=self.associate_equipment.ledit_descritpion.text(),
+        description=self.associate_equipment.ledit_description.text(),
         serial_number=self.associate_equipment.ledit_nserie.text(),
         equipment_function=self.associate_equipment.ledit_function.text(),
         primarary_sector=self.associate_equipment.ledit_primary_place.text(),
@@ -159,12 +164,30 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         Removes the equipment from the db
         """
 
-        xbee_description = self.edit_equipment.ledit_description.text()
-        self.db.deleteDataFrom(table='equipments', condition='description', condition_value=xbee_description )
+        equipment_serial_number = self.edit_equipment.ledit_nserie.text()
+        self.db.deleteDataFrom(table='equipments', condition='serial_number', condition_value=equipment_serial_number )
         print('[OK] Deleted equipment')
         self.open_edit_equipment(status='removed')
 
+    def update_equipment_db(self):
+        """
+        Updates equipment info's
+        """
+        equipment_serial_number = self.edit_equipment.ledit_nserie.text()
+        equipment = self.db.selectDataWhere('equipments', 'serial_number',equipment_serial_number,'serial_number')
+        print(equipment)
+        ds = self.edit_equipment.ledit_description.text()
+        fn = self.edit_equipment.ledit_function.text()
+        ps = self.edit_equipment.ledit_primary_place.text()
+
+        if equipment:
+            self.db.updateDataFrom(table='equipments', condition='serial_number',
+            condition_value=equipment[0], description=ds, equipment_function=fn,
+            primarary_sector=ps)
+            self.open_edit_equipment(status='updated')
+
     def fill_xbee_info(self):
+        self.associate_equipment.list_xbees.clear()
         option = self.associate_equipment.cbx_xbees.currentText()
         # print(option) # DEBUG
         xbee = self.db.selectDataWhere('xbees', 'address_64_bit',option, 'address_64_bit', 'ni')
