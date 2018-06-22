@@ -53,7 +53,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.list_equipment_window = QtWidgets.QWidget()
         self.list_equipment = list_equipment.Ui_ListEquipment()
         self.list_equipment.setupUi(self.list_equipment_window)
-        self.list_equipment.bnt_list_equipment.clicked.connect(self.list_all_equipments)
+        self.list_equipment.bnt_list_equipment.clicked.connect(self.search_all_equipments)
         self.list_equipment.list_progress_bar.setValue(0)
         self.list_equipment.list_progress_bar.setMaximum(5)
 
@@ -255,10 +255,10 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             self.associate_equipment.list_xbees.addItem("64 Bit Addr.: " +  xbee[0])
             self.associate_equipment.list_xbees.addItem("NI.: " +  xbee[1])
 
-    def list_all_equipments(self):
+    def search_all_equipments(self):
         self.list_equipment.search_equipment_thread = DiscoveryThread('all')
         # Connect the signal from the thread to the finished method
-        self.list_equipment.search_equipment_thread.signal.connect(self.display_list_all_equipments)
+        self.list_equipment.search_equipment_thread.signal.connect(self.list_all_equipments)
 
         self.list_equipment.bnt_list_equipment.setEnabled(False)
 
@@ -292,28 +292,15 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.edit_equipment.ledit_primary_place.setText(equipment[2])
 
     def search_sectors_equipment(self):
+        """
+            Searches all equipment inside a sector
+        """
         option = self.cbx_sectors.currentText()
-
-        # self.search_progress_bar.setMaximum(1)
-        # self.search_progress_bar.setValue(0)
-
-        # self.get_devices_thread = DiscoveryThread(option)
-        # self.worker = DiscoveryThread(option)
-        # self.thread = QtCore.QThread()
-        # self.signal_start_search.connect(self.worker.search)
-
-        # self.connect(self.get_devices_thread, SIGNAL('add_discovered_device(QList)'), self.add_discovered_device)
-        # self.get_devices_thread.add_discovered_device.connect(self.add_discovered_device)
-        # self.thread.start()
-        # self.worker.search()
-        # print("Thread iniciada")
-        # self.signal_start_search.emit()
-        # print("Thread finalizada")
 
         # Creating a thread
         self.search_equipment_thread = DiscoveryThread(option)
         # Connect the signal from the thread to the finished method
-        self.search_equipment_thread.signal.connect(self.display_discovered_devices)
+        self.search_equipment_thread.signal.connect(self.list_all_discovered_equipments)
 
         self.btn_search_devices.setEnabled(False)
         self.btn_search_sector.setEnabled(False)
@@ -321,7 +308,10 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.search_equipment_thread.start()
         self.search_progress_bar.setValue(0)
 
-    def display_discovered_devices(self, devices):
+    def list_all_discovered_equipments(self, devices):
+        """
+            Lists all register equipement inside a sector
+        """
         self.list_devices.clear()
         if devices == None:
             self.list_devices.addItem("Not found")
@@ -334,7 +324,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
                 self.btn_search_devices.setEnabled(True)
                 self.btn_search_sector.setEnabled(True)
 
-    def display_list_all_equipments(self, devices):
+    def list_all_equipments(self, devices):
         self.list_equipment.list_found_equipment.clear()
         if devices == None:
             self.list_equipment.list_found_equipment.addItem("Not found")
