@@ -47,23 +47,13 @@
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="cbx_sector">
+              <widget class="QComboBox" name="cbx_sectors">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                  <horstretch>1</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
-               <item>
-                <property name="text">
-                 <string>Bioengenharia</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Engenharia clínica</string>
-                </property>
-               </item>
               </widget>
              </item>
             </layout>
@@ -79,7 +69,7 @@
             <widget class="QListWidget" name="list_devices"/>
            </item>
            <item>
-            <widget class="QPushButton" name="btn_devices">
+            <widget class="QPushButton" name="btn_search_devices">
              <property name="text">
               <string>Buscar dispositivos</string>
              </property>
@@ -108,33 +98,13 @@
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="cbx_equipment">
+              <widget class="QComboBox" name="cbx_equipments">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                  <horstretch>1</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
-               <item>
-                <property name="text">
-                 <string>Oxímetro</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Ventilador Mecânico </string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Monitor Mutiparâmetro Portátil</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Ultrassom Portátil</string>
-                </property>
-               </item>
               </widget>
              </item>
             </layout>
@@ -150,7 +120,7 @@
             <widget class="QListWidget" name="list_sector"/>
            </item>
            <item>
-            <widget class="QPushButton" name="btn_sector">
+            <widget class="QPushButton" name="btn_search_sector">
              <property name="text">
               <string>Buscar setor</string>
              </property>
@@ -188,7 +158,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QProgressBar" name="progress_bar">
+         <widget class="QProgressBar" name="search_progress_bar">
           <property name="value">
            <number>24</number>
           </property>

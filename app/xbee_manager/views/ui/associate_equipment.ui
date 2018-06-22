@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>854</width>
-    <height>290</height>
+    <width>961</width>
+    <height>285</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>961</width>
+    <height>285</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>961</width>
+    <height>285</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Associar Equipamento</string>
@@ -84,7 +96,7 @@
               <widget class="QLineEdit" name="ledit_descritpion">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>3</horstretch>
+                 <horstretch>4</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
@@ -117,7 +129,7 @@
               <widget class="QLineEdit" name="ledit_nserie">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>3</horstretch>
+                 <horstretch>4</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
@@ -150,7 +162,7 @@
               <widget class="QLineEdit" name="ledit_function">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>3</horstretch>
+                 <horstretch>4</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
@@ -183,7 +195,7 @@
               <widget class="QLineEdit" name="ledit_primary_place">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>3</horstretch>
+                 <horstretch>4</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>

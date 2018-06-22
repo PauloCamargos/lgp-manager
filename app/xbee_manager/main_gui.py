@@ -15,7 +15,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
     def __init__(self, parent=None):
         super(LogahApp, self).__init__(parent)
         self.setupUi(self)
-        self.progress_bar.setValue(0)
+        self.search_progress_bar.setValue(0)
 
         # Instantiating database module
         self.db = database.Banco(database='logah', schema='assets', user='postgres',
@@ -33,16 +33,24 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.menu_list_equipment.triggered.connect(self.open_list_equipment)
         self.menu_edit_equipment.triggered.connect(self.open_edit_equipment)
 
+        # Getting sectors from database
+        self.sector = self.db.selectAllDataFrom(table='sectors')
+        # Getting xbees from database
+        self.xbees = self.db.selectAllDataFrom(table='xbees')
+
+        # Populating QComboBox sectors
+        for s in sorted(self.sector, key=lambda s:s[1]): # sorting the list
+            self.cbx_sectors.addItem(s[1])
 
 
     def show_hello_world(self):
         # start = time.time()
-        self.completed = 0
-        while self.completed < 100.0:
-            self.completed += 0.0001
-        #     self.completed = 5.0 / time.time() * 100
-            self.progress_bar.setValue(self.completed)
-
+        # self.completed = 0
+        # while self.completed < 100.0:
+        #     self.completed += 0.0001
+        # #     self.completed = 5.0 / time.time() * 100
+        #     self.progress_bar.setValue(self.completed)
+        print("HELLO WORLD!")
 
     def open_version(self):
         # About window
@@ -57,8 +65,18 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.associate_equipment_window = QtWidgets.QMainWindow()
         self.associate_equipment = associate_equipment.Ui_AssociateEquipment()
         self.associate_equipment.setupUi(self.associate_equipment_window)
+
+        # Events connection
         self.associate_equipment.btn_associate_equipment.clicked.connect(self.associate_equipment_db)
+        self.associate_equipment.cbx_xbees.currentIndexChanged.connect(self.fill_xbee_info)
+
         self.associate_equipment_window.show()
+        # Populating xbees QComboBox and sorting it alphab.
+        for x in sorted(self.xbees, key=lambda x:x[1]):
+            # print(x) # DEBUG
+            if x[3] != 'C' and x[3] != 'R': # if the xbee is an end device
+                self.associate_equipment.cbx_xbees.addItem(x[1])
+
 
 
     def open_list_equipment(self):
@@ -80,6 +98,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
     def associate_equipment_db(self):
         # db.insertDataInto()
         print(self.associate_equipment.ledit_descritpion.text())
+
         self.db.insertDataInto(table='equipments',
         description=self.associate_equipment.ledit_descritpion.text(),
         serial_number=self.associate_equipment.ledit_nserie.text(),
@@ -89,6 +108,14 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         print("[OK] Added equipment")
         self.associate_equipment.statusbar.show()
         self.associate_equipment.statusbar.showMessage('Equipamento associado com sucesso!')
+
+    def fill_xbee_info(self):
+        option = self.associate_equipment.cbx_xbees.currentText()
+        print(option)
+        xbee = self.db.selectDataWhere('xbees', 'address_64_bit',option, 'address_64_bit', 'ni')
+        # print(xbee)
+        self.associate_equipment.list_xbees.addItem("64 Bit Addr.: " +  xbee[0])
+        self.associate_equipment.list_xbees.addItem("NI.: " +  xbee[1])
 
 
 class DiscoveryThread(QThread):
