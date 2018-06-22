@@ -4,17 +4,22 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QThread
-import sys
-import time
 from views import main_window, about, associate_equipment, list_equipment, edit_equipment
 from controller import xbee_handler
 from controller import database
-
+import sys
+import time
 
 class LogahApp(QMainWindow, main_window.Ui_MainWindow):
+    signal_start_search = QtCore.pyqtSignal()
+
     def __init__(self, parent=None):
         super(LogahApp, self).__init__(parent)
         self.setupUi(self)
+
+        #  Threading
+
+
         self.search_progress_bar.setValue(0)
 
         # Instantiating database module
@@ -22,18 +27,21 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         password='admin', port=5432, host='localhost')
         self.db.connection()
 
-        # Connection functions to menu items
+        # Connecting functions to menu items
         self.menu_version.triggered.connect(self.open_version)
         self.menu_add_equipment.triggered.connect(self.open_associate_equipment)
         self.menu_list_equipment.triggered.connect(self.open_list_equipment)
         self.menu_edit_equipment.triggered.connect(self.open_edit_equipment)
+
+        # Connecting buttons to functions
+        self.btn_search_devices.clicked.connect(self.search_sectors_equipment)
 
         # Setting up children windows
         # About window
         self.about_window = QtWidgets.QWidget()
         self.about = about.Ui_About()
 
-        # associate_equipment window
+        # Associate equipment window
         self.associate_equipment_window = QtWidgets.QMainWindow()
         self.associate_equipment = associate_equipment.Ui_AssociateEquipment()
         self.associate_equipment.setupUi(self.associate_equipment_window)
@@ -56,8 +64,6 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
 
         # Getting sectors from database
         self.sector = self.db.selectAllDataFrom(table='sectors')
-        # Getting xbees from database
-        self.xbees = self.db.selectAllDataFrom(table='xbees')
         # Getting all equipment from database
         self.equipments = self.db.selectAllDataFrom(table='equipments')
 
@@ -269,17 +275,67 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.edit_equipment.ledit_function.setText(equipment[1])
         self.edit_equipment.ledit_primary_place.setText(equipment[2])
 
+    def search_sectors_equipment(self):
+        option = self.cbx_sectors.currentText()
 
-class DiscoveryThread(QThread):
+        self.search_progress_bar.setMaximum(1)
+        self.search_progress_bar.setValue(0)
+
+        # self.get_devices_thread = DiscoveryThread(option)
+        self.worker = DiscoveryThread(option)
+        self.thread = QtCore.QThread()
+        self.signal_start_search.connect(self.worker.search)
+
+        # self.connect(self.get_devices_thread, SIGNAL('add_discovered_device(QList)'), self.add_discovered_device)
+        # self.get_devices_thread.add_discovered_device.connect(self.add_discovered_device)
+        self.thread.start()
+        self.worker.search()
+        print("Thread iniciada")
+        self.signal_start_search.emit()
+        print("Thread finalizada")
+
+    def add_discovered_device(self, devices):
+        if devices == None:
+            self.list_devices.addItem("Not found")
+        else:
+            for d in devices:
+                self.list_devices.addItem(d)
+
+        self.search_progress_bar.setValue(self.search_progress_bar.value())
+
+#
+# class DiscoveryThread(QThread):
+#     def __init__(self, device_name):
+#         QThread.__init__(self)
+#         self.device_name = device_name
+#
+#     def __del__(self):
+#         self.wait()
+#
+#     def run(self):
+#         if self.device_name == 'Bioengenharia':
+#             device_ni = 'R1'
+#         devices = xbee.getSectorEquipments(self.device_ni)
+#         self.emit(SIGNAL('add_discovered_device(QList)'), devices)
+#         self.sleep(0.5)
+
+class DiscoveryThread(QtCore.QObject):
     def __init__(self, device_name):
-        QThread.__init__(self)
+        super(DiscoveryThread, self).__init__()
         self.device_name = device_name
 
-    def __del__(self):
-        self.wait()
+    # def __del__(self):
+    #     self.wait()
 
-    def getDevices(self):
-        devices = xbee.getSectorEquipments(self.device_name)
+    # @QtCore.pyqtSlot()
+    def search(self):
+        if self.device_name == 'Bioengenharia':
+            device_ni = 'R1'
+        devices = xbee.getSectorEquipments(device_ni)
+        # self.emit(SIGNAL('add_discovered_device(QList)'), devices)
+        time.sleep(0.5)
+        return devices
+
 
 
 def main():

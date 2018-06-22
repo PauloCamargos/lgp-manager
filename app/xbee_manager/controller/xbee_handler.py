@@ -21,6 +21,7 @@ class XBeeHandler():
             "E3": "0013A200407C4533",
             "E4": "0013A200407C4927"
         }
+
         self.open_ports = self.serial_ports()
         if not self.open_ports:
             print("No device connected")
@@ -67,15 +68,15 @@ class XBeeHandler():
 
         print(f"Searching for devices in the network...")
         # Getting the xbee network
-        xbee_network = self.coodinator.get_network()
+        xbee_network = self.coordinator.get_network()
         # discovery options
         xbee_network.set_discovery_options({DiscoveryOptions.APPEND_DD})
 
         # Setting timeout
         xbee_network.set_discovery_timeout(5)
         xbee_network.start_discovery_process()
-        # while xbee_network.is_discovery_running():
-            # time.sleep(0.5)
+        while xbee_network.is_discovery_running():
+            time.sleep(0.5)
 
         if not xbee_network.is_discovery_running():
         # Retrieving router from network by 64bit address
@@ -83,7 +84,7 @@ class XBeeHandler():
             discovered_device = xbee_network.get_device_by_64(x64addr)
             if discovered_device is None:
                 # If the device was not found
-                print(f"Device {router} not found. Try again.")
+                print(f"Device {sector} not found. Try again.")
                 xbee_network.clear()
                 return None
 
