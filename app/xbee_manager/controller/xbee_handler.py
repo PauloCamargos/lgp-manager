@@ -147,17 +147,17 @@ class XBeeHandler():
             print("Invalid sector. Try again.")
             return None
 
-        print(f"Searching for devices in the network...")
-        # Getting the xbee network
-        self.xbee_network = self.coodinator.get_network()
-        # discovery options
-        self.xbee_network.set_discovery_options({DiscoveryOptions.APPEND_DD})
-
-        # Setting timeout
-        self.xbee_network.set_discovery_timeout(5)
-        self.xbee_network.start_discovery_process()
-        while self.xbee_network.is_discovery_running():
-            time.sleep(0.5)
+        # print(f"Searching for devices in the network...")
+        # # Getting the xbee network
+        # self.xbee_network = self.coodinator.get_network()
+        # # discovery options
+        # self.xbee_network.set_discovery_options({DiscoveryOptions.APPEND_DD})
+        #
+        # # Setting timeout
+        # self.xbee_network.set_discovery_timeout(5)
+        # self.xbee_network.start_discovery_process()
+        # while self.xbee_network.is_discovery_running():
+        #     time.sleep(0.5)
 
         # Retrieving router from network by 64bit address
         print(f"Retrieving router '{equipment.title()}' in the network...")
@@ -197,6 +197,32 @@ class XBeeHandler():
             return None
         else:
             return connected_ed
+
+    def get_all_equipments(self):
+        all_devices = self.xbee_network.get_devices() # Get network's devices
+        self.xbee_network.clear() # Clearing the network before new discovery
+        print("Devices: " + str(len(all_devices)))
+        print("Devices type: " + str(discovered_device.get_parameter("DD")))
+
+        end_devices = []
+
+        for d in all_devices:
+            d.read_device_info()
+            # mp = str(d.get_parameter("MP"))
+            # # if ==
+            # my = str(discovered_device.get_parameter("MY"))
+            # print("MP encontado: " + mp +" | " + my)
+            # # print(f"-Router{d.get_node_id()} FOUND.")
+            # if mp == my:
+            print(f"-{d.get_node_id()} connected.")
+            end_devices.append(d.get_node_id())
+
+        if not end_devices:
+            # if the list connected_ed is empty
+            print(f"No other device connected to device {equipment.title()}")
+            return None
+        else:
+            return end_devices
 
 
     def serial_ports(self):

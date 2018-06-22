@@ -54,6 +54,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.list_equipment = list_equipment.Ui_ListEquipment()
         self.list_equipment.setupUi(self.list_equipment_window)
         self.list_equipment.bnt_list_equipment.clicked.connect(self.search_all_equipments_db)
+        self.list_equipment.list_progress_bar.setValue(0)
 
         # Add equipment window
         self.edit_equipment_window = QtWidgets.QMainWindow()
@@ -252,15 +253,15 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             self.associate_equipment.list_xbees.addItem("NI.: " +  xbee[1])
 
     def list_all_equipments(self):
-        self.search_equipment_thread = DiscoveryThread(option)
+        self.list_equipment.search_equipment_thread = DiscoveryThread('all')
         # Connect the signal from the thread to the finished method
-        self.search_equipment_thread.signal.connect(self.display_discovered_devices)
+        self.list_equipment.search_equipment_thread.signal.connect(self.display_discovered_devices)
 
-        self.btn_search_devices.setEnabled(False)
-        self.btn_search_sector.setEnabled(False)
+        self.list_equipment.bnt_list_equipment.setEnabled(False)
+        self.list_equipment.bnt_list_equipment.setEnabled(False)
 
-        self.search_equipment_thread.start()
-        self.search_progress_bar.setValue(0)
+        self.list_equipment.search_equipment_thread.start()
+        self.list_equipment.list_progress_bar.setValue(0)
 
     def search_all_equipments_db(self):
         """
@@ -330,6 +331,18 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
                 self.btn_search_devices.setEnabled(True)
                 self.btn_search_sector.setEnabled(True)
 
+    def display_list_all_equipments(self):
+        self.list_equipment.list_found_equipment.clear()
+        if devices == None:
+            self.list_equipment.list_found_equipment.addItem("Not found")
+        elif devices[0] == 'running':
+            self.list_equipment.list_progress_bar.setValue(self.list_equipment.list_progress_bar.value()+1)
+        else:
+            for d in devices:
+                self.list_equipment.list_found_equipment.addItem(d)
+                # self.search_progress_bar.setValue(self.search_progress_bar.value())
+                self.list_equipment.bnt_list_equipment.setEnabled(True)
+
 
 class DiscoveryThread(QThread):
     signal = pyqtSignal(list)
@@ -348,11 +361,26 @@ class DiscoveryThread(QThread):
             while xbee.xbee_network.is_discovery_running():
                 self.signal.emit(['running'])
                 time.sleep(1.265)
+
             device_ni = 'R1'
             devices = xbee.getSectorEquipments(device_ni)
+
             if devices is None:
                 devices = ['Not found']
             self.signal.emit(devices)
+        elif self.device_name == 'all':
+            xbee.discover_network()
+            while xbee.xbee_network.is_discovery_running():
+                self.signal.emit(['running'])
+                time.sleep(1.265)
+
+            device_ni = 'all'
+            devices = xbee.get_all_equipments(device_ni)
+
+            if devices is None:
+                devices = ['Not found']
+            self.signal.emit(devices)
+
         else:
             self.signal.emit(['Invalid'])
         # self.emit(SIGNAL('add_discovered_device(QList)'), devices)
