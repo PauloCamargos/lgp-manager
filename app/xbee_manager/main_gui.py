@@ -22,6 +22,25 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         password='admin', port=5432, host='localhost')
         self.db.connection()
 
+        # Setting up children windows
+        # About
+        self.about_window = QtWidgets.QWidget()
+        self.about = about.Ui_About()
+        # associate_equipment
+        self.associate_equipment_window = QtWidgets.QMainWindow()
+        self.associate_equipment = associate_equipment.Ui_AssociateEquipment()
+        self.associate_equipment.setupUi(self.associate_equipment_window)
+
+        # List equipment
+        self.list_equipment_window = QtWidgets.QWidget()
+        self.list_equipment = list_equipment.Ui_ListEquipment()
+        self.list_equipment.setupUi(self.list_equipment_window)
+
+        # Add equipment window
+        self.edit_equipment_window = QtWidgets.QWidget()
+        self.edit_equipment = edit_equipment.Ui_EditEquipment()
+        self.edit_equipment.setupUi(self.edit_equipment_window)
+
         # # Connection functions to buttons
         # self.btn_devices.clicked.connect(self.show_hello_world)
         # self.list_devices.addItem("Oxímetro Portátil Bioland")
@@ -54,18 +73,12 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
 
     def open_version(self):
         # About window
-        self.about_window = QtWidgets.QWidget()
-        self.about = about.Ui_About()
         self.about.setupUi(self.about_window)
         self.about_window.show()
 
 
     def open_associate_equipment(self):
         # Add equipment window
-        self.associate_equipment_window = QtWidgets.QMainWindow()
-        self.associate_equipment = associate_equipment.Ui_AssociateEquipment()
-        self.associate_equipment.setupUi(self.associate_equipment_window)
-
         # Events connection
         self.associate_equipment.btn_associate_equipment.clicked.connect(self.associate_equipment_db)
         self.associate_equipment.cbx_xbees.currentIndexChanged.connect(self.fill_xbee_info)
@@ -80,19 +93,17 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
 
 
     def open_list_equipment(self):
-        # Add equipment window
-        self.list_equipment_window = QtWidgets.QWidget()
-        self.list_equipment = list_equipment.Ui_ListEquipment()
-        self.list_equipment.setupUi(self.list_equipment_window)
+        # list equipment window
         self.list_equipment.bnt_list_equipment.clicked.connect(self.search_all_equipments_db)
         self.list_equipment_window.show()
 
 
     def open_edit_equipment(self):
         # Add equipment window
-        self.edit_equipment_window = QtWidgets.QWidget()
-        self.edit_equipment = edit_equipment.Ui_EditEquipment()
-        self.edit_equipment.setupUi(self.edit_equipment_window)
+        self.edit_equipment.btn_search_equipment.clicked.connect(self.search_equipment_db)
+        all_equipments = self.search_all_equipments_db()
+        for e in all_equipments:
+                self.edit_equipment.cbx_equipments.addItem(f'{e[1]}')
         self.edit_equipment_window.show()
 
 
@@ -116,13 +127,16 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
     def fill_xbee_info(self):
         self.associate_equipment.list_xbees.clear()
         option = self.associate_equipment.cbx_xbees.currentText()
-        print(option)
+        # print(option) # DEBUG
         xbee = self.db.selectDataWhere('xbees', 'address_64_bit',option, 'address_64_bit', 'ni')
         # print(xbee)
         self.associate_equipment.list_xbees.addItem("64 Bit Addr.: " +  xbee[0])
         self.associate_equipment.list_xbees.addItem("NI.: " +  xbee[1])
 
     def search_all_equipments_db(self):
+        """
+         Search all equipment in the DB
+        """
         self.list_equipment.list_registered_equipment.clear()
         all_equipments = self.db.selectAllDataFrom(table='equipments')
         eq_number = len(all_equipments)
@@ -131,7 +145,18 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             # print(a) # DEBUG
             self.list_equipment.list_registered_equipment.addItem(f"{i}) {a[1]} ({a[4]})")
             i+=1
+        return all_equipments
 
+    def search_equipment_db(self):
+        """
+        Searches one equipment in the DB and update GUI fileds
+        """
+        option = self.edit_equipment.cbx_equipments.currentText()
+        equipment = self.db.selectDataWhere('equipments', 'description',option, 'serial_number', 'equipment_function', 'primarary_sector')
+        self.edit_equipment.ledit_description.setText(option)
+        self.edit_equipment.ledit_nserie.setText(equipment[0])
+        self.edit_equipment.ledit_function.setText(equipment[1])
+        self.edit_equipment.ledit_primary_place.setText(equipment[2])
 
 
 class DiscoveryThread(QThread):
