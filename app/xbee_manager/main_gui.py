@@ -84,6 +84,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.list_equipment_window = QtWidgets.QWidget()
         self.list_equipment = list_equipment.Ui_ListEquipment()
         self.list_equipment.setupUi(self.list_equipment_window)
+        self.list_equipment.bnt_list_equipment.clicked.connect(self.search_all_equipments_db)
         self.list_equipment_window.show()
 
 
@@ -97,25 +98,40 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
 
     def associate_equipment_db(self):
         # db.insertDataInto()
-        print(self.associate_equipment.ledit_descritpion.text())
+        # print(self.associate_equipment.ledit_descritpion.text())
+        option = self.associate_equipment.cbx_xbees.currentText()
+        xbee = self.db.selectDataWhere('xbees', 'address_64_bit',option, 'id','address_64_bit')
 
         self.db.insertDataInto(table='equipments',
         description=self.associate_equipment.ledit_descritpion.text(),
         serial_number=self.associate_equipment.ledit_nserie.text(),
         equipment_function=self.associate_equipment.ledit_function.text(),
-        primarary_sector=self.associate_equipment.ledit_primary_place.text()
+        primarary_sector=self.associate_equipment.ledit_primary_place.text(),
+        xbee=xbee[0]
         )
         print("[OK] Added equipment")
         self.associate_equipment.statusbar.show()
-        self.associate_equipment.statusbar.showMessage('Equipamento associado com sucesso!')
+        self.associate_equipment.statusbar.showMessage('STATUS: Equipamento associado com sucesso!')
 
     def fill_xbee_info(self):
+        self.associate_equipment.list_xbees.clear()
         option = self.associate_equipment.cbx_xbees.currentText()
         print(option)
         xbee = self.db.selectDataWhere('xbees', 'address_64_bit',option, 'address_64_bit', 'ni')
         # print(xbee)
         self.associate_equipment.list_xbees.addItem("64 Bit Addr.: " +  xbee[0])
         self.associate_equipment.list_xbees.addItem("NI.: " +  xbee[1])
+
+    def search_all_equipments_db(self):
+        self.list_equipment.list_registered_equipment.clear()
+        all_equipments = self.db.selectAllDataFrom(table='equipments')
+        eq_number = len(all_equipments)
+        i=1
+        for a in all_equipments:
+            # print(a) # DEBUG
+            self.list_equipment.list_registered_equipment.addItem(f"{i}) {a[1]} ({a[4]})")
+            i+=1
+
 
 
 class DiscoveryThread(QThread):
