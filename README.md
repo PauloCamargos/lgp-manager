@@ -39,7 +39,7 @@ Add equipment screen
 
    `pip3 install pyqt5`
 
-### Installing PostgreSQL drive
+### Installing PostgreSQL database adapter
   1. Installing binary
 
   `pip3 install psycopg2-binary`
