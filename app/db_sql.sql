@@ -53,6 +53,7 @@ ALTER TABLE assets.xbees ALTER COLUMN ni SET DEFAULT 'EMPTY';
 ALTER TABLE assets.xbees ADD CONSTRAINT fk_room FOREIGN KEY (room) REFERENCES assets.rooms(id);
 ALTER TABLE assets.xbees ADD COLUMN xbee_type VARCHAR(1) DEFAULT 'E';
 ALTER TABLE assets.sectors RENAME COLUMN descripton TO description;
+ALTER TABLE assets.equipments ADD UNIQUE (serial_number);
 
 INSERT INTO assets.sectors (description) VALUES ('Enfermaria'),
 ('Pronto Socorro'), ('Lavanderia'), ('Bioengenharia'),
@@ -63,3 +64,7 @@ INSERT INTO assets.rooms(room_number, id_sector) VALUES ('1A', 1), ('1B', 1),('1
 INSERT INTO assets.xbees(address_64_bit, xbee_type) VALUES ('0013A200404A4BB3', 'C'),
 ('0013A200404A4BC6', 'R'),('0013A200404AB737','R'),('0013A200407C48FE','E'),
 ('0013A200407C48FF','E'),('0013A200407C4533','E'), ('0013A200407C4927','E')
+
+SELECT e.description, e.serial_number, x.address_64_bit FROM assets.equipments e
+RIGHT JOIN assets.xbees x ON e.xbee = x.id
+WHERE e.xbee IS NULL

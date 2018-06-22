@@ -11,9 +11,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ListEquipment(object):
     def setupUi(self, ListEquipment):
         ListEquipment.setObjectName("ListEquipment")
-        ListEquipment.resize(902, 474)
-        ListEquipment.setMinimumSize(QtCore.QSize(902, 474))
-        ListEquipment.setMaximumSize(QtCore.QSize(902, 474))
+        ListEquipment.resize(1000, 474)
+        ListEquipment.setMinimumSize(QtCore.QSize(1000, 474))
+        ListEquipment.setMaximumSize(QtCore.QSize(1000, 474))
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(ListEquipment)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
@@ -86,4 +86,3 @@ if __name__ == "__main__":
     ui.setupUi(ListEquipment)
     ListEquipment.show()
     sys.exit(app.exec_())
-

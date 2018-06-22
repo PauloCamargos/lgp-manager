@@ -322,7 +322,7 @@ class Banco:
         self.query = "DELETE FROM " + self.schema + "." + table
         self.cur.execute(self.query)
         self.con.commit()
-
+# -------------- CUSTOM METHODS---------------------
     def visualizeByUser(self, user_id=None):
         """Selects the id of a measure, it's value and it's unity and the name of the user who
         registered the data. User id is optional. If not passed, returns all records.
@@ -344,6 +344,19 @@ class Banco:
                         INNER JOIN arduinoproject.physical_quantity p ON m.id_pquantity = p.id \
                         INNER JOIN arduinoproject.environment e ON m.id_environment = e.id \
                         ORDER BY m.id ASC"
+        self.cur.execute(self.query)
+        rows = self.cur.fetchall()
+        return rows
+
+    def select_free_xbees(self):
+        """
+            Returns all unassociated xbees
+        """
+
+
+        self.query = "SELECT e.description, e.serial_number, x.address_64_bit, x.xbee_type FROM assets.equipments e \
+                            RIGHT JOIN assets.xbees x ON e.xbee = x.id \
+                            WHERE e.xbee IS NULL"
         self.cur.execute(self.query)
         rows = self.cur.fetchall()
         return rows

@@ -11,9 +11,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_EditEquipment(object):
     def setupUi(self, EditEquipment):
         EditEquipment.setObjectName("EditEquipment")
-        EditEquipment.resize(736, 297)
-        EditEquipment.setMinimumSize(QtCore.QSize(736, 297))
-        EditEquipment.setMaximumSize(QtCore.QSize(736, 297))
+        EditEquipment.resize(900, 300)
+        EditEquipment.setMinimumSize(QtCore.QSize(900, 300))
+        EditEquipment.setMaximumSize(QtCore.QSize(900, 300))
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(EditEquipment)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
@@ -177,4 +177,3 @@ if __name__ == "__main__":
     ui.setupUi(EditEquipment)
     EditEquipment.show()
     sys.exit(app.exec_())
-
