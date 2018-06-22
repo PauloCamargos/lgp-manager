@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(803, 579)
+        MainWindow.resize(1233, 619)
         MainWindow.setLocale(QtCore.QLocale(QtCore.QLocale.Portuguese, QtCore.QLocale.Brazil))
         MainWindow.setTabShape(QtWidgets.QTabWidget.Rounded)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -105,7 +105,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.verticalLayout_3)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menuBar = QtWidgets.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 803, 25))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1233, 25))
         self.menuBar.setObjectName("menuBar")
         self.menuArquivo = QtWidgets.QMenu(self.menuBar)
         self.menuArquivo.setObjectName("menuArquivo")
@@ -149,7 +149,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "LOGAH Manager"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Logah Manager"))
         self.groupBox.setTitle(_translate("MainWindow", "Por setor"))
         self.label_4.setText(_translate("MainWindow", "Setor:"))
         self.label_2.setText(_translate("MainWindow", "Dispositivos encontrados:"))
@@ -179,3 +179,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+

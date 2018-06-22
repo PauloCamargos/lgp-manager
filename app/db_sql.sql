@@ -54,6 +54,7 @@ ALTER TABLE assets.xbees ADD CONSTRAINT fk_room FOREIGN KEY (room) REFERENCES as
 ALTER TABLE assets.xbees ADD COLUMN xbee_type VARCHAR(1) DEFAULT 'E';
 ALTER TABLE assets.sectors RENAME COLUMN descripton TO description;
 ALTER TABLE assets.equipments ADD UNIQUE (serial_number);
+ALTER TABLE assets.equipments RENAME COLUMN primarary_sector TO primary_sector;
 
 INSERT INTO assets.sectors (description) VALUES ('Enfermaria'),
 ('Pronto Socorro'), ('Lavanderia'), ('Bioengenharia'),
