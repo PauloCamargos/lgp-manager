@@ -23,7 +23,8 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.search_progress_bar.setMaximum(5)
 
         # Instantiating database module
-        self.db = database.Banco(database='logah', schema='assets', user='postgres',
+        self.db = database.Banco(database='logah', schema='assets',\
+        user='postgres',
         password='admin', port=5432, host='localhost')
         self.db.connection()
 
@@ -121,12 +122,6 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.edit_equipment.statusbar.clearMessage()
 
     def show_hello_world(self):
-        # start = time.time()
-        # self.completed = 0
-        # while self.completed < 100.0:
-        #     self.completed += 0.0001
-        # #     self.completed = 5.0 / time.time() * 100
-        #     self.progress_bar.setValue(self.completed)
         print("HELLO WORLD!")
 
     def open_version(self):
@@ -154,10 +149,12 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         # Status bar message
         if status == 'added':
             self.associate_equipment.statusbar.show()
-            self.associate_equipment.statusbar.showMessage('STATUS: Equipamento associado com sucesso!')
+            self.associate_equipment.statusbar.showMessage('STATUS: Equipamento\
+             associado com sucesso!')
         elif status == 'not added':
             self.associate_equipment.statusbar.show()
-            self.associate_equipment.statusbar.showMessage('STATUS: Erro. Preencha as informações corretamente!')
+            self.associate_equipment.statusbar.showMessage('STATUS: Erro. \
+            Preencha as informações corretamente!')
 
 
     def open_list_equipment(self):
@@ -180,13 +177,16 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.edit_equipment_window.show()
         if status == 'removed':
             self.edit_equipment.statusbar.show()
-            self.edit_equipment.statusbar.showMessage('STATUS: Equipamento removido com sucesso!')
+            self.edit_equipment.statusbar.showMessage('STATUS: Equipamento \
+            removido com sucesso!')
         elif status == 'updated':
             self.edit_equipment.statusbar.show()
-            self.edit_equipment.statusbar.showMessage('STATUS: Equipamento atualizado com sucesso!')
+            self.edit_equipment.statusbar.showMessage('STATUS: Equipamento\
+             atualizado com sucesso!')
         elif status == 'not updated':
             self.edit_equipment.statusbar.show()
-            self.edit_equipment.statusbar.showMessage('STATUS: Erro. Preencha as informações corretamente!')
+            self.edit_equipment.statusbar.showMessage('STATUS: Erro. Preencha\
+             as informações corretamente!')
 
 
     def associate_equipment_db(self):
@@ -196,15 +196,18 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         """
 
         option = self.associate_equipment.cbx_xbees.currentText()
-        xbee = self.db.selectDataWhere('xbees', 'address_64_bit',option, 'id','address_64_bit')
+        xbee = self.db.selectDataWhere('xbees', 'address_64_bit',option, 'id',
+        'address_64_bit')
 
         description_text = self.associate_equipment.ledit_description.text()
         serial_number_text = self.associate_equipment.ledit_nserie.text()
         equipment_function_text = self.associate_equipment.ledit_function.text()
         primary_sector_text = self.associate_equipment.ledit_primary_place.text()
 
-        if description_text != "" and serial_number_text != "" and  equipment_function_text != "" and  primary_sector_text:
-            self.db.insertDataInto(table='equipments',
+        if description_text != "" and serial_number_text != "" \
+        and  equipment_function_text != "" and  primary_sector_text:
+            self.db.insertDataInto(
+            table='equipments',
             description=description_text,
             serial_number=serial_number_text,
             equipment_function=equipment_function_text,
@@ -222,7 +225,8 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         """
 
         equipment_serial_number = self.edit_equipment.ledit_nserie.text()
-        self.db.deleteDataFrom(table='equipments', condition='serial_number', condition_value=equipment_serial_number )
+        self.db.deleteDataFrom(table='equipments', condition='serial_number',
+        condition_value=equipment_serial_number )
         print('[OK] Deleted equipment')
         self.open_edit_equipment(status='removed')
 
@@ -231,7 +235,8 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         Updates equipment info's
         """
         equipment_serial_number = self.edit_equipment.ledit_nserie.text()
-        equipment = self.db.selectDataWhere('equipments', 'serial_number',equipment_serial_number,'serial_number')
+        equipment = self.db.selectDataWhere('equipments', 'serial_number',
+        equipment_serial_number,'serial_number')
         print(equipment)
         ds = self.edit_equipment.ledit_description.text()
         fn = self.edit_equipment.ledit_function.text()
@@ -249,10 +254,12 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.associate_equipment.list_xbees.clear()
         option = self.associate_equipment.cbx_xbees.currentText()
         # print(option) # DEBUG
-        xbee = self.db.selectDataWhere('xbees', 'address_64_bit',option, 'address_64_bit', 'ni')
+        xbee = self.db.selectDataWhere('xbees', 'address_64_bit',option, \
+        'address_64_bit', 'ni')
         # print(xbee)
         if xbee:
-            self.associate_equipment.list_xbees.addItem("64 Bit Addr.: " +  xbee[0])
+            self.associate_equipment.list_xbees.addItem("64 Bit Addr.: " +  \
+            xbee[0])
             self.associate_equipment.list_xbees.addItem("NI.: " +  xbee[1])
 
     def search_all_equipments(self):
@@ -285,7 +292,8 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         Searches one equipment in the DB and update GUI fileds
         """
         option = self.edit_equipment.cbx_equipments.currentText()
-        equipment = self.db.selectDataWhere('equipments', 'description',option, 'serial_number', 'equipment_function', 'primary_sector')
+        equipment = self.db.selectDataWhere('equipments', 'description',option, \
+        'serial_number', 'equipment_function', 'primary_sector')
         self.edit_equipment.ledit_description.setText(option)
         self.edit_equipment.ledit_nserie.setText(equipment[0])
         self.edit_equipment.ledit_function.setText(equipment[1])
@@ -313,13 +321,16 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             Lists all register equipement inside a sector
         """
         self.list_devices.clear()
-        if devices == None:
-            self.list_devices.addItem("Not found")
+        if not devices:
+            self.list_devices.addItem("Nenhum dispositivo encontrado neste setor")
+            self.btn_search_devices.setEnabled(True)
+            self.btn_search_sector.setEnabled(True)
         elif devices[0] == 'running':
             self.search_progress_bar.setValue(self.search_progress_bar.value()+1)
         else:
             for d in devices:
-                self.list_devices.addItem(d)
+                device_description = self.db.select_equipment_by_xbee(d)
+                self.list_devices.addItem(device_description)
                 # self.search_progress_bar.setValue(self.search_progress_bar.value())
                 self.btn_search_devices.setEnabled(True)
                 self.btn_search_sector.setEnabled(True)
@@ -327,7 +338,8 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
     def list_all_equipments(self, devices):
         self.list_equipment.list_found_equipment.clear()
         if devices == None:
-            self.list_equipment.list_found_equipment.addItem("Not found")
+            self.list_equipment.list_found_equipment.addItem("Nenhum \
+            dispositivo encontrado neste setor")
         elif devices[0] == 'running':
             self.list_equipment.list_progress_bar.setValue(self.list_equipment.list_progress_bar.value()+1)
         else:
@@ -350,18 +362,33 @@ class DiscoveryThread(QThread):
     def run(self):
         print("Buscando dispositivos (thread iniciada)")
         if self.device_name == 'Bioengenharia':
+            self.find_equipment('Pronto socorro')
+        elif self.device_name == 'Pronto socorro':
+            self.find_equipment('Pronto socorro')
+        elif self.device_name == 'all':
+            self.find_equipment('all')
+
+        # self.emit(SIGNAL('add_discovered_device(QList)'), devices)
+        # self.sleep(0.5)
+
+    else:
+        self.signal.emit(['Invalid'])
+
+    def find_equipment(self, sector):
+        if sector != 'all':
+            # Getting all equipment connected to the chosen sector
+            if sector == 'Bioengenharia':
+                xbee_ni = 'R1'
+            elif sector == 'Pronto socorro'
+                xbee_ni = 'R2'
+
             xbee.discover_network()
             while xbee.xbee_network.is_discovery_running():
                 self.signal.emit(['running'])
                 time.sleep(1.265)
 
-            xbee_ni = 'R1'
-            devices = xbee.getSectorEquipments(xbee_ni)
-
-            if devices is None:
-                devices = ['Not found']
-            self.signal.emit(devices)
-        elif self.device_name == 'all':
+            devices = xbee.get_sector_equipments(xbee_ni)
+        else:
             xbee.discover_network()
             while xbee.xbee_network.is_discovery_running():
                 self.signal.emit(['running'])
@@ -369,35 +396,10 @@ class DiscoveryThread(QThread):
 
             devices = xbee.get_all_equipments()
 
-            if devices is None:
-                devices = ['Not found']
-            self.signal.emit(devices)
+        if devices is None: # If the device wasn't found
+            devices = []
 
-        else:
-            self.signal.emit(['Invalid'])
-        # self.emit(SIGNAL('add_discovered_device(QList)'), devices)
-        # self.sleep(0.5)
-
-
-
-# class DiscoveryThread(QtCore.QObject):
-#     def __init__(self, device_name):
-#         super(DiscoveryThread, self).__init__()
-#         self.device_name = device_name
-#
-#     # def __del__(self):
-#     #     self.wait()
-#
-#     # @QtCore.pyqtSlot()
-#     def search(self):
-#         if self.device_name == 'Bioengenharia':
-#             device_ni = 'R1'
-#         devices = xbee.getSectorEquipments(device_ni)
-#         # self.emit(SIGNAL('add_discovered_device(QList)'), devices)
-#         time.sleep(0.5)
-#         return devices
-
-
+        self.signal.emit(devices)
 
 def main():
     app = QApplication(sys.argv)
@@ -410,8 +412,8 @@ if __name__ == "__main__":
     xbee = xbee_handler.XBeeHandler()
     try:
         if xbee.coordinator is not None:
-            xbee.openCoordinatorCom()
+            xbee.open_coordinator_com()
         main()
     finally:
         if xbee.coordinator is not None:
-            xbee.closeCoordinatorCom()
+            xbee.close_coordinator_com()

@@ -322,7 +322,7 @@ class Banco:
         self.query = "DELETE FROM " + self.schema + "." + table
         self.cur.execute(self.query)
         self.con.commit()
-# -------------- CUSTOM METHODS---------------------
+# -------------- USER CUSTOM METHODS---------------------
     def visualizeByUser(self, user_id=None):
         """Selects the id of a measure, it's value and it's unity and the name of the user who
         registered the data. User id is optional. If not passed, returns all records.
@@ -361,6 +361,21 @@ class Banco:
         rows = self.cur.fetchall()
         return rows
 
+    def select_equipment_by_xbee(self, xbee_64_bit_address):
+        """
+            Returns the equipment description given it's associated xbee
+        """
+
+
+        self.query = "SELECT e.description FROM assets.equipments e \
+                        INNER JOIN assets.xbees x ON e.xbee = x.id \
+                        WHERE x.address_64_bit = %s"
+        
+        self.cur.execute(self.query, (xbee_64_bit_address))
+        row = self.cur.fetchone()
+        return row
+
+# ------------------------ END USER CUSTOM METHODS
     def closeConnecetion(self):
         """Closes the connection.
 

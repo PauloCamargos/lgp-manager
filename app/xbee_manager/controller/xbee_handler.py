@@ -31,14 +31,14 @@ class XBeeHandler():
             self.coordinator = XBeeDevice(self.open_ports[0], 9600)
 
 
-    def openCoordinatorCom(self):
+    def open_coordinator_com(self):
         """
         Opens the communication with the local XBee
         """
         self.coordinator.open()
 
 
-    def closeCoordinatorCom(self):
+    def close_coordinator_com(self):
         """
         Closes the communication with the local XBee
         """
@@ -57,7 +57,7 @@ class XBeeHandler():
         # while self.xbee_network.is_discovery_running():
         #     time.sleep(0.5)
 
-    def getSectorEquipments(self, sector):
+    def get_sector_equipments(self, sector):
         """
             Returns a list of end devices conected to a specified router.
 
@@ -84,35 +84,39 @@ class XBeeHandler():
     # if not self.xbee_network.is_discovery_running():
     # Retrieving router from network by 64bit address
         print(f"Retrieving router '{sector.title()}' in the network...")
-        discovered_device = self.xbee_network.get_device_by_64(x64addr)
-        if discovered_device is None:
+        router = self.xbee_network.get_device_by_64(x64addr)
+        if router is None:
             # If the device was not found
             print(f"Device {sector} not found. Try again.")
             self.xbee_network.clear()
             return None
 
+        router_64_bit_addr = router.get_64bit_addr()
         # If the device was found in the network
         print(f"Device {sector.title()} found. Retrieving device information...")
-        discovered_device.read_device_info()
-        print(f"{sector.title()}-NI: {discovered_device.get_node_id()}")
+        router.read_device_info()
+        print(f"{sector.title()}-NI: {router.get_node_id()}")
         print("Searching for EDs...")
 
         all_devices = self.xbee_network.get_devices() # Get network's devices
         self.xbee_network.clear() # Clearing the network before new discovery
         print("Devices: " + str(len(all_devices)))
-        print("Devices type: " + str(discovered_device.get_parameter("DD")))
+        print("Devices type: " + str(router.get_parameter("DD")))
         connected_ed = []
 
         for d in all_devices:
             d.read_device_info()
             mp = str(d.get_parameter("MP"))
-            # if ==
-            my = str(discovered_device.get_parameter("MY"))
+            my = str(router.get_parameter("MY"))
+            ed_64_bit_addr = d.get_64bit_addr()
             print("MP encontado: " + mp +" | " + my)
-            # print(f"-Router{d.get_node_id()} FOUND.")
-            if mp == my:
+
+            # If device is connected to router and 'd' is not the router itself
+            if mp == my and router_64_bit_addr != ed_64ed_64_bit_addr:
                 print(f"-{d.get_node_id()} connected.")
-                connected_ed.append(d.get_node_id())
+                # connected_ed.append(d.get_node_id())
+                # Retrieving the end device 64 bit address
+                connected_ed.append(ed_64_bit_addr)
         if not connected_ed:
             # if the list connected_ed is empty
             print(f"No other device connected to device {sector.title()}")
@@ -121,7 +125,7 @@ class XBeeHandler():
             return connected_ed
 
 
-    def getEquipmentLocation(self, equipment):
+    def get_equipment_location(self, equipment):
         """
             Searches the router (sector) which an specified equipment
             (end device) is located.
