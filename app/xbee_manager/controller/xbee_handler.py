@@ -112,11 +112,15 @@ class XBeeHandler():
             print("MP encontado: " + mp +" | " + my)
 
             # If device is connected to router and 'd' is not the router itself
-            if mp == my and router_64_bit_addr != ed_64ed_64_bit_addr:
+            if mp == my and router_64_bit_addr != ed_64_bit_addr:
                 print(f"-{d.get_node_id()} connected.")
                 # connected_ed.append(d.get_node_id())
                 # Retrieving the end device 64 bit address
-                connected_ed.append(ed_64_bit_addr)
+                # hs = d.get_parameter('H')
+                addr = str(ed_64_bit_addr.address.hex()).upper()
+                print("Returning xbee address: " + addr)
+                print(type(addr))
+                connected_ed.append(addr)
         if not connected_ed:
             # if the list connected_ed is empty
             print(f"No other device connected to device {sector.title()}")

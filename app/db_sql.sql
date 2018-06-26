@@ -69,3 +69,12 @@ INSERT INTO assets.xbees(address_64_bit, xbee_type) VALUES ('0013A200404A4BB3', 
 SELECT e.description, e.serial_number, x.address_64_bit FROM assets.equipments e
 RIGHT JOIN assets.xbees x ON e.xbee = x.id
 WHERE e.xbee IS NULL
+
+UPDATE assets.xbees SET ni = 'C' WHERE id=15;
+UPDATE assets.xbees SET ni = 'R1' WHERE id=16;
+UPDATE assets.xbees SET ni = 'R2' WHERE id=17;
+UPDATE assets.xbees SET ni = 'E1' WHERE id=18;
+UPDATE assets.xbees SET ni = 'E2' WHERE id=19;
+UPDATE assets.xbees SET ni = 'E3' WHERE id=20;
+UPDATE assets.xbees SET ni = 'E4' WHERE id=21;
+UPDATE assets.xbees SET ni = 'TESTE' WHERE id=22;

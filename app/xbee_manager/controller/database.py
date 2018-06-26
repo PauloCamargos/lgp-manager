@@ -370,8 +370,13 @@ class Banco:
         self.query = "SELECT e.description FROM assets.equipments e \
                         INNER JOIN assets.xbees x ON e.xbee = x.id \
                         WHERE x.address_64_bit = %s"
-        
-        self.cur.execute(self.query, (xbee_64_bit_address))
+
+        print(self.query)
+        value = tuple([xbee_64_bit_address])
+        print(value)
+        print(type(value))
+
+        self.cur.execute(self.query, value)
         row = self.cur.fetchone()
         return row
 

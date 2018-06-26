@@ -263,6 +263,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             self.associate_equipment.list_xbees.addItem("NI.: " +  xbee[1])
 
     def search_all_equipments(self):
+
         self.list_equipment.search_equipment_thread = DiscoveryThread('all')
         # Connect the signal from the thread to the finished method
         self.list_equipment.search_equipment_thread.signal.connect(self.list_all_equipments)
@@ -312,9 +313,12 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
 
         self.btn_search_devices.setEnabled(False)
         self.btn_search_sector.setEnabled(False)
-
-        self.search_equipment_thread.start()
+        self.statusBar.show()
+        self.statusBar.showMessage('Iniciando busca...')
         self.search_progress_bar.setValue(0)
+        self.search_progress_bar.setMaximum(5)
+        self.search_equipment_thread.start()
+
 
     def list_all_discovered_equipments(self, devices):
         """
@@ -328,12 +332,19 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         elif devices[0] == 'running':
             self.search_progress_bar.setValue(self.search_progress_bar.value()+1)
         else:
+            self.search_progress_bar.setValue(0)
+            self.search_progress_bar.setMaximum(len(devices))
+            self.statusBar.showMessage('Buscando equipamentos...')
             for d in devices:
+                print("Searching for xbee description in database...")
+                self.search_progress_bar.setValue(self.search_progress_bar.value()+1)
                 device_description = self.db.select_equipment_by_xbee(d)
-                self.list_devices.addItem(device_description)
+                self.list_devices.addItem(device_description[0])
                 # self.search_progress_bar.setValue(self.search_progress_bar.value())
                 self.btn_search_devices.setEnabled(True)
                 self.btn_search_sector.setEnabled(True)
+            self.statusBar.showMessage('Busca finalizada.')
+
 
     def list_all_equipments(self, devices):
         self.list_equipment.list_found_equipment.clear()
@@ -362,44 +373,37 @@ class DiscoveryThread(QThread):
     def run(self):
         print("Buscando dispositivos (thread iniciada)")
         if self.device_name == 'Bioengenharia':
-            self.find_equipment('Pronto socorro')
-        elif self.device_name == 'Pronto socorro':
-            self.find_equipment('Pronto socorro')
+            self.find_equipment('R1')
+        elif self.device_name == 'Pronto Socorro':
+            self.find_equipment('R2')
         elif self.device_name == 'all':
             self.find_equipment('all')
 
         # self.emit(SIGNAL('add_discovered_device(QList)'), devices)
         # self.sleep(0.5)
 
-    else:
-        self.signal.emit(['Invalid'])
+        else:
+            self.signal.emit(['Invalid'])
 
     def find_equipment(self, sector):
+        print('inside find_equipment()')
+        xbee.discover_network() # Discovering network
+        while xbee.xbee_network.is_discovery_running():
+            self.signal.emit(['running'])
+            time.sleep(1.265)
+
+
         if sector != 'all':
             # Getting all equipment connected to the chosen sector
-            if sector == 'Bioengenharia':
-                xbee_ni = 'R1'
-            elif sector == 'Pronto socorro'
-                xbee_ni = 'R2'
-
-            xbee.discover_network()
-            while xbee.xbee_network.is_discovery_running():
-                self.signal.emit(['running'])
-                time.sleep(1.265)
-
-            devices = xbee.get_sector_equipments(xbee_ni)
+            devices = xbee.get_sector_equipments(sector)
         else:
-            xbee.discover_network()
-            while xbee.xbee_network.is_discovery_running():
-                self.signal.emit(['running'])
-                time.sleep(1.265)
-
             devices = xbee.get_all_equipments()
 
         if devices is None: # If the device wasn't found
             devices = []
 
         self.signal.emit(devices)
+
 
 def main():
     app = QApplication(sys.argv)
