@@ -310,7 +310,8 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         # Creating a thread
         self.search_equipment_thread = DiscoveryThread(option)
         # Connect the signal from the thread to the finished method
-        self.search_equipment_thread.signal.connect(self.list_all_discovered_equipments)
+        self.search_equipment_thread.signal.connect(self.list_discovered_equipments)
+        self.search_equipment_thread.signal_number_of_connected_devices.connect(self.list_discovered_equipments)
 
         self.btn_search_devices.setEnabled(False)
         self.btn_search_sector.setEnabled(False)
@@ -321,46 +322,40 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.search_equipment_thread.start()
 
 
-    def list_all_discovered_equipments(self, devices):
+    def list_discovered_equipments(self, signal_status="", number_of_connected_devices=0, discovered_device=""):
         """
             Lists all register equipement inside a sector
         """
-        if not devices:
-            self.list_devices.addItem("Nenhum dispositivo encontrado neste setor")
-            self.btn_search_devices.setEnabled(True)
-            self.btn_search_sector.setEnabled(True)
-        elif devices[0] == 'running':
-            self.search_progress_bar.setValue(self.search_progress_bar.value()+1)
-        elif devices[0] == 'number_of_devices':
-            self.search_progress_bar.setValue(0)
-            self.search_progress_bar.setMaximum(devices[1]+1)
-            self.statusBar.showMessage('Buscando equipamentos...')
-        elif devices[0] == 'found':
-            print("Searching for xbee description in database...")
-            device_description = self.db.select_equipment_by_xbee(devices[1])
-            self.list_devices.addItem(device_description[0])
-            self.search_progress_bar.setValue(self.search_progress_bar.value())
-            self.btn_search_devices.setEnabled(True)
-            self.btn_search_sector.setEnabled(True)
-        elif devices[0] == 'finnished':
+        if signal_status == 'finnished':
             if self.search_progress_bar.value() < self.search_progress_bar.maximum():
+                # Completing progress bar case it's not been completed
                 self.search_progress_bar.setValue(self.search_progress_bar.maximum())
+
             self.statusBar.show()
             self.statusBar.showMessage('Busca finalizada.')
+            self.btn_search_devices.setEnabled(True)
+            self.btn_search_sector.setEnabled(True)
+        else:
+            if number_of_connected_devices > 0:
+                # If there are devices in the network
+                self.search_progress_bar.setValue(0)
+                self.search_progress_bar.setMaximum(number_of_connected_devices + 1)
+                self.statusBar.showMessage('Buscando equipamentos...')
 
-         # else:
-        #     for d in devices:
-        #         print("Searching for xbee description in database...")
-        #         self.search_progress_bar.setValue(self.search_progress_bar.value()+1)
-        #         device_description = self.db.select_equipment_by_xbee(d)
-        #         self.list_devices.addItem(device_description[0])
-        #         # self.search_progress_bar.setValue(self.search_progress_bar.value())
-        #         self.btn_search_devices.setEnabled(True)
-        #         self.btn_search_sector.setEnabled(True)
-        #         self.statusBar.showMessage('Busca finalizada.')
+            if signal_status == 'no device found':
+                # show message 'not found'
+                self.list_devices.addItem("Nenhum dispositivo encontrado neste setor")
+            elif signal_status == 'discovering network':
+                # update progress bar
+                self.search_progress_bar.setValue(self.search_progress_bar.value()+1)
 
-        # self.statusBar.showMessage('Busca finalizada.')
-
+            # if a device was discovered
+            if discovered_device != "":
+                # If a device was discorever
+                print("Searching for xbee description in database...")
+                device_description = self.db.select_equipment_by_xbee(discovered_device)
+                self.list_devices.addItem(device_description[0])
+                self.search_progress_bar.setValue(self.search_progress_bar.value())
 
 
     def list_all_equipments(self, devices):
@@ -378,7 +373,9 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
 
 
 class DiscoveryThread(QThread):
-    signal = pyqtSignal(list)
+    signal_status = pyqtSignal(list)
+    signal_number_of_connected_devices = pyqtSignal(int)
+    signal_discovered_device = pyqtSignal(str)
 
 
     def __init__(self, device_name=""):
@@ -392,7 +389,7 @@ class DiscoveryThread(QThread):
         print("Buscando dispositivos (thread iniciada)")
         if self.device_name == 'Bioengenharia':
             self.find_equipment('R1')
-        elif self.device_name == 'Pronto Socorro':
+        elif self.device_name == 'Enfermaria':
             self.find_equipment('R2')
         elif self.device_name == 'all':
             self.find_equipment('all')
@@ -400,43 +397,49 @@ class DiscoveryThread(QThread):
         # self.emit(SIGNAL('add_discovered_device(QList)'), devices)
         # self.sleep(0.5)
 
-        self.signal.emit(['finnished'])
+        self.signal_status.emit('finnished')
+
 
     def find_equipment(self, sector):
+        """
+            1) Descobrir a rede
+            2) Recuperar todos os dispositivos
+            3) Para cada dispositivo, comparar se MP == MY
+            4) Caso (3) eh verdade, retorna em string o endereço de 64 bits do
+                XBee
+            5) Consultar no banco de dados qual equipamento o XBee está associado
+            6) Retornar a descrição do
+        """
+        status_found_devices = False
         xbee.discover_network() # Discovering network
         while xbee.xbee_network.is_discovery_running():
-            self.signal.emit(['running'])
+            self.signal_status.emit('discovering')
             time.sleep(1.265)
 
         number_of_devices = xbee.get_all_devices()
         # xbee.xbee_network.clear()
         print("There are " + str(number_of_devices) + " connected")
-        self.signal.emit(['number_of_devices', number_of_devices])
+        self.signal_number_of_connected_devices.emit(number_of_devices)
 
         xbee.find_router(sector)
 
         if sector != 'all':
             # Getting all equipment connected to the chosen sector
             # devices = xbee.get_sector_equipments(sector)
-            devices = []
             for d in xbee.all_devices:
                 print(d)
-                self.signal.emit(['running'])
-                dispositivo_lido = xbee.read_device(d)
-                devices = []
-                if dispositivo_lido:
-                    devices.insert(0, 'found')
-                    devices.insert(1, dispositivo_lido)
-                    print(devices)
-                    self.signal.emit(devices)
+                self.signal_status.emit('discovering')
+                xbee_64_bit_address = xbee.read_device(d)
+                if xbee_64_bit_address:
+                    # If a device inside a sector was found, signal it
+                    status_found_devices = True
+                    print(xbee_64_bit_address)
+                    self.signal_discovered_device.emit(xbee_64_bit_address)
 
-        else:
-            devices = xbee.get_all_equipments()
-            self.signal.emit(devices)
 
-        # if devices is None: # If the device wasn't found
-        #     devices = []
-        self.signal.emit(devices)
+        if not status_found_devices:
+            # If no device inside a sector was found
+            self.signal_discovered_device.emit("")
 
 
 def main():

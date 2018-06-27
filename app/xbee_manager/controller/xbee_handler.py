@@ -28,7 +28,7 @@ class XBeeHandler():
             self.coordinator = None
         else:
             print("Device connected")
-            self.coordinator = XBeeDevice(self.open_ports[1], 9600)
+            self.coordinator = XBeeDevice(self.open_ports[0], 9600)
 
 
     def open_coordinator_com(self):
@@ -60,7 +60,7 @@ class XBeeHandler():
     def get_all_devices(self):
         self.all_devices = self.xbee_network.get_devices() # Get network's devices
         # self.xbee_network.clear() # Clearing the network before new discovery
-        print("Devices: " + str(len(self.all_devices)))
+        # print("Devices: " + str(len(self.all_devices)))
         return len(self.all_devices)
 
     def find_router(self, sector):
@@ -85,8 +85,8 @@ class XBeeHandler():
         # If the device was found in the network
         print(f"Device {sector.title()} found. Retrieving device information...")
         self.router.read_device_info()
-        print(f"{sector.title()}-NI: {self.router.get_node_id()}")
-        print("Searching for EDs...")
+        # print(f"{sector.title()}-NI: {self.router.get_node_id()}")
+        # print("Searching for EDs...")
 
 
     def get_sector_equipments(self, sector):
@@ -162,7 +162,7 @@ class XBeeHandler():
         mp = str(d.get_parameter("MP"))
         my = str(self.router.get_parameter("MY"))
         ed_64_bit_addr = d.get_64bit_addr()
-        print("MP encontado: " + mp +" | " + my)
+        # print("MP encontado: " + mp +" | " + my)
 
         # If device is connected to router and 'd' is not the router itself
         if mp == my and self.router_64_bit_addr != ed_64_bit_addr:
