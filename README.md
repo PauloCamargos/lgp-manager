@@ -5,11 +5,17 @@ localization of a given asset inside an ambient.
 
 ## App overview
 
-Search home screen
-![app image](app/img/search_screen.png "LOGAH's search equipment screen")
+Main screen
+![app image](app/img/main_window.png "LOGAH's search equipment screen")
+
+List all equipment screen
+![app image](app/img/list_window.png "List equipment screen")
 
 Add equipment screen
-![app image](app/img/add_equipment_screen.png "Add equipment screen")
+![app image](app/img/associate_equipment_window.png "Add equipment screen")
+
+Edit equipment screen
+![app image](app/img/edit_equipment.png "Add equipment screen")
 
 ## XBee documentation
 ### RF Kits Common
