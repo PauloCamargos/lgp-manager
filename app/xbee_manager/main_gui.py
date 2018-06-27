@@ -318,7 +318,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.btn_search_devices.setEnabled(False)
         self.btn_search_sector.setEnabled(False)
         self.statusBar.show()
-        self.statusBar.showMessage('Iniciando busca...')
+        self.statusBar.showMessage('Aguarde, buscando equipamentos...')
         self.search_progress_bar.setValue(0)
         self.search_progress_bar.setMaximum(5)
         self.search_equipment_thread.start()
@@ -326,10 +326,10 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
 
     def configure_progress_bar(self, maximum):
         self.search_progress_bar.setValue(0)
-        self.search_progress_bar.setMaximum(maximum + 1)
+        self.search_progress_bar.setMaximum(maximum+1)
 
     def update_progress_bar(self, signal_status):
-        if signal_status == 'discovering network':
+        if signal_status == 'loading':
             # update progress bar
             self.search_progress_bar.setValue(self.search_progress_bar.value()+1)
 
@@ -343,9 +343,6 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             self.statusBar.showMessage('Busca finalizada.')
             self.btn_search_devices.setEnabled(True)
             self.btn_search_sector.setEnabled(True)
-        elif signal_status == 'discovering network':
-            # update progress bar
-            self.search_progress_bar.setValue(self.search_progress_bar.value()+1)
 
     def list_discovered_equipments(self, discovered_device=""):
         """
@@ -357,7 +354,6 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             print("Searching for xbee description in database...")
             device_description = self.db.select_equipment_by_xbee(discovered_device)
             self.list_devices.addItem(device_description[0])
-            self.search_progress_bar.setValue(self.search_progress_bar.value())
         else:
             # show message 'not found'
             self.list_devices.addItem("Nenhum dispositivo encontrado neste setor")
@@ -418,7 +414,7 @@ class DiscoveryThread(QThread):
         status_found_devices = False
         xbee.discover_network() # Discovering network
         while xbee.xbee_network.is_discovery_running():
-            self.signal_update_progress_bar.emit('discovering')
+            self.signal_update_progress_bar.emit('loading')
             time.sleep(1.265)
 
         number_of_devices = xbee.get_all_devices()
@@ -433,7 +429,7 @@ class DiscoveryThread(QThread):
             # devices = xbee.get_sector_equipments(sector)
             for d in xbee.all_devices:
                 print(d)
-                self.signal_update_progress_bar.emit('discovering')
+                self.signal_update_progress_bar.emit('loading')
                 xbee_64_bit_address = xbee.read_device(d)
                 if xbee_64_bit_address:
                     # If a device inside a sector was found, signal it
