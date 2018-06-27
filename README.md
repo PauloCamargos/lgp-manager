@@ -2,7 +2,14 @@
 The LOGAH (Localizador e Gerenciador de Ativos Hospitalares) aims into keeping a record of all
 registered equipment in a hospital. It uses the XBee technology (ZigBee protocol) to provide information about
 localization of a given asset inside an ambient.
+## Usage
+First, configure all the devices using the XCTU software (link available at the section "Installs" bellow). Power then accordingly to your needs. 
+To use this software, install the libraries described at the section "Installs" bellow, download or clone the repository. Change your directory to LOGAH/app/xbee manager. Connect the coordinator (local device) to your computer and execute the program. 
+To execute the program, using Python 3, execute the main_gui.py program:
 
+`puthon3 main_gui.py`
+
+If your local XBee is not connected to the computer, a message indicating that the device is not connected will be shown on your console/terminal. 
 ## App overview
 
 Main screen
