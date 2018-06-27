@@ -28,15 +28,15 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         password='admin', port=5432, host='localhost')
         self.db.connection()
 
+        # Connecting buttons to functions
+        self.btn_search_devices.clicked.connect(self.search_sectors_equipment)
+        self.btn_search_sector.clicked.connect(self.search_sector_by_equipment)
+
         # Connecting functions to menu items
         self.menu_version.triggered.connect(self.open_version)
         self.menu_add_equipment.triggered.connect(self.open_associate_equipment)
         self.menu_list_equipment.triggered.connect(self.open_list_equipment)
         self.menu_edit_equipment.triggered.connect(self.open_edit_equipment)
-
-        # Connecting buttons to functions
-        self.btn_search_devices.clicked.connect(self.search_sectors_equipment)
-
 
         # Setting up children windows
         # About window
@@ -264,7 +264,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
 
     def search_all_equipments(self):
 
-        self.list_equipment.search_equipment_thread = DiscoveryThread('all')
+        self.list_equipment.search_equipment_thread = DiscoverEquipmentsBySector('all')
         # Connect the signal from the thread to the finished method
         self.list_equipment.search_equipment_thread.signal_status.connect(self.list_all_equipments)
 
@@ -308,7 +308,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         option = self.cbx_sectors.currentText()
 
         # Creating a thread
-        self.search_equipment_thread = DiscoveryThread(option)
+        self.search_equipment_thread = DiscoverEquipmentsBySector(option)
         # Connect the signal from the thread to the finished method
         self.search_equipment_thread.signal_status.connect(self.thread_manager)
         self.search_equipment_thread.signal_number_of_connected_devices.connect(self.configure_progress_bar)
@@ -372,8 +372,102 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
                 # self.search_progress_bar.setValue(self.search_progress_bar.value())
                 self.list_equipment.bnt_list_equipment.setEnabled(True)
 
+    def search_sector_by_equipment(self):
+        self.list_sector.clear()
+        option = self.cbx_equipments.currentText()
 
-class DiscoveryThread(QThread):
+        equipment_ni = self.db.select_equipment_ni(option)
+
+        # Creating a thread
+        self.search_equipment_thread = DiscoverEquipmentsBySector(equipment_ni)
+        # Connect the signal from the thread to the finished method
+        self.search_equipment_thread.signal_status.connect(self.thread_manager)
+        self.search_equipment_thread.signal_number_of_connected_devices.connect(self.configure_progress_bar)
+        self.search_equipment_thread.signal_update_progress_bar.connect(self.update_progress_bar)
+        self.search_equipment_thread.signal_discovered_device.connect(self.list_discovered_sector)
+
+        self.btn_search_devices.setEnabled(False)
+        self.btn_search_sector.setEnabled(False)
+        self.statusBar.show()
+        self.statusBar.showMessage('Aguarde, buscando...')
+        self.search_progress_bar.setValue(0)
+        self.search_progress_bar.setMaximum(5)
+        self.search_equipment_thread.start()
+
+    def list_discovered_sector(self, sector_xbee_64_bit_address):
+        self.list_equipment.list_found_equipment.clear()
+        if discovered_device != "":
+            # If a device was discorever
+            sector_description = self.db.select_sector_description(sector_xbee_64_bit_address)
+            self.list_sector.addItem(sector_description[0])
+        else:
+            # show message 'not found'
+            self.list_sector.addItem("Dispositivo não encontrado")
+
+
+
+class SearchSectorByEquipment(QThread):
+    signal_status = pyqtSignal(str)
+    signal_number_of_connected_devices = pyqtSignal(int)
+    signal_discovered_device = pyqtSignal(str)
+    signal_update_progress_bar = pyqtSignal(str)
+
+    def __init__(self, equipment_ni=""):
+        QThread.__init__(self)
+        self.equipment_ni = equipment_ni
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+        self.find_equipment(self.equipment_ni)
+
+        # self.emit(SIGNAL('add_discovered_device(QList)'), devices)
+        # self.sleep(0.5)
+
+        self.signal_status.emit('finnished')
+
+
+    def find_equipment(self, equipment_ni):
+        """
+            1) Descobrir a rede
+            1) Recuperar todos os dispositivos
+            1) Recuperar o dispositivo desejado na lista total
+            1) Para cada dispositivo, comparar se MP == MY
+            1) Caso (3) eh verdade, retorna em string o endereço de 64 bits do
+                XBee que está conectado
+            1) Consultar no banco de dados qual setor o XBee está associado
+            1) Retornar a descrição do setor
+        """
+        status_found_devices = False
+        xbee.discover_network() # Discovering network
+        while xbee.xbee_network.is_discovery_running():
+            self.signal_update_progress_bar.emit('loading')
+            time.sleep(1.265)
+
+        number_of_devices = xbee.get_all_devices()
+        # xbee.xbee_network.clear()
+        print("There are " + str(number_of_devices) + " connected")
+        self.signal_number_of_connected_devices.emit(number_of_devices)
+
+        xbee.find_equipment(sector)
+
+        for d in xbee.all_devices:
+            print(d)
+            self.signal_update_progress_bar.emit('loading')
+            xbee_64_bit_address = xbee.find_sector_by_equipment(d)
+            if xbee_64_bit_address:
+                # If a device inside a sector was found, signal it
+                status_found_devices = True
+                print(xbee_64_bit_address)
+                self.signal_discovered_device.emit(xbee_64_bit_address)
+
+        if not status_found_devices:
+            # If no device inside a sector was found
+            self.signal_discovered_device.emit("")
+
+
+class DiscoverEquipmentsBySector(QThread):
     signal_status = pyqtSignal(str)
     signal_number_of_connected_devices = pyqtSignal(int)
     signal_discovered_device = pyqtSignal(str)

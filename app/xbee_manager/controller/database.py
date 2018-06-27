@@ -367,12 +367,50 @@ class Banco:
         """
 
 
-        self.query = "SELECT e.description FROM assets.equipments e \
+        self.query = "SELECT e.description, x.address_64_bit FROM assets.equipments e \
                         INNER JOIN assets.xbees x ON e.xbee = x.id \
                         WHERE x.address_64_bit = %s"
 
         print(self.query)
         value = tuple([xbee_64_bit_address])
+        print(value)
+        print(type(value))
+
+        self.cur.execute(self.query, value)
+        row = self.cur.fetchone()
+        return row
+
+    def select_equipment_ni(self, equipment_description):
+        """
+            Returns the equipment xbee's NI given it's equipment name description
+        """
+
+
+        self.query = "SELECT x.ni, x.address_64_bit FROM assets.xbees x \
+                        INNER JOIN assets.equipments e ON e.xbee = x.id \
+                        WHERE e.description= %s"
+
+        print(self.query)
+        value = tuple([equipment_description])
+        print(value)
+        print(type(value))
+
+        self.cur.execute(self.query, value)
+        row = self.cur.fetchone()
+        return row
+
+    def select_sector_description(self, router_xbee_64_bit_address):
+        """
+            Returns the sector description
+        """
+
+
+        self.query = "SELECT s.description FROM assets.sectors s \
+                        INNER JOIN assets.xbees x ON x.sector = s.id \
+                        WHERE x.address_64_bit = %s "
+
+        print(self.query)
+        value = tuple([router_xbee_64_bit_address])
         print(value)
         print(type(value))
 

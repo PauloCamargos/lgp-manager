@@ -255,6 +255,49 @@ class XBeeHandler():
         else:
             return connected_ed
 
+    def find_equipment(self, equipment):
+        if equipment.title() == "E1":
+            x64addr = XBee64BitAddress.from_hex_string(self.devices_64bit_addr['E1'])
+        elif equipment.title() == "E2":
+            x64addr = XBee64BitAddress.from_hex_string(self.devices_64bit_addr['E2'])
+        elif equipment.title() == "E3":
+            x64addr = XBee64BitAddress.from_hex_string(self.devices_64bit_addr['E3'])
+        elif equipment.title() == "E4":
+            x64addr = XBee64BitAddress.from_hex_string(self.devices_64bit_addr['E4'])
+        else:
+            print("Invalid sector. Try again.")
+            return None
+
+        print(f"Retrieving router '{equipment.title()}' in the network...")
+        self.discovered_device = self.xbee_network.get_device_by_64(x64addr)
+        if self.discovered_device is None:
+            # If the device was not found
+            print(f"Device {equipment} not found. Try again.")
+            self.xbee_network.clear()
+            return None
+
+        return self.discovered_device
+
+    def find_sector_by_equipment(self, d):
+        end_device = None
+
+        d.read_device_info()
+        mp = str(d.get_parameter("MP"))
+        # if ==
+        my = str(discovered_device.get_parameter("MY"))
+        print("MP encontado: " + mp +" | " + my)
+        # print(f"-Router{d.get_node_id()} FOUND.")
+        if mp == my:
+            print(f"-{d.get_node_id()} connected.")
+            end_device = d.get_node_id()
+
+        if not end_device:
+            # if the list connected_ed is empty
+            print(f"No other device connected to device {equipment.title()}")
+            return None
+        else:
+            return connected_ed
+
     def get_all_equipments(self):
         all_devices = self.xbee_network.get_devices() # Get network's devices
         self.xbee_network.clear() # Clearing the network before new discovery

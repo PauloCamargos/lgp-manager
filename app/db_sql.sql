@@ -31,8 +31,6 @@ CREATE TABLE assets.equipments(
 	CONSTRAINT fk_xbee FOREIGN KEY (xbee) REFERENCES assets.xbees(id)
 );
 
-
-
 SELECT * FROM assets.equipments;
 SELECT * FROM assets.sectors;
 SELECT * FROM assets.xbees;
@@ -78,3 +76,7 @@ UPDATE assets.xbees SET ni = 'E2' WHERE id=19;
 UPDATE assets.xbees SET ni = 'E3' WHERE id=20;
 UPDATE assets.xbees SET ni = 'E4' WHERE id=21;
 UPDATE assets.xbees SET ni = 'TESTE' WHERE id=22;
+
+ALTER TABLE assets.xbees ADD COLUMN sector VARCHAR(64)
+UPDATE assets.xbees SET sector = 1 WHERE ni = 'R2'
+UPDATE assets.xbees SET sector = 4 WHERE ni = 'R1'
