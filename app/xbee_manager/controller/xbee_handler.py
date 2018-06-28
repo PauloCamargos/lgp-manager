@@ -5,6 +5,17 @@ import sys
 import glob
 import serial
 
+# PAN ID: C001BEE
+# SC: FFF
+
+# Corrdinator C:    0013A200404A4BB3
+# Router R1:        0013A200404A4BC6
+# Router R2:        0013A200404AB737
+# End Device 1:     0013A200407C48FE
+# End Device 2:     0013A200407C48FF
+# End Device 3:     0013A200407C4533
+# End Device 4:     0013A200407C4927
+
 class XBeeHandler():
     """
     Class to handle XBee's methods. It integrates easily with the LOGAH Manager
@@ -156,6 +167,8 @@ class XBeeHandler():
             return connected_ed
 
     def read_device(self, d):
+        if self.router is None:
+            return None
 
         d.read_device_info()
         mp = str(d.get_parameter("MP"))

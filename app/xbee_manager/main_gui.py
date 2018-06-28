@@ -6,7 +6,8 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
-from views import main_window, about, associate_equipment, list_equipment, edit_equipment
+from views import main_window, about, associate_equipment, list_equipment, \
+                    edit_equipment
 from controller import xbee_handler
 from controller import database
 import sys
@@ -47,14 +48,20 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.associate_equipment_window = QtWidgets.QMainWindow()
         self.associate_equipment = associate_equipment.Ui_AssociateEquipment()
         self.associate_equipment.setupUi(self.associate_equipment_window)
-        self.associate_equipment.btn_associate_equipment.clicked.connect(self.associate_equipment_db)
-        self.associate_equipment.cbx_xbees.currentIndexChanged.connect(self.fill_xbee_info)
+        self.associate_equipment.btn_associate_equipment.clicked.connect(
+        self.associate_equipment_db
+        )
+        self.associate_equipment.cbx_xbees.currentIndexChanged.connect(
+        self.fill_xbee_info
+        )
 
         # List equipment window
         self.list_equipment_window = QtWidgets.QWidget()
         self.list_equipment = list_equipment.Ui_ListEquipment()
         self.list_equipment.setupUi(self.list_equipment_window)
-        self.list_equipment.bnt_list_equipment.clicked.connect(self.search_all_equipments)
+        self.list_equipment.bnt_list_equipment.clicked.connect(
+        self.search_all_equipments
+        )
         self.list_equipment.list_progress_bar.setValue(0)
         self.list_equipment.list_progress_bar.setMaximum(5)
 
@@ -62,9 +69,15 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.edit_equipment_window = QtWidgets.QMainWindow()
         self.edit_equipment = edit_equipment.Ui_EditEquipment()
         self.edit_equipment.setupUi(self.edit_equipment_window)
-        self.edit_equipment.btn_search_equipment.clicked.connect(self.search_equipment_db)
-        self.edit_equipment.btn_remove_equipment.clicked.connect(self.remove_equipment_db)
-        self.edit_equipment.btn_update_data.clicked.connect(self.update_equipment_db)
+        self.edit_equipment.btn_search_equipment.clicked.connect(
+        self.search_equipment_db
+        )
+        self.edit_equipment.btn_remove_equipment.clicked.connect(
+        self.remove_equipment_db
+        )
+        self.edit_equipment.btn_update_data.clicked.connect(
+        self.update_equipment_db
+        )
 
         # Getting sectors from database
         self.sector = self.db.selectAllDataFrom(table='sectors')
@@ -149,12 +162,12 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         # Status bar message
         if status == 'added':
             self.associate_equipment.statusbar.show()
-            self.associate_equipment.statusbar.showMessage('STATUS: Equipamento\
-             associado com sucesso!')
+            self.associate_equipment.statusbar.showMessage('STATUS: Equipamento' \
+             'associado com sucesso!')
         elif status == 'not added':
             self.associate_equipment.statusbar.show()
-            self.associate_equipment.statusbar.showMessage('STATUS: Erro. \
-            Preencha as informações corretamente!')
+            self.associate_equipment.statusbar.showMessage('STATUS: Erro. ' \
+            'Preencha as informações corretamente!')
 
 
     def open_list_equipment(self):
@@ -177,16 +190,16 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.edit_equipment_window.show()
         if status == 'removed':
             self.edit_equipment.statusbar.show()
-            self.edit_equipment.statusbar.showMessage('STATUS: Equipamento \
-            removido com sucesso!')
+            self.edit_equipment.statusbar.showMessage('STATUS: Equipamento ' \
+            'removido com sucesso!')
         elif status == 'updated':
             self.edit_equipment.statusbar.show()
-            self.edit_equipment.statusbar.showMessage('STATUS: Equipamento\
-             atualizado com sucesso!')
+            self.edit_equipment.statusbar.showMessage('STATUS: Equipamento ' \
+             'atualizado com sucesso!')
         elif status == 'not updated':
             self.edit_equipment.statusbar.show()
-            self.edit_equipment.statusbar.showMessage('STATUS: Erro. Preencha\
-             as informações corretamente!')
+            self.edit_equipment.statusbar.showMessage('STATUS: Erro. Preencha '\
+             'as informações corretamente!')
 
 
     def associate_equipment_db(self):
@@ -243,7 +256,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         ps = self.edit_equipment.ledit_primary_place.text()
 
         if ds != "" and fn != "" and  ps != "":
-            self.db.updateDataFrom(table='equipments', condition='serial_number',
+            self.db.updateDataFrom(table='equipments',condition='serial_number',
             condition_value=equipment[0], description=ds, equipment_function=fn,
             primaryy_sector=ps)
             self.open_edit_equipment(status='updated')
@@ -267,10 +280,18 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
 
         self.list_equipment.search_equipment_thread = DiscoverEquipmentsBySector("All")
         # Connect the signal from the thread to the finished method
-        self.list_equipment.search_equipment_thread.signal_status.connect(self.list_window_thread_manager)
-        self.list_equipment.search_equipment_thread.signal_number_of_connected_devices.connect(self.configure_list_progress_bar)
-        self.list_equipment.search_equipment_thread.signal_discovered_device.connect(self.list_all_equipments)
-        self.list_equipment.search_equipment_thread.signal_update_progress_bar.connect(self.update_list_progress_bar)
+        self.list_equipment.search_equipment_thread.signal_status.connect(
+        self.list_window_thread_manager
+        )
+        self.list_equipment.search_equipment_thread.signal_number_of_connected_devices.connect(
+        self.configure_list_progress_bar
+        )
+        self.list_equipment.search_equipment_thread.signal_discovered_device.connect(
+        self.list_all_equipments
+        )
+        self.list_equipment.search_equipment_thread.signal_update_progress_bar.connect(
+        self.update_list_progress_bar
+        )
 
         self.list_equipment.bnt_list_equipment.setEnabled(False)
         # self.statusBar.show()
@@ -291,7 +312,8 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         i=1
         for a in all_equipments:
             # print(a) # DEBUG
-            self.list_equipment.list_registered_equipment.addItem(f"{i}) {a[1]} ({a[4]})")
+            self.list_equipment.list_registered_equipment.addItem(f"{i}) " \
+            f"{a[1]} ({a[4]})")
             i+=1
         return all_equipments
 
@@ -300,7 +322,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         Searches one equipment in the DB and update GUI fileds
         """
         option = self.edit_equipment.cbx_equipments.currentText()
-        equipment = self.db.selectDataWhere('equipments', 'description',option, \
+        equipment = self.db.selectDataWhere('equipments', 'description',option,
         'serial_number', 'equipment_function', 'primary_sector')
         self.edit_equipment.ledit_description.setText(option)
         self.edit_equipment.ledit_nserie.setText(equipment[0])
@@ -318,10 +340,18 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         # Creating a thread
         self.search_equipment_thread = DiscoverEquipmentsBySector(option)
         # Connect the signal from the thread to the finished method
-        self.search_equipment_thread.signal_status.connect(self.main_window_thread_manager)
-        self.search_equipment_thread.signal_number_of_connected_devices.connect(self.configure_progress_bar)
-        self.search_equipment_thread.signal_discovered_device.connect(self.list_discovered_equipments)
-        self.search_equipment_thread.signal_update_progress_bar.connect(self.update_progress_bar)
+        self.search_equipment_thread.signal_status.connect(
+        self.main_window_thread_manager
+        )
+        self.search_equipment_thread.signal_number_of_connected_devices.connect(
+        self.configure_progress_bar
+        )
+        self.search_equipment_thread.signal_discovered_device.connect(
+        self.list_discovered_equipments
+        )
+        self.search_equipment_thread.signal_update_progress_bar.connect(
+        self.update_progress_bar
+        )
 
         self.btn_search_devices.setEnabled(False)
         self.btn_search_sector.setEnabled(False)
@@ -343,18 +373,25 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
     def update_progress_bar(self, signal_status):
         if signal_status == 'loading':
             # update progress bar
-            self.search_progress_bar.setValue(self.search_progress_bar.value()+1)
+            self.search_progress_bar.setValue(
+            self.search_progress_bar.value()+1
+            )
 
     def update_list_progress_bar(self, signal_status):
         if signal_status == 'loading':
             # update progress bar
-            self.list_equipment.list_progress_bar.setValue(self.list_equipment.list_progress_bar.value()+1)
+            self.list_equipment.list_progress_bar.setValue(
+            self.list_equipment.list_progress_bar.value()+1
+            )
 
     def main_window_thread_manager(self, signal_status):
         if signal_status == 'finnished':
-            if self.search_progress_bar.value() < self.search_progress_bar.maximum():
+            if self.search_progress_bar.value() < \
+            self.search_progress_bar.maximum():
                 # Completing progress bar case it's not been completed
-                self.search_progress_bar.setValue(self.search_progress_bar.maximum())
+                self.search_progress_bar.setValue(
+                self.search_progress_bar.maximum()
+                )
 
             self.statusBar.show()
             self.statusBar.showMessage('Busca finalizada.')
@@ -363,9 +400,12 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
 
     def list_window_thread_manager(self, signal_status):
         if signal_status == 'finnished':
-            if self.list_equipment.list_progress_bar.value() < self.list_equipment.list_progress_bar.maximum():
+            if self.list_equipment.list_progress_bar.value() < \
+            self.list_equipment.list_progress_bar.maximum():
                 # Completing progress bar case it's not been completed
-                self.list_equipment.list_progress_bar.setValue(self.list_equipment.list_progress_bar.maximum())
+                self.list_equipment.list_progress_bar.setValue(
+                self.list_equipment.list_progress_bar.maximum()
+                )
 
         self.list_equipment.bnt_list_equipment.setEnabled(True)
 
@@ -381,7 +421,8 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             self.list_devices.addItem(device_description[0])
         else:
             # show message 'not found'
-            self.list_devices.addItem("Nenhum dispositivo encontrado neste setor")
+            self.list_devices.addItem("Nenhum dispositivo encontrado neste " \
+            "setor")
 
 
     def list_all_equipments(self, discovered_device):
@@ -392,7 +433,8 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             self.list_equipment.list_found_equipment.addItem(device_description[0])
         else:
             # show message 'not found'
-            self.list_equipment.list_found_equipment.addItem("Nenhum dispositivo encontrado neste setor")
+            self.list_equipment.list_found_equipment.addItem("Nenhum " \
+            "dispositivo encontrado.")
 
     def search_sector_by_equipment(self):
         self.list_sector.clear()
@@ -403,10 +445,18 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         # Creating a thread
         self.search_equipment_thread = SearchSectorByEquipment(equipment_ni[0])
         # Connect the signal from the thread to the finished method
-        self.search_equipment_thread.signal_status.connect(self.main_window_thread_manager)
-        self.search_equipment_thread.signal_number_of_connected_devices.connect(self.configure_progress_bar)
-        self.search_equipment_thread.signal_update_progress_bar.connect(self.update_progress_bar)
-        self.search_equipment_thread.signal_discovered_device.connect(self.list_discovered_sector)
+        self.search_equipment_thread.signal_status.connect(
+        self.main_window_thread_manager
+        )
+        self.search_equipment_thread.signal_number_of_connected_devices.connect(
+        self.configure_progress_bar
+        )
+        self.search_equipment_thread.signal_update_progress_bar.connect(
+        self.update_progress_bar
+        )
+        self.search_equipment_thread.signal_discovered_device.connect(
+        self.list_discovered_sector
+        )
 
         self.btn_search_devices.setEnabled(False)
         self.btn_search_sector.setEnabled(False)
@@ -420,11 +470,13 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.list_equipment.list_found_equipment.clear()
         if sector_xbee_64_bit_address != "":
             # If a device was discorever
-            sector_description = self.db.select_sector_description(sector_xbee_64_bit_address)
+            sector_description = self.db.select_sector_description(
+            sector_xbee_64_bit_address
+            )
             self.list_sector.addItem(sector_description[0])
         else:
             # show message 'not found'
-            self.list_sector.addItem("Dispositivo não encontrado")
+            self.list_sector.addItem("Equipamento não encontrado")
 
 
 
@@ -524,7 +576,8 @@ class DiscoverEquipmentsBySector(QThread):
             3) Para cada dispositivo, comparar se MP == MY
             4) Caso (3) eh verdade, retorna em string o endereço de 64 bits do
                 XBee
-            5) Consultar no banco de dados qual equipamento o XBee está associado
+            5) Consultar no banco de dados qual equipamento o XBee está
+                associado
             6) Retornar a descrição do
         """
         status_found_devices = False

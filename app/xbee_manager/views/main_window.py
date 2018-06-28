@@ -150,7 +150,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Logah Manager"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "LOGAH Manager"))
         self.groupBox.setTitle(_translate("MainWindow", "Por setor"))
         self.label_4.setText(_translate("MainWindow", "Setor:"))
         self.label_2.setText(_translate("MainWindow", "Dispositivos encontrados:"))
