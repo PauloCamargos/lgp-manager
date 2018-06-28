@@ -404,7 +404,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             self.msg.setInformativeText("Um equipamento foi inserido ou removido. " \
             "A rede está sendo reconfigurada.")
             self.msg.setWindowTitle("Aguarde")
-            self.msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+            self.msg.setStandardButtons(QMessageBox.Ok)
             self.msg.buttonClicked.connect(self.close_message_box)
             self.msg.show()
             self.statusBar.show()
