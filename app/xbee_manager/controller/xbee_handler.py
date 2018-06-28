@@ -168,6 +168,7 @@ class XBeeHandler():
 
     def read_device(self, d):
         if self.router is None:
+            self.xbee_network.clear()
             return None
 
         d.read_device_info()
@@ -186,8 +187,10 @@ class XBeeHandler():
             print("Returning xbee address: " + addr)
             print(type(addr))
             # connected_ed.append(addr)
+            self.xbee_network.clear()
             return addr
         else:
+            self.xbee_network.clear()
             return None
 
     def get_equipment_location(self, equipment):
@@ -263,8 +266,10 @@ class XBeeHandler():
         if not end_device:
             # if the list connected_ed is empty
             print(f"No other device connected to device {equipment.title()}")
+            self.xbee_network.clear()
             return None
         else:
+            self.xbee_network.clear()
             return connected_ed
 
     def find_equipment(self, equipment):
@@ -285,9 +290,9 @@ class XBeeHandler():
         if self.discovered_device  is None:
             # If the device was not found
             print(f"Device {equipment} not found. Try again.")
-            self.xbee_network.clear()
             return None
 
+        self.xbee_network.clear()
         return self.discovered_device
 
     def find_sector_by_equipment(self, d):
@@ -331,7 +336,8 @@ class XBeeHandler():
             ports = ['COM%s' % (i + 1) for i in range(256)]
         elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
             # this excludes your current terminal "/dev/tty"
-            ports = glob.glob('/dev/tty[A-Za-z]*')
+            ports = glob.glob('/dev/ttyUSB*')
+            # ports = glob.glob('/dev/tty[A-Za-z]*')
         elif sys.platform.startswith('darwin'):
             ports = glob.glob('/dev/tty.*')
         else:
@@ -343,6 +349,7 @@ class XBeeHandler():
                 s = serial.Serial(port)
                 s.close()
                 result.append(port)
+                print(port)
             except (OSError, serial.SerialException):
                 pass
         return result

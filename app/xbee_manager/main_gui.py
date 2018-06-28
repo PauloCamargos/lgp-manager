@@ -3,7 +3,7 @@
 
 # PyQt5 threading example https://kushaldas.in/posts/pyqt5-thread-example.html
 
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
 from views import main_window, about, associate_equipment, list_equipment, \
@@ -162,7 +162,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         # Status bar message
         if status == 'added':
             self.associate_equipment.statusbar.show()
-            self.associate_equipment.statusbar.showMessage('STATUS: Equipamento' \
+            self.associate_equipment.statusbar.showMessage('STATUS: Equipamento ' \
              'associado com sucesso!')
         elif status == 'not added':
             self.associate_equipment.statusbar.show()
@@ -258,7 +258,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         if ds != "" and fn != "" and  ps != "":
             self.db.updateDataFrom(table='equipments',condition='serial_number',
             condition_value=equipment[0], description=ds, equipment_function=fn,
-            primaryy_sector=ps)
+            primary_sector=ps)
             self.open_edit_equipment(status='updated')
         else:
             self.open_edit_equipment(status='not updated')
@@ -395,8 +395,26 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
 
             self.statusBar.show()
             self.statusBar.showMessage('Busca finalizada.')
-            self.btn_search_devices.setEnabled(True)
-            self.btn_search_sector.setEnabled(True)
+        elif signal_status == 'busy':
+            self.msg = QMessageBox()
+            self.msg.setLocale(QtCore.QLocale(QtCore.QLocale.Portuguese, QtCore.QLocale.Brazil))
+            self.msg.setIcon(QMessageBox.Information)
+            self.msg.setText("Aguarde um instante. As informações estão sendo " \
+            "atualizadas.")
+            self.msg.setInformativeText("Um equipamento foi inserido ou removido. " \
+            "A rede está sendo reconfigurada.")
+            self.msg.setWindowTitle("Aguarde")
+            self.msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+            self.msg.buttonClicked.connect(self.close_message_box)
+            self.msg.show()
+            self.statusBar.show()
+            self.statusBar.showMessage('Busca finalizada.')
+
+        self.btn_search_devices.setEnabled(True)
+        self.btn_search_sector.setEnabled(True)
+
+    def close_message_box(self):
+        self.msg.close()
 
     def list_window_thread_manager(self, signal_status):
         if signal_status == 'finnished':
@@ -406,6 +424,20 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
                 self.list_equipment.list_progress_bar.setValue(
                 self.list_equipment.list_progress_bar.maximum()
                 )
+        elif signal_status == 'busy':
+            self.msg = QMessageBox()
+            self.msg.setLocale(QtCore.QLocale(QtCore.QLocale.Portuguese, QtCore.QLocale.Brazil))
+            self.msg.setIcon(QMessageBox.Information)
+            self.msg.setText("Aguarde um instante. As informações estão sendo " \
+            "atualizadas.")
+            self.msg.setInformativeText("Um equipamento foi inserido ou removido. " \
+            "A rede está sendo reconfigurada.")
+            self.msg.setWindowTitle("Aguarde")
+            self.msg.setStandardButtons(QMessageBox.Ok)
+            self.msg.buttonClicked.connect(self.close_message_box)
+            self.msg.show()
+            self.statusBar.show()
+            self.statusBar.showMessage('Busca finalizada.')
 
         self.list_equipment.bnt_list_equipment.setEnabled(True)
 
@@ -524,21 +556,25 @@ class SearchSectorByEquipment(QThread):
         print("There are " + str(number_of_devices) + " connected")
         self.signal_number_of_connected_devices.emit(number_of_devices)
 
-        xbee.find_equipment(equipment_ni)
+        try:
+            xbee.find_equipment(equipment_ni)
 
-        for d in xbee.all_devices:
-            print(d)
-            self.signal_update_progress_bar.emit('loading')
-            xbee_64_bit_address = xbee.find_sector_by_equipment(d)
-            if xbee_64_bit_address:
-                # If a device inside a sector was found, signal it
-                status_found_devices = True
-                print(xbee_64_bit_address)
-                self.signal_discovered_device.emit(xbee_64_bit_address)
+            for d in xbee.all_devices:
+                print(d)
+                self.signal_update_progress_bar.emit('loading')
+                xbee_64_bit_address = xbee.find_sector_by_equipment(d)
+                if xbee_64_bit_address:
+                    # If a device inside a sector was found, signal it
+                    status_found_devices = True
+                    print(xbee_64_bit_address)
+                    self.signal_discovered_device.emit(xbee_64_bit_address)
 
-        if not status_found_devices:
-            # If no device inside a sector was found
-            self.signal_discovered_device.emit("")
+            if not status_found_devices:
+                # If no device inside a sector was found
+                self.signal_discovered_device.emit("")
+
+        except:
+            self.signal_status.emit("busy")
 
 
 class DiscoverEquipmentsBySector(QThread):
@@ -591,37 +627,41 @@ class DiscoverEquipmentsBySector(QThread):
         print("There are " + str(number_of_devices) + " connected")
         self.signal_number_of_connected_devices.emit(number_of_devices)
 
-        xbee.find_router(sector)
+        try:
+            xbee.find_router(sector)
 
-        if sector != 'All':
-            # Getting all equipment connected to the chosen sector
-            # devices = xbee.get_sector_equipments(sector)
-            for d in xbee.all_devices:
-                print(d)
-                self.signal_update_progress_bar.emit('loading')
-                xbee_64_bit_address = xbee.read_device(d)
-                if xbee_64_bit_address:
-                    # If a device inside a sector was found, signal it
-                    status_found_devices = True
-                    print(xbee_64_bit_address)
-                    self.signal_discovered_device.emit(xbee_64_bit_address)
-        else:
-            # returns all equipments
-            for d in xbee.all_devices:
-                print(d)
-                self.signal_update_progress_bar.emit('loading')
-                xbee_64_bit_address = xbee.get_equipment_64_bit_addr(d)
-                if xbee_64_bit_address:
-                    # If a device inside a sector was found, signal it
-                    status_found_devices = True
-                    print(xbee_64_bit_address)
-                    self.signal_discovered_device.emit(xbee_64_bit_address)
+            if sector != 'All':
+                # Getting all equipment connected to the chosen sector
+                # devices = xbee.get_sector_equipments(sector)
+                for d in xbee.all_devices:
+                    print(d)
+                    self.signal_update_progress_bar.emit('loading')
+                    xbee_64_bit_address = xbee.read_device(d)
+                    if xbee_64_bit_address:
+                        # If a device inside a sector was found, signal it
+                        status_found_devices = True
+                        print(xbee_64_bit_address)
+                        self.signal_discovered_device.emit(xbee_64_bit_address)
+            else:
+                # returns all equipments
+                for d in xbee.all_devices:
+                    print(d)
+                    self.signal_update_progress_bar.emit('loading')
+                    xbee_64_bit_address = xbee.get_equipment_64_bit_addr(d)
+                    if xbee_64_bit_address:
+                        # If a device inside a sector was found, signal it
+                        status_found_devices = True
+                        print(xbee_64_bit_address)
+                        self.signal_discovered_device.emit(xbee_64_bit_address)
 
 
-        if not status_found_devices:
-            # If no device inside a sector was found
-            self.signal_discovered_device.emit("")
 
+            if not status_found_devices:
+                # If no device inside a sector was found
+                self.signal_discovered_device.emit("")
+
+        except:
+            self.signal_status.emit("busy")
 
 def main():
     app = QApplication(sys.argv)

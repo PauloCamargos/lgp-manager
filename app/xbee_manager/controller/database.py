@@ -211,6 +211,8 @@ class Banco:
                     + " WHERE " + condition + "=%s"
 
         condition_value = (condition_value ,)
+        print(self.query)
+        print(condition_value)
         self.cur.execute(self.query, condition_value)
         row = self.cur.fetchone()
         return row
