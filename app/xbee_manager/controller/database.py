@@ -356,9 +356,9 @@ class Banco:
         """
 
 
-        self.query = "SELECT e.description, e.serial_number, x.address_64_bit, x.xbee_type FROM assets.equipments e \
-                            RIGHT JOIN assets.xbees x ON e.xbee = x.id \
-                            WHERE e.xbee IS NULL"
+        self.query = 'SELECT e.description, e.serial_number, x.address_64_bit, x.xbee_type FROM assets.equipments e ' \
+                            'RIGHT JOIN assets.xbees x ON e.xbee = x.id ' \
+                            'WHERE e.xbee IS NULL'
         self.cur.execute(self.query)
         rows = self.cur.fetchall()
         return rows
@@ -369,13 +369,13 @@ class Banco:
         """
 
 
-        self.query = "SELECT e.description, x.address_64_bit FROM assets.equipments e \
-                        INNER JOIN assets.xbees x ON e.xbee = x.id \
-                        WHERE x.address_64_bit = %s"
+        self.query = 'SELECT e.description, x.address_64_bit FROM assets.equipments e ' \
+                        'INNER JOIN assets.xbees x ON e.xbee = x.id ' \
+                        'WHERE x.address_64_bit = %s'
 
-        print(self.query)
+        # print(self.query)
         value = tuple([xbee_64_bit_address])
-        print(value)
+        # print(value)
         print(type(value))
 
         self.cur.execute(self.query, value)
@@ -388,9 +388,9 @@ class Banco:
         """
 
 
-        self.query = "SELECT x.ni, x.address_64_bit FROM assets.xbees x \
-                        INNER JOIN assets.equipments e ON e.xbee = x.id \
-                        WHERE e.description= %s"
+        self.query = 'SELECT x.ni, x.address_64_bit FROM assets.xbees x ' \
+                        'INNER JOIN assets.equipments e ON e.xbee = x.id ' \
+                        'WHERE e.description= %s'
 
         print(self.query)
         value = tuple([equipment_description])
@@ -407,9 +407,9 @@ class Banco:
         """
 
 
-        self.query = "SELECT s.description FROM assets.sectors s \
-                        INNER JOIN assets.xbees x ON x.sector = s.id \
-                        WHERE x.address_64_bit = %s "
+        self.query = "SELECT s.description FROM assets.sectors s " \
+                        "INNER JOIN assets.xbees x ON x.sector = s.id " \
+                        "WHERE x.address_64_bit = %s "
 
         print(self.query)
         value = tuple([router_xbee_64_bit_address])

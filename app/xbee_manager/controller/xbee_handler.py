@@ -1,4 +1,5 @@
 from digi.xbee.devices import XBeeDevice, RemoteXBeeDevice, XBee64BitAddress, DiscoveryOptions
+from digi.xbee.exception import TimeoutException
 import time
 import os
 import sys
@@ -41,29 +42,29 @@ class XBeeHandler():
             print("Device connected")
             self.coordinator = XBeeDevice(self.open_ports[0], 9600)
 
-
     def open_coordinator_com(self):
         """
         Opens the communication with the local XBee
         """
         self.coordinator.open()
-
+        # time.sleep(1)
 
     def close_coordinator_com(self):
         """
         Closes the communication with the local XBee
         """
         self.coordinator.close()
+        # time.sleep(1)
 
     def discover_network(self):
-        print(f"Searching for devices in the network...")
+        print(f"[INFO] Searching for devices in the network...")
         # Getting the xbee network
         self.xbee_network = self.coordinator.get_network()
         # discovery options
         # self.xbee_network.set_discovery_options({DiscoveryOptions.APPEND_DD})
 
         # Setting timeout
-        self.xbee_network.set_discovery_timeout(6)
+        self.xbee_network.set_discovery_timeout(5)
         self.xbee_network.start_discovery_process()
         # while self.xbee_network.is_discovery_running():
         #     time.sleep(0.5)
@@ -83,22 +84,21 @@ class XBeeHandler():
             print("Invalid sector. Try again.")
             return None
 
-    # Retrieving router from network by 64bit address
+        # Retrieving router from network by 64bit address
         print(f"Retrieving router '{sector.title()}' in the network...")
         self.router = self.xbee_network.get_device_by_64(x64addr)
         if self.router is None:
             # If the device was not found
-            print(f"Device {sector} not found. Try again.")
+            print(f"[ERROR] Router {sector} not found. Try again.")
             self.xbee_network.clear()
             return None
 
         self.router_64_bit_addr = self.router.get_64bit_addr()
         # If the device was found in the network
-        print(f"Device {sector.title()} found. Retrieving device information...")
-        self.router.read_device_info()
+        print(f"[OK] {sector.title()} found. Retrieving device information...")
+        # self.router.read_device_info()
         # print(f"{sector.title()}-NI: {self.router.get_node_id()}")
         # print("Searching for EDs...")
-
 
     def get_sector_equipments(self, sector):
         """
@@ -122,7 +122,7 @@ class XBeeHandler():
             print("Invalid sector. Try again.")
             return None
 
-    # Retrieving router from network by 64bit address
+            # Retrieving router from network by 64bit address
         print(f"Retrieving router '{sector.title()}' in the network...")
         self.router = self.xbee_network.get_device_by_64(x64addr)
         if self.router is None:
@@ -166,25 +166,26 @@ class XBeeHandler():
         else:
             return connected_ed
 
-    def read_device(self, d):
+    def compare_mp_my(self, d):
         if self.router is None:
             self.xbee_network.clear()
             return None
 
-        d.read_device_info()
-        mp = str(d.get_parameter("MP"))
-        my = str(self.router.get_parameter("MY"))
+        time.sleep(3)
+        # d.read_device_info()
+        mp = d.get_parameter("MP")
+        my = self.router.get_parameter("MY")
         ed_64_bit_addr = d.get_64bit_addr()
-        # print("MP encontado: " + mp +" | " + my)
+        print("MP: " + str(mp.hex()).upper() +" | MY: " + str(my.hex()).upper())
 
         # If device is connected to router and 'd' is not the router itself
-        if mp == my and self.router_64_bit_addr != ed_64_bit_addr:
-            print(f"-{d.get_node_id()} connected.")
+        if str(mp) == str(my) and self.router_64_bit_addr != ed_64_bit_addr:
+            # print(f"-{d.get_parameter("NI")} connected.")
             # connected_ed.append(d.get_node_id())
             # Retrieving the end device 64 bit address
             # hs = d.get_parameter('H')
             addr = str(ed_64_bit_addr.address.hex()).upper()
-            print("Returning xbee address: " + addr)
+            print(f"Returning xbee address: {addr} ({d.get_parameter('NI')})")
             print(type(addr))
             # connected_ed.append(addr)
             self.xbee_network.clear()
@@ -273,6 +274,10 @@ class XBeeHandler():
             return connected_ed
 
     def find_equipment(self, equipment):
+        """
+            Sets the attribute self.discovered_device to a RemoteXBeeDevice
+            given its NI
+        """
         if equipment.title() == "E1":
             x64addr = XBee64BitAddress.from_hex_string(self.devices_64bit_addr['E1'])
         elif equipment.title() == "E2":
@@ -296,6 +301,9 @@ class XBeeHandler():
         return self.discovered_device
 
     def find_sector_by_equipment(self, d):
+        """
+            Searches every sector for a specified equipment.
+        """
         if self.discovered_device is None:
             return None
         d.read_device_info()
@@ -303,22 +311,23 @@ class XBeeHandler():
         # if ==
         mp = str(self.discovered_device.get_parameter("MP"))
         print("MP encontado: " + mp +" | " + my)
-        device_address = d.get_64bit_addr()
         # print(f"-Router{d.get_node_id()} FOUND.")
+
         if mp == my:
+            device_address = d.get_64bit_addr()
             addr = str(device_address.address.hex()).upper()
             print("Returning xbee address: " + addr)
             print(type(addr))
             # connected_ed.append(addr)
             return addr
 
-
     def get_equipment_64_bit_addr(self, device):
         device.read_device_info()
         device_address = device.get_64bit_addr()
+        device_ni = device.get_node_id()
         # print(f"-Router{d.get_node_id()} FOUND.")
         addr = str(device_address.address.hex()).upper()
-        print("RETORNANDO " + addr)
+        print(f"[OK] Returning device address number '{addr}-{device_ni}' ")
         if addr != self.devices_64bit_addr['R1'] and addr != self.devices_64bit_addr['R2']:
             return addr
         else :

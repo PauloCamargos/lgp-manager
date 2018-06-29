@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*
 
 # PyQt5 threading example https://kushaldas.in/posts/pyqt5-thread-example.html
+from digi.xbee.exception import TimeoutException
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -90,6 +91,17 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         # Populating QComboBox equipments
         for e in sorted(self.equipments, key=lambda e:e[1]): # sorting the list
             self.cbx_equipments.addItem(e[1])
+
+    def coordinator_not_found(self):
+        self.msg = QMessageBox()
+        self.msg.setLocale(QtCore.QLocale(QtCore.QLocale.Portuguese, QtCore.QLocale.Brazil))
+        self.msg.setIcon(QMessageBox.Information)
+        self.msg.setText("Dispositivo de localização não encontrado. Conecte-o "
+        "e execute o programa novamente.")
+        self.msg.setWindowTitle("Erro")
+        self.msg.setStandardButtons(QMessageBox.Ok)
+        self.msg.buttonClicked.connect(self.close_message_box)
+        self.msg.show()
 
     def update_ui(self):
         # MAIN WINDOW
@@ -448,7 +460,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         # if a device was discovered
         if discovered_device != "":
             # If a device was discorever
-            print("Searching for xbee description in database...")
+            print("[INFO] Searching for xbee description in database...")
             device_description = self.db.select_equipment_by_xbee(discovered_device)
             self.list_devices.addItem(device_description[0])
         else:
@@ -460,7 +472,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
     def list_all_equipments(self, discovered_device):
         if discovered_device != "":
             # If a device was discorever
-            print("Searching for xbee description in database..." + discovered_device)
+            print("Searching for xbee description in database")
             device_description = self.db.select_equipment_by_xbee(discovered_device)
             self.list_equipment.list_found_equipment.addItem(device_description[0])
         else:
@@ -521,6 +533,8 @@ class SearchSectorByEquipment(QThread):
     def __init__(self, equipment_ni=""):
         QThread.__init__(self)
         self.equipment_ni = equipment_ni
+        xbee.open_coordinator_com()
+        print("[INFO] Connection opened")
 
     def __del__(self):
         self.wait()
@@ -532,6 +546,8 @@ class SearchSectorByEquipment(QThread):
         # self.sleep(0.5)
 
         self.signal_status.emit('finnished')
+        xbee.close_coordinator_com()
+        print("[INFO] Connection closed")
 
 
     def find_equipment(self, equipment_ni):
@@ -549,7 +565,7 @@ class SearchSectorByEquipment(QThread):
         xbee.discover_network() # Discovering network
         while xbee.xbee_network.is_discovery_running():
             self.signal_update_progress_bar.emit('loading')
-            time.sleep(1.265)
+            time.sleep(1.270)
 
         number_of_devices = xbee.get_all_devices()
         # xbee.xbee_network.clear()
@@ -568,12 +584,13 @@ class SearchSectorByEquipment(QThread):
                     status_found_devices = True
                     print(xbee_64_bit_address)
                     self.signal_discovered_device.emit(xbee_64_bit_address)
+                    break
 
             if not status_found_devices:
                 # If no device inside a sector was found
                 self.signal_discovered_device.emit("")
 
-        except:
+        except TimeoutException:
             self.signal_status.emit("busy")
 
 
@@ -586,12 +603,14 @@ class DiscoverEquipmentsBySector(QThread):
     def __init__(self, device_name=""):
         QThread.__init__(self)
         self.device_name = device_name
+        xbee.open_coordinator_com()
+        print("[INFO] Connection opened")
 
     def __del__(self):
         self.wait()
 
     def run(self):
-        print("Buscando dispositivos (thread iniciada)")
+        print("[INFO] Thread started. Searching devices...")
         if self.device_name == 'Bioengenharia':
             self.find_equipment('R1')
         elif self.device_name == 'Enfermaria':
@@ -603,6 +622,9 @@ class DiscoverEquipmentsBySector(QThread):
         # self.sleep(0.5)
 
         self.signal_status.emit('finnished')
+        xbee.close_coordinator_com()
+        print("[INFO] Connection closed")
+
 
 
     def find_equipment(self, sector):
@@ -620,7 +642,7 @@ class DiscoverEquipmentsBySector(QThread):
         xbee.discover_network() # Discovering network
         while xbee.xbee_network.is_discovery_running():
             self.signal_update_progress_bar.emit('loading')
-            time.sleep(1.265)
+            time.sleep(1.270)
 
         number_of_devices = xbee.get_all_devices()
         # xbee.xbee_network.clear()
@@ -628,24 +650,24 @@ class DiscoverEquipmentsBySector(QThread):
         self.signal_number_of_connected_devices.emit(number_of_devices)
 
         try:
-            xbee.find_router(sector)
 
             if sector != 'All':
+                xbee.find_router(sector)
                 # Getting all equipment connected to the chosen sector
                 # devices = xbee.get_sector_equipments(sector)
                 for d in xbee.all_devices:
-                    print(d)
+                    # print(d)
                     self.signal_update_progress_bar.emit('loading')
-                    xbee_64_bit_address = xbee.read_device(d)
+                    xbee_64_bit_address = xbee.compare_mp_my(d)
                     if xbee_64_bit_address:
                         # If a device inside a sector was found, signal it
                         status_found_devices = True
-                        print(xbee_64_bit_address)
+                        # print(xbee_64_bit_address)
                         self.signal_discovered_device.emit(xbee_64_bit_address)
             else:
                 # returns all equipments
                 for d in xbee.all_devices:
-                    print(d)
+                    # print(d)
                     self.signal_update_progress_bar.emit('loading')
                     xbee_64_bit_address = xbee.get_equipment_64_bit_addr(d)
                     if xbee_64_bit_address:
@@ -660,22 +682,32 @@ class DiscoverEquipmentsBySector(QThread):
                 # If no device inside a sector was found
                 self.signal_discovered_device.emit("")
 
-        except:
+        except TimeoutException:
             self.signal_status.emit("busy")
+
 
 def main():
     app = QApplication(sys.argv)
     form = LogahApp()
     form.show()
-    app.exec_()
+    if xbee.coordinator is None:
+        print("Coordenador não encontrado")
+        form.coordinator_not_found()
+        form.close()
+        app.exec_()
+    else:
+        app.exec_()
 
 
 if __name__ == "__main__":
     xbee = xbee_handler.XBeeHandler()
     try:
         if xbee.coordinator is not None:
-            xbee.open_coordinator_com()
+            pass
+            # xbee.open_coordinator_com()
         main()
     finally:
         if xbee.coordinator is not None:
-            xbee.close_coordinator_com()
+            if xbee.coordinator.is_open():
+                xbee.close_coordinator_com()
+                print("[INFO] Connection closed")
