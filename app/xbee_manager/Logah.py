@@ -523,8 +523,11 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             self.list_sector.addItem("Equipamento não encontrado")
 
 
-
 class SearchSectorByEquipment(QThread):
+    """
+        Class used as a thread to search all sectors in an ambient and check
+        if an equipment is present inside this ambient
+    """
     signal_status = pyqtSignal(str)
     signal_number_of_connected_devices = pyqtSignal(int)
     signal_discovered_device = pyqtSignal(str)
@@ -595,6 +598,10 @@ class SearchSectorByEquipment(QThread):
 
 
 class DiscoverEquipmentsBySector(QThread):
+    """
+        Class used as a thread to discover every equipment inside an ambiente
+        given an sector.
+    """
     signal_status = pyqtSignal(str)
     signal_number_of_connected_devices = pyqtSignal(int)
     signal_discovered_device = pyqtSignal(str)
@@ -624,8 +631,6 @@ class DiscoverEquipmentsBySector(QThread):
         self.signal_status.emit('finnished')
         xbee.close_coordinator_com()
         print("[INFO] Connection closed")
-
-
 
     def find_equipment(self, sector):
         """
