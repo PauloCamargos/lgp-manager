@@ -176,7 +176,8 @@ class XBeeHandler():
         mp = d.get_parameter("MP")
         my = self.router.get_parameter("MY")
         ed_64_bit_addr = d.get_64bit_addr()
-        print("MP: " + str(mp.hex()).upper() +" | MY: " + str(my.hex()).upper())
+        ni = d.get_node_id()
+        print(str(ni) + " - MP: " + str(mp.hex()).upper() +" | (router) MY: " + str(my.hex()).upper())
 
         # If device is connected to router and 'd' is not the router itself
         if str(mp) == str(my) and self.router_64_bit_addr != ed_64_bit_addr:
@@ -259,6 +260,7 @@ class XBeeHandler():
             mp = str(d.get_parameter("MP"))
             # if ==
             my = str(self.discovered_device .get_parameter("MY"))
+
             print("MP encontado: " + mp +" | " + my)
             # print(f"-Router{d.get_node_id()} FOUND.")
             if mp == my:

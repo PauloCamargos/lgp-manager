@@ -29,18 +29,6 @@ References_
 """
 import psycopg2  # PostgreSQL database adapter for Python
 
-        row = self.cur.fetchone()
-        return row
-
-    def select_sector_description(self, router_xbee_64_bit_address):
-        """
-            Returns the sector description
-        """
-
-
-        self.query = "SELECT s.description FROM assets.sectors s " \
-                        "INNER JOIN assets.xbees x ON x.sector = s.id " \
-                        "WHERE x.address_64_bi
 
 class Banco:
     """Database class. Use this class to create connection and execute CRUD

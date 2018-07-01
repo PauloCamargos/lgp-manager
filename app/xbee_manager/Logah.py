@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*
 
 # PyQt5 threading example https://kushaldas.in/posts/pyqt5-thread-example.html
-from digi.xbee.exception import TimeoutException
+from digi.xbee.exception import TimeoutException, InvalidOperatingModeException
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -154,7 +154,6 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.about.setupUi(self.about_window)
         self.about_window.show()
 
-
     def open_associate_equipment(self, status=''):
         # Add equipment window
         unassociated_xbees = self.db.select_free_xbees()
@@ -181,14 +180,12 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             self.associate_equipment.statusbar.showMessage('STATUS: Erro. ' \
             'Preencha as informações corretamente!')
 
-
     def open_list_equipment(self):
         # list equipment window
 
         # Clearing old infos
         self.update_ui()
         self.list_equipment_window.show()
-
 
     def open_edit_equipment(self, status=''):
         # Add equipment window
@@ -212,7 +209,6 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             self.edit_equipment.statusbar.show()
             self.edit_equipment.statusbar.showMessage('STATUS: Erro. Preencha '\
              'as informações corretamente!')
-
 
     def associate_equipment_db(self):
         """
@@ -373,7 +369,6 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.search_progress_bar.setMaximum(5)
         self.search_equipment_thread.start()
 
-
     def configure_list_progress_bar(self, maximum):
         self.list_equipment.list_progress_bar.setValue(0)
         self.list_equipment.list_progress_bar.setMaximum(maximum+1)
@@ -468,7 +463,6 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
             self.list_devices.addItem("Nenhum dispositivo encontrado neste " \
             "setor")
 
-
     def list_all_equipments(self, discovered_device):
         if discovered_device != "":
             # If a device was discorever
@@ -536,6 +530,8 @@ class SearchSectorByEquipment(QThread):
     def __init__(self, equipment_ni=""):
         QThread.__init__(self)
         self.equipment_ni = equipment_ni
+        while xbee.coordinator.is_open():
+            time.sleep(0.1)
         xbee.open_coordinator_com()
         print("[INFO] Connection opened")
 
@@ -595,7 +591,8 @@ class SearchSectorByEquipment(QThread):
 
         except TimeoutException:
             self.signal_status.emit("busy")
-
+        except InvalidOperatingModeException:
+            print("InvalidOperatingModeException")
 
 class DiscoverEquipmentsBySector(QThread):
     """
@@ -610,6 +607,8 @@ class DiscoverEquipmentsBySector(QThread):
     def __init__(self, device_name=""):
         QThread.__init__(self)
         self.device_name = device_name
+        while xbee.coordinator.is_open():
+            time.sleep(0.1)
         xbee.open_coordinator_com()
         print("[INFO] Connection opened")
 
@@ -689,7 +688,8 @@ class DiscoverEquipmentsBySector(QThread):
 
         except TimeoutException:
             self.signal_status.emit("busy")
-
+        except InvalidOperatingModeException:
+            print("InvalidOperatingModeException")
 
 def main():
     app = QApplication(sys.argv)
