@@ -25,9 +25,9 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         self.search_progress_bar.setMaximum(5)
 
         # Instantiating database module
-        self.db = database.Banco(database='logah', schema='assets',\
+        self.db = database.Banco(database='lgp', schema='assets',\
         user='postgres',
-        password='admin', port=5432, host='localhost')
+        password='banco', port=5432, host='localhost')
         self.db.connection()
 
         # Connecting buttons to functions

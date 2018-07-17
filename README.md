@@ -59,3 +59,24 @@ Edit equipment screen
   1. Installing binary
 
   `pip3 install psycopg2-binary`
+
+## Configurando o banco de dados
+
+Faça o download e instale o PostgreSQL e o pgAdmin
+
+1. `$ sudo apt-get install postgresql`
+1. `$ sudo apt-get install pgadmin3`
+
+Configure o BD
+
+1. `$ sudo su`
+1. `$ su postgres`
+1. `# psql`
+1. `# \password`
+1. `# banco`
+
+    Obs.: Este password acima foi o configurado no programa. Altere-o de acordo com as suas necessidades (no seu BD e no programa).
+
+1. Para sair: `# exit`
+
+> Ao finalizar as configurações do BD, siga as instruções dentro do arquivo `db_sql.sql`
