@@ -90,4 +90,4 @@ Para que o dispositivo local (coordenador) seja reconhecido pelo programa, execu
 
 Ao executar esta linha, você estará incluindo seu usuário ao grupo autorizado a abrir portas.
 
-    Obs.: Para que as alterações tomem efeito, é necessário que você 'deslogue' e 'logue' novamente no seu sistema operacional.
+> Obs.: Para que as alterações tomem efeito, é necessário que você 'deslogue' e 'logue' novamente no seu sistema operacional.
