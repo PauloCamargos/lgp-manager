@@ -37,6 +37,8 @@ class XBeeHandler():
         self.open_ports = self.serial_ports()
         if not self.open_ports:
             print("No device connected")
+            print("Portas: ")
+            print(self.open_ports)
             self.coordinator = None
         else:
             print("Device connected")

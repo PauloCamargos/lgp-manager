@@ -80,3 +80,14 @@ Configure o BD
 1. Para sair: `# exit`
 
 > Ao finalizar as configurações do BD, siga as instruções dentro do arquivo `db_sql.sql`
+
+## Permissões de acesso as portas USB no Linux
+
+Caso você esteja utilizando Linux, será necessário adicionar permissão ao seu usuário para utilização de portas USB do seu computador.
+Para que o dispositivo local (coordenador) seja reconhecido pelo programa, execute no seu terminal as seguintes linhas:
+
+  `$ sudo usermod -a -G dialout <nomedousuario>`
+
+Ao executar esta linha, você estará incluindo seu usuário ao grupo autorizado a abrir portas.
+
+    Obs.: Para que as alterações tomem efeito, é necessário que você 'deslogue' e 'logue' novamente no seu sistema operacional.

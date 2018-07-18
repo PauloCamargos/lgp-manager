@@ -709,6 +709,7 @@ if __name__ == "__main__":
     try:
         if xbee.coordinator is not None:
             pass
+            print("Coordenador não encontrado.")
             # xbee.open_coordinator_com()
         main()
     finally:
