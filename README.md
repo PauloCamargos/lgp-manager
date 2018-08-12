@@ -75,7 +75,7 @@ Configure o BD
 1. `# \password`
 1. `# banco`
 
-    Obs.: Este password acima foi o configurado no programa. Altere-o de acordo com as suas necessidades (no seu BD e no programa).
+> Obs.: Este password acima foi o configurado no programa. Altere-o de acordo com as suas necessidades (no seu BD e no programa).
 
 1. Para sair: `# exit`
 

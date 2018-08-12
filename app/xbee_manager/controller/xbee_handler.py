@@ -136,7 +136,7 @@ class XBeeHandler():
         self.router_64_bit_addr = self.router.get_64bit_addr()
         # If the device was found in the network
         print(f"Device {sector.title()} found. Retrieving device information...")
-        router.read_device_info()
+        self.router.read_device_info()
         print(f"{sector.title()}-NI: {self.router.get_node_id()}")
         print("Searching for EDs...")
 
@@ -147,7 +147,7 @@ class XBeeHandler():
         for d in self.all_devices:
             d.read_device_info()
             mp = str(d.get_parameter("MP"))
-            my = str(router.get_parameter("MY"))
+            my = str(self.router.get_parameter("MY"))
             ed_64_bit_addr = d.get_64bit_addr()
             print("MP encontado: " + mp +" | " + my)
 
