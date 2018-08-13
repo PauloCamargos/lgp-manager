@@ -6,6 +6,7 @@
 
 # Private folders
 /java/LogahGUI/nbproject/private/
+.vscode/
 
 # Compilation folders
 __pycache__/
