@@ -1,10 +1,10 @@
-# LOGAH
-The LOGAH (Localizador e Gerenciador de Ativos Hospitalares) aims into keeping a record of all
+# LGP
+The LGP (Localizador e Gerenciador de Ativos Hospitalares) aims into keeping a record of all
 registered equipment in a hospital. It uses the XBee technology (ZigBee protocol) to provide information about
 localization of a given asset inside an ambient.
 ## Usage
 First, configure all the devices using the XCTU software (link available at the section "Installs" bellow). Power then accordingly to your needs.
-To use this software, install the libraries described at the section "Installs" bellow, download or clone the repository. Change your directory to LOGAH/app/xbee manager. Connect the coordinator (local device) to your computer and execute the program.
+To use this software, install the libraries described at the section "Installs" bellow, download or clone the repository. Change your directory to LGP/app/xbee manager. Connect the coordinator (local device) to your computer and execute the program.
 To execute the program, using Python 3, execute the main_gui.py program:
 
 `$ python3 main_gui.py`
@@ -16,7 +16,7 @@ If your local XBee is not connected to the computer, a message indicating that t
 ## App overview
 
 Main screen
-![app image](app/img/main_window.png "LOGAH's search equipment screen")
+![app image](app/img/main_window.png "LGP's search equipment screen")
 
 List all equipment screen
 ![app image](app/img/list_window.png "List equipment screen")

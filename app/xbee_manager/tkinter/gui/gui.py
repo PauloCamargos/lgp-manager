@@ -6,7 +6,7 @@ import witkets as wtk
 # Abrindo comm. do xbee coordenador
 
 root = tk.Tk()
-root.title("LOGAH Manager")
+root.title("LGP Manager")
 style = wtk.Style()
 style.theme_use('clam')
 style.apply_default()

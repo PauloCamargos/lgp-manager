@@ -5,7 +5,7 @@
 *.odt
 
 # Private folders
-/java/LogahGUI/nbproject/private/
+/java/LgpGUI/nbproject/private/
 .vscode/
 
 # Compilation folders

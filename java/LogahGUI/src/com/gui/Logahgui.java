@@ -9,12 +9,12 @@ package com.gui;
  *
  * @author pauloc
  */
-public class Logahgui extends javax.swing.JFrame {
+public class Lgpgui extends javax.swing.JFrame {
 
     /**
-     * Creates new form Logahgui
+     * Creates new form Lgpgui
      */
-    public Logahgui() {
+    public Lgpgui() {
         initComponents();
     }
 
@@ -45,7 +45,7 @@ public class Logahgui extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("LOGAH");
+        setTitle("LGP");
         setResizable(false);
 
         jLabel1.setText("Por setor");
@@ -227,20 +227,20 @@ public class Logahgui extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Logahgui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Lgpgui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Logahgui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Lgpgui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Logahgui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Lgpgui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Logahgui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Lgpgui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Logahgui().setVisible(true);
+                new Lgpgui().setVisible(true);
             }
         });
     }

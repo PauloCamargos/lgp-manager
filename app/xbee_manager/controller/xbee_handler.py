@@ -19,7 +19,7 @@ import serial
 
 class XBeeHandler():
     """
-    Class to handle XBee's methods. It integrates easily with the LOGAH Manager
+    Class to handle XBee's methods. It integrates easily with the LGP Manager
     GUI.
     """
 

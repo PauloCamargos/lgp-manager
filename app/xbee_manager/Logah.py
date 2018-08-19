@@ -14,11 +14,11 @@ from controller import database
 import sys
 import time
 
-class LogahApp(QMainWindow, main_window.Ui_MainWindow):
+class LgpApp(QMainWindow, main_window.Ui_MainWindow):
     signal_start_search = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
-        super(LogahApp, self).__init__(parent)
+        super(LgpApp, self).__init__(parent)
         self.setupUi(self)
 
         self.search_progress_bar.setValue(0)
@@ -27,7 +27,7 @@ class LogahApp(QMainWindow, main_window.Ui_MainWindow):
         # Instantiating database module
         self.db = database.Banco(database='lgp', schema='assets',\
         user='postgres',
-        password='banco', port=5432, host='localhost')
+        password='admin', port=5432, host='localhost')
         self.db.connection()
 
         # Connecting buttons to functions
@@ -693,7 +693,7 @@ class DiscoverEquipmentsBySector(QThread):
 
 def main():
     app = QApplication(sys.argv)
-    form = LogahApp()
+    form = LgpApp()
     form.show()
     if xbee.coordinator is None:
         print("Coordenador não encontrado")

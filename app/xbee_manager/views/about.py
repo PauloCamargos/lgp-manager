@@ -35,8 +35,8 @@ class Ui_About(object):
     def retranslateUi(self, About):
         _translate = QtCore.QCoreApplication.translate
         About.setWindowTitle(_translate("About", "Sobre"))
-        self.label.setText(_translate("About", "LOGAH Medical Softwares Ltda ® 2018 "))
-        self.label_2.setText(_translate("About", "LOGAH Manager Versão 1.0"))
+        self.label.setText(_translate("About", "LGP Medical Softwares Ltda ® 2018 "))
+        self.label_2.setText(_translate("About", "LGP Manager Versão 1.0"))
 
 
 if __name__ == "__main__":
