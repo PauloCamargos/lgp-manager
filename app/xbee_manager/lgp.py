@@ -479,6 +479,7 @@ class LgpApp(QMainWindow, main_window.Ui_MainWindow):
         option = self.cbx_equipments.currentText()
 
         equipment_ni = self.db.select_equipment_ni(option)
+        print(equipment_ni)
 
         # Creating a thread
         self.search_equipment_thread = SearchSectorByEquipment(equipment_ni[0])
@@ -707,8 +708,7 @@ def main():
 if __name__ == "__main__":
     xbee = xbee_handler.XBeeHandler()
     try:
-        if xbee.coordinator is not None:
-            pass
+        if xbee.coordinator is None:
             print("Coordenador não encontrado.")
             # xbee.open_coordinator_com()
         main()

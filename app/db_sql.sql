@@ -65,7 +65,7 @@ INSERT INTO assets.sectors (description) VALUES ('Enfermaria'),
 -- Inserindo valores nas salas
 INSERT INTO assets.rooms(room_number, id_sector) VALUES ('1A', 1), ('1B', 1),('1C', 1),('5A', 2),('9Z', 3),('8K', 4),('6F', 5),('2B', 5), ('3N', 6)
 
--- Inserindo valores de enderecos 64bit dos xbees e seu tipo 
+-- Inserindo valores de enderecos 64bit dos xbees e seu tipo
 INSERT INTO assets.xbees(address_64_bit, xbee_type) VALUES ('0013A200404A4BB3', 'C'),
 ('0013A200404A4BC6', 'R'),('0013A200404AB737','R'),('0013A200407C48FE','E'),
 ('0013A200407C48FF','E'),('0013A200407C4533','E'), ('0013A200407C4927','E')
@@ -76,13 +76,13 @@ RIGHT JOIN assets.xbees x ON e.xbee = x.id
 WHERE e.xbee IS NULL
 
 -- Atualizacao nas informacoes das tabelas
-UPDATE assets.xbees SET ni = 'C' WHERE id=15;
-UPDATE assets.xbees SET ni = 'R1' WHERE id=16;
-UPDATE assets.xbees SET ni = 'R2' WHERE id=17;
-UPDATE assets.xbees SET ni = 'E1' WHERE id=18;
-UPDATE assets.xbees SET ni = 'E2' WHERE id=19;
-UPDATE assets.xbees SET ni = 'E3' WHERE id=20;
-UPDATE assets.xbees SET ni = 'E4' WHERE id=21;
+UPDATE assets.xbees SET ni = 'C' WHERE id=1;
+UPDATE assets.xbees SET ni = 'R1' WHERE id=2;
+UPDATE assets.xbees SET ni = 'R2' WHERE id=3;
+UPDATE assets.xbees SET ni = 'E1' WHERE id=4;
+UPDATE assets.xbees SET ni = 'E2' WHERE id=5;
+UPDATE assets.xbees SET ni = 'E3' WHERE id=6;
+UPDATE assets.xbees SET ni = 'E4' WHERE id=7;
 UPDATE assets.xbees SET ni = 'TESTE' WHERE id=22;
 
 -- Alteracao na estrutura da tabela xbees
