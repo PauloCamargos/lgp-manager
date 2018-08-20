@@ -86,6 +86,12 @@ UPDATE assets.xbees SET ni = 'E4' WHERE id=7;
 UPDATE assets.xbees SET ni = 'TESTE' WHERE id=22;
 
 -- Alteracao na estrutura da tabela xbees
-ALTER TABLE assets.xbees ADD COLUMN sector VARCHAR(64)
-UPDATE assets.xbees SET sector = 1 WHERE ni = 'R2'
-UPDATE assets.xbees SET sector = 4 WHERE ni = 'R1'
+-- ALTER TABLE assets.xbees ADD COLUMN sector VARCHAR(64)
+-- UPDATE assets.xbees SET sector = 1 WHERE ni = 'R2'
+-- UPDATE assets.xbees SET sector = 4 WHERE ni = 'R1'
+-- ALTER TABLE assets.xbees DROP COLUMN sector;
+ALTER TABLE assets.xbees ADD COLUMN sector_id INT;
+ALTER TABLE assets.xbees
+ADD CONSTRAINT fk_sector FOREIGN KEY (sector_id) REFERENCES assets.sectors(id);
+UPDATE assets.xbees SET sector_id = 1 WHERE id = 3;
+UPDATE assets.xbees SET sector_id = 4 WHERE id = 2;

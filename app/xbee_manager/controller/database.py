@@ -406,9 +406,8 @@ class Banco:
             Returns the sector description
         """
 
-
         self.query = "SELECT s.description FROM assets.sectors s " \
-                        "INNER JOIN assets.xbees x ON x.sector = s.id " \
+                        "INNER JOIN assets.xbees x ON x.sector_id = s.id " \
                         "WHERE x.address_64_bit = %s "
 
         print(self.query)
