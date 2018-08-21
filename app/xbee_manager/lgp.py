@@ -713,7 +713,7 @@ if __name__ == "__main__":
             # xbee.open_coordinator_com()
         main()
     finally:
-        if xbee.coordinator is not None:
-            if xbee.coordinator.is_open():
-                xbee.close_coordinator_com()
-                print("[INFO] Connection closed")
+        if xbee.coordinator.is_open():
+            xbee.clear()
+            xbee.close_coordinator_com()
+            print("[INFO] Connection closed")
